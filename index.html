@@ -50,7 +50,7 @@ body {
 
 /* ── Tab Bar ── */
 .tab-bar { position:fixed; bottom:0; left:0; right:0; z-index:100; display:flex; justify-content:space-around; align-items:center; height:var(--nav-h); padding-bottom:var(--safe-b); background:rgba(13,13,16,0.97); backdrop-filter:blur(18px); -webkit-backdrop-filter:blur(18px); border-top:1px solid var(--border2) }
-.tab-item { display:flex; flex-direction:column; align-items:center; gap:3px; cursor:pointer; padding:6px 14px; border:none; background:none; color:var(--text3); font-size:0.6rem; font-weight:600; font-family:inherit; letter-spacing:0.2px; transition:color 0.2s }
+.tab-item { display:flex; flex-direction:column; align-items:center; gap:2px; cursor:pointer; padding:6px 8px; border:none; background:none; color:var(--text3); font-size:0.55rem; font-weight:600; font-family:inherit; letter-spacing:0.2px; transition:color 0.2s }
 .tab-item.active { color:var(--blue) }
 .tab-icon svg { width:20px; height:20px; stroke-width:1.8; opacity:0.55; transition:opacity 0.2s }
 .tab-item.active .tab-icon svg { opacity:1; stroke:var(--blue) }
@@ -113,6 +113,27 @@ input[type="range"]::-webkit-slider-thumb { -webkit-appearance:none; width:22px;
 
 /* ── Settings Button ── */
 .settings-btn { display:flex; align-items:center; gap:8px; width:100%; padding:12px 0; background:none; border:none; color:var(--text2); font-size:0.88rem; font-weight:600; cursor:pointer; font-family:inherit }
+
+/* ── Data Tool Cards ── */
+.dt-card { display:flex; flex-direction:column; align-items:center; gap:4px; padding:16px 10px; background:var(--surface2); border:1px solid var(--border2); border-radius:var(--r); cursor:pointer; font-family:inherit; color:var(--text2); transition:border-color 0.15s }
+.dt-card:hover { border-color:var(--text3) }
+.dt-card svg { opacity:0.6; margin-bottom:2px }
+.dt-label { font-size:0.82rem; font-weight:700; color:var(--text1) }
+.dt-sub { font-size:0.65rem; color:var(--text3) }
+.dt-card.dt-danger { border-color:rgba(220,38,38,0.15) }
+.dt-card.dt-danger:hover { border-color:rgba(220,38,38,0.35) }
+
+/* ── Settings Collapsible ── */
+.set-hdr { display:flex; align-items:center; justify-content:space-between; padding:14px 16px; cursor:pointer }
+.set-caret { transition:transform 0.2s ease; color:var(--text3) }
+.set-body { overflow:hidden }
+.set-body.closed { display:none }
+
+/* ── Size Picker ── */
+.size-picker { display:grid; grid-template-columns:1fr 1fr 1fr 1fr; gap:8px }
+.size-btn { padding:10px 0; border-radius:var(--r); border:1px solid var(--border2); background:var(--surface2); color:var(--text3); font-size:0.82rem; font-weight:700; cursor:pointer; font-family:inherit; transition:all 0.15s }
+.size-btn.active { background:var(--blue); color:#fff; border-color:var(--blue) }
+.size-btn:not(.active):hover { border-color:var(--text3) }
 
 /* ── Info note ── */
 .info-note { display:flex; align-items:flex-start; gap:5px; padding:10px 0 4px; margin-top:8px; border-top:1px solid var(--border2) }
@@ -267,31 +288,211 @@ input[type="range"]::-webkit-slider-thumb { -webkit-appearance:none; width:22px;
 </div>
 
 <!-- ═══ SETTINGS PAGE ═══ -->
-<div class="page" id="page-settings">
+<!-- ═══ FI (Financial Independence) PAGE ═══ -->
+<div class="page" id="page-fi">
   <div class="container" style="padding-top:12px">
     <div class="card">
-      <div class="sec-hdr"><div class="sec-title">Appearance</div></div>
-      <div style="display:flex;align-items:center;justify-content:space-between;padding:6px 0">
-        <div style="display:flex;align-items:center;gap:8px">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
-          <span style="font-size:0.88rem;font-weight:600">Dark Mode</span>
+      <div class="fg">
+        <label class="fl">Monthly Expenses (₹)</label>
+        <input class="fi" id="fi-expenses" type="number" inputmode="numeric" placeholder="e.g. 70000" value="70000" oninput="calcFI()"/>
+      </div>
+      <div class="form-row2">
+        <div class="fg">
+          <label class="fl">Expense Inflation (% p.a.)</label>
+          <input class="fi" id="fi-infl" type="number" step="0.5" placeholder="7" value="7" oninput="calcFI()"/>
         </div>
-        <label class="toggle">
-          <input type="checkbox" id="theme-toggle" onchange="toggleTheme(this.checked)"/>
-          <span class="toggle-slider"></span>
-        </label>
+        <div class="fg">
+          <label class="fl">Years to FI</label>
+          <input class="fi" id="fi-years" type="number" placeholder="15" value="15" oninput="calcFI()"/>
+        </div>
+      </div>
+      <div class="form-row2">
+        <div class="fg">
+          <label class="fl">Post-FI Return (% p.a.)</label>
+          <input class="fi" id="fi-return" type="number" step="0.5" placeholder="8" value="8" oninput="calcFI()"/>
+        </div>
+        <div class="fg">
+          <label class="fl">Withdrawal Rate (%)</label>
+          <input class="fi" id="fi-wr" type="number" step="0.5" placeholder="3.5" value="3.5" oninput="calcFI()"/>
+        </div>
+      </div>
+      <div class="fg">
+        <label class="fl">Current Savings (₹) <span>optional</span></label>
+        <input class="fi" id="fi-current" type="number" inputmode="numeric" placeholder="0" value="" oninput="calcFI()"/>
+      </div>
+
+      <div id="fi-results" style="display:none">
+        <div class="result-card">
+          <div class="result-label">FI Corpus Needed</div>
+          <div class="result-val" id="fi-corpus">₹0</div>
+          <div class="result-sub" id="fi-corpus-sub"></div>
+        </div>
+
+        <div style="margin-top:12px">
+          <div class="result-row">
+            <span class="result-row-label">Monthly Expenses at FI</span>
+            <span class="result-row-val" id="fi-future-exp">₹0</span>
+          </div>
+          <div class="result-row">
+            <span class="result-row-label">Annual Expenses at FI</span>
+            <span class="result-row-val" id="fi-annual-exp">₹0</span>
+          </div>
+          <div class="result-row">
+            <span class="result-row-label">Withdrawal Rate</span>
+            <span class="result-row-val" id="fi-wr-display">0%</span>
+          </div>
+          <div class="result-row" id="fi-gap-row" style="display:none">
+            <span class="result-row-label">Gap to Fill</span>
+            <span class="result-row-val" id="fi-gap" style="color:var(--amber)">₹0</span>
+          </div>
+          <div class="result-row" id="fi-sip-row" style="display:none">
+            <span class="result-row-label">Monthly SIP Needed</span>
+            <span class="result-row-val" id="fi-sip" style="color:var(--blue)">₹0</span>
+          </div>
+        </div>
+
+        <div class="yr-table-wrap">
+          <button class="yr-toggle" onclick="const b=document.getElementById('fi-table-body');b.classList.toggle('closed');const o=!b.classList.contains('closed');this.querySelector('span').textContent=o?'Hide Yearly Projection':'Yearly Projection';this.querySelector('svg').style.transform=o?'rotate(180deg)':''">
+            <span>Yearly Projection</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:10px;height:10px;transition:transform 0.2s ease"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div id="fi-table-body" class="yr-body closed">
+            <table class="yr-table"><thead><tr><th>Year</th><th>Expenses/yr</th><th>Corpus Needed</th></tr></thead><tbody id="fi-table-rows"></tbody></table>
+          </div>
+        </div>
+
+        <div class="info-note">
+          <span style="opacity:0.5">ⓘ</span>
+          <span>FI corpus = annual expenses ÷ withdrawal rate. A lower withdrawal rate means a larger but safer corpus.</span>
+        </div>
       </div>
     </div>
+  </div>
+</div>
+
+<!-- ═══ LOAN PAGE ═══ -->
+<div class="page" id="page-loan">
+  <div class="container" style="padding-top:12px">
     <div class="card">
-      <div class="sec-hdr"><div class="sec-title">Data Tools</div></div>
-      <button class="settings-btn" onclick="loadSample()">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-        Load Sample Data
-      </button>
-      <button class="settings-btn" style="color:var(--red)" onclick="resetCalc()">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg>
-        Reset
-      </button>
+      <div class="fg">
+        <label class="fl">Loan Amount (₹)</label>
+        <input class="fi" id="loan-amt" type="number" inputmode="numeric" placeholder="e.g. 500000" value="500000" oninput="calcLoan()"/>
+      </div>
+      <div class="form-row2">
+        <div class="fg">
+          <label class="fl">Interest Rate (% p.a.)</label>
+          <input class="fi" id="loan-rate" type="number" step="0.1" placeholder="12" value="12" oninput="calcLoan()"/>
+        </div>
+        <div class="fg">
+          <label class="fl">Tenure (months)</label>
+          <input class="fi" id="loan-tenure" type="number" placeholder="36" value="36" oninput="calcLoan()"/>
+        </div>
+      </div>
+      <div class="fg">
+        <label class="fl">Part Payment (₹ per year) <span>optional</span></label>
+        <input class="fi" id="loan-extra" type="number" inputmode="numeric" placeholder="0" value="" oninput="calcLoan()"/>
+      </div>
+
+      <div id="loan-results" style="display:none">
+        <div class="result-card">
+          <div class="result-label">Monthly EMI</div>
+          <div class="result-val" id="loan-emi">₹0</div>
+          <div class="result-sub" id="loan-emi-sub"></div>
+        </div>
+
+        <div style="margin-top:12px">
+          <div class="result-row">
+            <span class="result-row-label">Total Payable</span>
+            <span class="result-row-val" id="loan-total">₹0</span>
+          </div>
+          <div class="result-row">
+            <span class="result-row-label">Total Interest</span>
+            <span class="result-row-val" id="loan-interest" style="color:var(--red)">₹0</span>
+          </div>
+          <div class="result-row">
+            <span class="result-row-label">Interest % of Loan</span>
+            <span class="result-row-val" id="loan-int-pct">0%</span>
+          </div>
+          <div class="result-row" id="loan-save-row" style="display:none">
+            <span class="result-row-label">Interest Saved (part payment)</span>
+            <span class="result-row-val" id="loan-saved" style="color:var(--green)">₹0</span>
+          </div>
+          <div class="result-row" id="loan-early-row" style="display:none">
+            <span class="result-row-label">Closes Early By</span>
+            <span class="result-row-val" id="loan-early" style="color:var(--green)"></span>
+          </div>
+        </div>
+
+        <div class="yr-table-wrap">
+          <button class="yr-toggle" onclick="const b=document.getElementById('loan-table-body');b.classList.toggle('closed');const o=!b.classList.contains('closed');this.querySelector('span').textContent=o?'Hide Amortization':'Amortization Schedule';this.querySelector('svg').style.transform=o?'rotate(180deg)':''">
+            <span>Amortization Schedule</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:10px;height:10px;transition:transform 0.2s ease"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div id="loan-table-body" class="yr-body closed">
+            <table class="yr-table"><thead><tr><th>Year</th><th>Principal</th><th>Interest</th><th>Balance</th></tr></thead><tbody id="loan-table-rows"></tbody></table>
+          </div>
+        </div>
+
+        <div class="info-note">
+          <span style="opacity:0.5">ⓘ</span>
+          <span>Even small part payments reduce total interest significantly. Pay off high-interest loans before investing.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="page" id="page-settings">
+  <div class="container" style="padding-top:12px">
+    <div class="card" style="padding:0;overflow:hidden">
+      <div class="set-hdr" onclick="toggleSet('set-appearance')">
+        <div class="sec-title">Appearance</div>
+        <svg class="set-caret" id="caret-set-appearance" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="set-body closed" id="set-appearance">
+        <div style="padding:10px 16px 14px">
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border2);padding-bottom:12px;margin-bottom:12px">
+            <div style="display:flex;align-items:center;gap:8px">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+              <span style="font-size:0.86rem;font-weight:600">Dark Mode</span>
+            </div>
+            <label class="toggle">
+              <input type="checkbox" id="theme-toggle" onchange="toggleTheme(this.checked)"/>
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg>
+            <span style="font-size:0.86rem;font-weight:600">Text Size</span>
+          </div>
+          <div class="size-picker" id="size-picker">
+            <button class="size-btn" onclick="setTextSize(14)" data-size="14">S</button>
+            <button class="size-btn active" onclick="setTextSize(16)" data-size="16">M</button>
+            <button class="size-btn" onclick="setTextSize(18)" data-size="18">L</button>
+            <button class="size-btn" onclick="setTextSize(20)" data-size="20">XL</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card" style="padding:0;overflow:hidden">
+      <div class="set-hdr" onclick="toggleSet('set-data')">
+        <div class="sec-title">Data Tools</div>
+        <svg class="set-caret" id="caret-set-data" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="set-body closed" id="set-data">
+        <div style="padding:6px 16px 14px;display:grid;grid-template-columns:1fr 1fr;gap:8px">
+          <button class="dt-card" onclick="loadSample()">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+            <div class="dt-label">Sample Data</div>
+            <div class="dt-sub">Load demo values</div>
+          </button>
+          <button class="dt-card dt-danger" onclick="resetCalc()">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>
+            <div class="dt-label" style="color:var(--red)">Reset</div>
+            <div class="dt-sub">Clear everything</div>
+          </button>
+        </div>
+      </div>
     </div>
     <div style="text-align:center;padding:20px 0;font-size:0.72rem;color:var(--text3)">
       Data calculated locally. Nothing stored or sent anywhere.
@@ -308,6 +509,14 @@ input[type="range"]::-webkit-slider-thumb { -webkit-appearance:none; width:22px;
   <button class="tab-item" onclick="navigate('swp',this)">
     <div class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 18 8.5 10.5 13.5 15.5 23 6"/><polyline points="17 18 23 18 23 12"/></svg></div>
     SWP
+  </button>
+  <button class="tab-item" onclick="navigate('fi',this)">
+    <div class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+    FIRE
+  </button>
+  <button class="tab-item" onclick="navigate('loan',this)">
+    <div class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg></div>
+    Loan
   </button>
   <button class="tab-item" onclick="navigate('settings',this)">
     <div class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 112.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg></div>
@@ -327,6 +536,34 @@ function navigate(page,btn){
   if(btn)btn.classList.add('active');
 }
 
+// ── Settings toggle ──
+function toggleSet(id){
+  const el=document.getElementById(id);if(!el)return;
+  el.classList.toggle('closed');
+  const caret=document.getElementById('caret-'+id);
+  if(caret)caret.style.transform=el.classList.contains('closed')?'':'rotate(180deg)';
+}
+
+// ── Text Size ──
+function setTextSize(v){
+  const n=Number(v);
+  document.documentElement.style.fontSize=n+'px';
+  document.querySelectorAll('.size-btn').forEach(b=>{
+    b.classList.toggle('active',Number(b.dataset.size)===n);
+  });
+  localStorage.setItem('calc_fontsize',n);
+}
+(function(){
+  const saved=localStorage.getItem('calc_fontsize');
+  if(saved){
+    const n=Number(saved);
+    document.documentElement.style.fontSize=n+'px';
+    document.querySelectorAll('.size-btn').forEach(b=>{
+      b.classList.toggle('active',Number(b.dataset.size)===n);
+    });
+  }
+})();
+
 // ── Theme ──
 function toggleTheme(isDark){
   const theme=isDark?'dark':'light';
@@ -334,33 +571,167 @@ function toggleTheme(isDark){
   localStorage.setItem('calc_theme',theme);
 }
 function loadSample(){
-  // SIP: ₹25K/mo, 12%, 15 years, 7% inflation
   document.getElementById('sip-amt').value='25000';
   document.getElementById('sip-rate').value='12';
   document.getElementById('sip-years').value='15';
   document.getElementById('sip-infl').value='7';
-  // SWP: ₹1Cr corpus, ₹50K/mo, 8%, 25 years, 5% step-up
   document.getElementById('swp-corpus').value='10000000';
   document.getElementById('swp-withdraw').value='50000';
   document.getElementById('swp-rate').value='8';
   document.getElementById('swp-years').value='25';
   document.getElementById('swp-stepup').value='5';
-  calcSIP();calcSWP();
+  document.getElementById('fi-expenses').value='70000';
+  document.getElementById('fi-infl').value='7';
+  document.getElementById('fi-years').value='15';
+  document.getElementById('fi-return').value='8';
+  document.getElementById('fi-wr').value='3.5';
+  document.getElementById('fi-current').value='1500000';
+  document.getElementById('loan-amt').value='500000';
+  document.getElementById('loan-rate').value='12';
+  document.getElementById('loan-tenure').value='36';
+  document.getElementById('loan-extra').value='5000';
+  calcSIP();calcSWP();calcFI();calcLoan();
   navigate('sip',document.querySelectorAll('.tab-item')[0]);
 }
 function resetCalc(){
-  document.getElementById('sip-amt').value='';
-  document.getElementById('sip-rate').value='';
-  document.getElementById('sip-years').value='';
-  document.getElementById('sip-infl').value='';
-  document.getElementById('swp-corpus').value='';
-  document.getElementById('swp-withdraw').value='';
-  document.getElementById('swp-rate').value='';
-  document.getElementById('swp-years').value='';
-  document.getElementById('swp-stepup').value='';
-  document.getElementById('sip-results').style.display='none';
-  document.getElementById('swp-results').style.display='none';
+  ['sip-amt','sip-rate','sip-years','sip-infl','swp-corpus','swp-withdraw','swp-rate','swp-years','swp-stepup','fi-expenses','fi-infl','fi-years','fi-return','fi-wr','fi-current','loan-amt','loan-rate','loan-tenure','loan-extra'].forEach(id=>{document.getElementById(id).value=''});
+  ['sip-results','swp-results','fi-results','loan-results'].forEach(id=>{document.getElementById(id).style.display='none'});
   navigate('sip',document.querySelectorAll('.tab-item')[0]);
+}
+
+// ── FI Calculator ──
+function calcFI(){
+  const expenses=Number(document.getElementById('fi-expenses').value||0);
+  const infl=Number(document.getElementById('fi-infl').value||0)/100;
+  const years=Number(document.getElementById('fi-years').value||0);
+  const ret=Number(document.getElementById('fi-return').value||0)/100;
+  const wr=Number(document.getElementById('fi-wr').value||0)/100;
+  const current=Number(document.getElementById('fi-current').value||0);
+
+  const wrap=document.getElementById('fi-results');
+  if(!expenses||!years||!wr){wrap.style.display='none';return}
+  wrap.style.display='';
+
+  const futureMonthly=expenses*Math.pow(1+infl,years);
+  const futureAnnual=futureMonthly*12;
+  const corpus=Math.round(futureAnnual/wr);
+
+  document.getElementById('fi-corpus').textContent=fmt(corpus);
+  document.getElementById('fi-corpus-sub').textContent=`${fmt(expenses)}/mo today becomes ${fmt(futureMonthly)}/mo in ${years} years`;
+  document.getElementById('fi-future-exp').textContent=fmt(futureMonthly)+'/mo';
+  document.getElementById('fi-annual-exp').textContent=fmt(futureAnnual)+'/yr';
+  document.getElementById('fi-wr-display').textContent=(wr*100)+'%';
+
+  // Gap and SIP needed
+  const gapRow=document.getElementById('fi-gap-row');
+  const sipRow=document.getElementById('fi-sip-row');
+  if(current>0){
+    const projectedCurrent=current*Math.pow(1+ret,years);
+    const gap=Math.max(0,corpus-projectedCurrent);
+    gapRow.style.display='';
+    document.getElementById('fi-gap').textContent=gap>0?fmt(gap):'₹0 (already on track!)';
+    document.getElementById('fi-gap').style.color=gap>0?'var(--amber)':'var(--green)';
+    if(gap>0&&ret>0){
+      sipRow.style.display='';
+      const r=ret/12;const n=years*12;
+      const sip=gap*r/(Math.pow(1+r,n)-1);
+      document.getElementById('fi-sip').textContent=fmt(sip)+'/mo';
+    } else {
+      sipRow.style.display=gap>0?'':'none';
+    }
+  } else {
+    gapRow.style.display='none';
+    // Show SIP needed from zero
+    if(ret>0){
+      sipRow.style.display='';
+      const r=ret/12;const n=years*12;
+      const sip=corpus*r/(Math.pow(1+r,n)-1);
+      document.getElementById('fi-sip').textContent=fmt(sip)+'/mo';
+    }
+  }
+
+  // Yearly projection table
+  const tableBody=document.getElementById('fi-table-rows');
+  let rows='';
+  for(let y=1;y<=years;y++){
+    const futExp=expenses*Math.pow(1+infl,y)*12;
+    const corpusNeeded=Math.round(futExp/wr);
+    rows+=`<tr><td>${y}</td><td>${fmt(futExp)}</td><td>${fmt(corpusNeeded)}</td></tr>`;
+  }
+  tableBody.innerHTML=rows;
+}
+
+// ── Loan Calculator ──
+function calcLoan(){
+  const P=Number(document.getElementById('loan-amt').value||0);
+  const annualRate=Number(document.getElementById('loan-rate').value||0)/100;
+  const tenure=Number(document.getElementById('loan-tenure').value||0);
+  const extra=Number(document.getElementById('loan-extra').value||0);
+
+  const wrap=document.getElementById('loan-results');
+  if(!P||!annualRate||!tenure){wrap.style.display='none';return}
+  wrap.style.display='';
+
+  const r=annualRate/12;
+  const emi=P*r*Math.pow(1+r,tenure)/(Math.pow(1+r,tenure)-1);
+  const totalPayable=emi*tenure;
+  const totalInterest=totalPayable-P;
+
+  document.getElementById('loan-emi').textContent=fmt(emi);
+  document.getElementById('loan-emi-sub').textContent=`for ${tenure} months (${(tenure/12).toFixed(1)} years)`;
+  document.getElementById('loan-total').textContent=fmt(totalPayable);
+  document.getElementById('loan-interest').textContent=fmt(totalInterest);
+  document.getElementById('loan-int-pct').textContent=Math.round(totalInterest/P*100)+'% of loan';
+
+  // Part payment calculation (annual lumpsum)
+  const saveRow=document.getElementById('loan-save-row');
+  const earlyRow=document.getElementById('loan-early-row');
+  if(extra>0){
+    let balance=P;let months=0;let totalPaidExtra=0;
+    while(balance>0&&months<tenure*2){
+      const intPart=balance*r;
+      const prinPart=Math.min(balance,emi-intPart);
+      balance-=prinPart;
+      totalPaidExtra+=Math.min(emi,prinPart+intPart);
+      months++;
+      // Apply annual part payment at end of each year
+      if(months%12===0&&balance>0){
+        const pp=Math.min(extra,balance);
+        balance-=pp;
+        totalPaidExtra+=pp;
+      }
+      if(balance<=0)break;
+    }
+    const interestWithExtra=totalPaidExtra-P;
+    const saved=totalInterest-interestWithExtra;
+    const monthsSaved=tenure-months;
+    saveRow.style.display='';
+    earlyRow.style.display='';
+    document.getElementById('loan-saved').textContent=fmt(Math.max(0,saved));
+    document.getElementById('loan-early').textContent=monthsSaved>0?monthsSaved+' months':'0 months';
+  } else {
+    saveRow.style.display='none';
+    earlyRow.style.display='none';
+  }
+
+  // Yearly amortization table
+  const tableBody=document.getElementById('loan-table-rows');
+  let balance=P;let rows='';
+  const totalYears=Math.ceil(tenure/12);
+  for(let y=1;y<=totalYears;y++){
+    let yearPrincipal=0,yearInterest=0;
+    const monthsThisYear=Math.min(12,tenure-(y-1)*12);
+    for(let m=0;m<monthsThisYear;m++){
+      if(balance<=0)break;
+      const intPart=balance*r;
+      const prinPart=Math.min(balance,emi-intPart);
+      yearPrincipal+=prinPart;
+      yearInterest+=intPart;
+      balance-=prinPart;
+    }
+    rows+=`<tr><td>${y}</td><td>${fmt(yearPrincipal)}</td><td style="color:var(--red)">${fmt(yearInterest)}</td><td>${fmt(Math.max(0,balance))}</td></tr>`;
+  }
+  tableBody.innerHTML=rows;
 }
 (function(){
   const saved=localStorage.getItem('calc_theme');
@@ -474,6 +845,8 @@ function calcSWP(){
 // Init
 calcSIP();
 calcSWP();
+calcFI();
+calcLoan();
 </script>
 </body>
 </html>
