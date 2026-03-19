@@ -45,9 +45,8 @@ body {
 }
 
 /* ── Header ── */
-.top-header { position:sticky; top:0; z-index:90; background:rgba(13,13,16,0.95); backdrop-filter:blur(18px); -webkit-backdrop-filter:blur(18px); padding:12px 20px calc(6px + var(--safe-t)); display:flex; align-items:center; gap:12px }
-.hdr-title { font-size:1.15rem; font-weight:800; flex:1 }
-.hdr-sub { font-size:0.72rem; color:var(--text3); font-weight:500 }
+.top-header { position:sticky; top:0; z-index:90; background:rgba(13,13,16,0.95); backdrop-filter:blur(18px); -webkit-backdrop-filter:blur(18px); padding:calc(12px + var(--safe-t)) 20px 10px; display:flex; align-items:center; gap:12px }
+.hdr-title { font-size:1.15rem; font-weight:800 }
 
 /* ── Tab Bar ── */
 .tab-bar { position:fixed; bottom:0; left:0; right:0; z-index:100; display:flex; justify-content:space-around; align-items:center; height:var(--nav-h); padding-bottom:var(--safe-b); background:rgba(13,13,16,0.97); backdrop-filter:blur(18px); -webkit-backdrop-filter:blur(18px); border-top:1px solid var(--border2) }
@@ -104,8 +103,16 @@ input[type="range"]::-webkit-slider-thumb { -webkit-appearance:none; width:22px;
 .sec-hdr { display:flex; align-items:center; gap:8px; padding:14px 0 8px }
 .sec-title { font-size:0.68rem; font-weight:700; color:var(--text3); text-transform:uppercase; letter-spacing:0.4px }
 
-/* ── Theme toggle ── */
-.theme-btn { background:var(--surface2); border:1px solid var(--border2); border-radius:var(--r); padding:10px 14px; color:var(--text2); font-size:0.82rem; font-weight:600; cursor:pointer; font-family:inherit; width:100%; text-align:left; margin-bottom:8px; display:flex; align-items:center; gap:8px }
+/* ── Toggle Switch ── */
+.toggle { position:relative; display:inline-block; width:44px; height:26px; flex-shrink:0 }
+.toggle input { opacity:0; width:0; height:0 }
+.toggle-slider { position:absolute; cursor:pointer; top:0; left:0; right:0; bottom:0; background:var(--surface3); border:1px solid var(--border); border-radius:99px; transition:0.2s }
+.toggle-slider::before { content:''; position:absolute; height:20px; width:20px; left:2px; bottom:2px; background:var(--text3); border-radius:50%; transition:0.2s }
+.toggle input:checked+.toggle-slider { background:var(--blue); border-color:var(--blue) }
+.toggle input:checked+.toggle-slider::before { transform:translateX(18px); background:#fff }
+
+/* ── Settings Button ── */
+.settings-btn { display:flex; align-items:center; gap:8px; width:100%; padding:12px 0; background:none; border:none; color:var(--text2); font-size:0.88rem; font-weight:600; cursor:pointer; font-family:inherit }
 
 /* ── Info note ── */
 .info-note { display:flex; align-items:flex-start; gap:5px; padding:10px 0 4px; margin-top:8px; border-top:1px solid var(--border2) }
@@ -115,8 +122,7 @@ input[type="range"]::-webkit-slider-thumb { -webkit-appearance:none; width:22px;
 <body data-theme="dark">
 
 <div class="top-header">
-  <div>
-    <div class="hdr-sub">Finance Tools</div>
+  <div style="flex:1">
     <div class="hdr-title">Calculator</div>
   </div>
 </div>
@@ -265,9 +271,26 @@ input[type="range"]::-webkit-slider-thumb { -webkit-appearance:none; width:22px;
   <div class="container" style="padding-top:12px">
     <div class="card">
       <div class="sec-hdr"><div class="sec-title">Appearance</div></div>
-      <button class="theme-btn" onclick="cycleTheme()">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
-        <span id="theme-label">Dark</span>
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:6px 0">
+        <div style="display:flex;align-items:center;gap:8px">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+          <span style="font-size:0.88rem;font-weight:600">Dark Mode</span>
+        </div>
+        <label class="toggle">
+          <input type="checkbox" id="theme-toggle" onchange="toggleTheme(this.checked)"/>
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+    </div>
+    <div class="card">
+      <div class="sec-hdr"><div class="sec-title">Data Tools</div></div>
+      <button class="settings-btn" onclick="loadSample()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        Load Sample Data
+      </button>
+      <button class="settings-btn" style="color:var(--red)" onclick="resetCalc()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg>
+        Reset
       </button>
     </div>
     <div style="text-align:center;padding:20px 0;font-size:0.72rem;color:var(--text3)">
@@ -305,18 +328,52 @@ function navigate(page,btn){
 }
 
 // ── Theme ──
-const themes=['dark','light'];
-let themeIdx=0;
-function cycleTheme(){
-  themeIdx=(themeIdx+1)%themes.length;
-  document.body.setAttribute('data-theme',themes[themeIdx]);
-  document.getElementById('theme-label').textContent=themes[themeIdx]==='dark'?'Dark':'Light';
-  localStorage.setItem('calc_theme',themes[themeIdx]);
+function toggleTheme(isDark){
+  const theme=isDark?'dark':'light';
+  document.body.setAttribute('data-theme',theme);
+  localStorage.setItem('calc_theme',theme);
+}
+function loadSample(){
+  // SIP: ₹25K/mo, 12%, 15 years, 7% inflation
+  document.getElementById('sip-amt').value='25000';
+  document.getElementById('sip-rate').value='12';
+  document.getElementById('sip-years').value='15';
+  document.getElementById('sip-infl').value='7';
+  // SWP: ₹1Cr corpus, ₹50K/mo, 8%, 25 years, 5% step-up
+  document.getElementById('swp-corpus').value='10000000';
+  document.getElementById('swp-withdraw').value='50000';
+  document.getElementById('swp-rate').value='8';
+  document.getElementById('swp-years').value='25';
+  document.getElementById('swp-stepup').value='5';
+  calcSIP();calcSWP();
+  navigate('sip',document.querySelectorAll('.tab-item')[0]);
+}
+function resetCalc(){
+  document.getElementById('sip-amt').value='';
+  document.getElementById('sip-rate').value='';
+  document.getElementById('sip-years').value='';
+  document.getElementById('sip-infl').value='';
+  document.getElementById('swp-corpus').value='';
+  document.getElementById('swp-withdraw').value='';
+  document.getElementById('swp-rate').value='';
+  document.getElementById('swp-years').value='';
+  document.getElementById('swp-stepup').value='';
+  document.getElementById('sip-results').style.display='none';
+  document.getElementById('swp-results').style.display='none';
+  navigate('sip',document.querySelectorAll('.tab-item')[0]);
 }
 (function(){
   const saved=localStorage.getItem('calc_theme');
-  if(saved){const i=themes.indexOf(saved);if(i>=0){themeIdx=i;document.body.setAttribute('data-theme',saved);document.getElementById('theme-label').textContent=saved==='dark'?'Dark':'Light';}}
-  else if(window.matchMedia('(prefers-color-scheme:light)').matches){themeIdx=1;document.body.setAttribute('data-theme','light');document.getElementById('theme-label').textContent='Light';}
+  const toggle=document.getElementById('theme-toggle');
+  if(saved){
+    document.body.setAttribute('data-theme',saved);
+    if(toggle)toggle.checked=saved==='dark';
+  } else if(window.matchMedia('(prefers-color-scheme:light)').matches){
+    document.body.setAttribute('data-theme','light');
+    if(toggle)toggle.checked=false;
+  } else {
+    if(toggle)toggle.checked=true;
+  }
 })();
 
 // ── SIP Calculator ──
