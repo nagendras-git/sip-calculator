@@ -60,13 +60,13 @@ body {
 .page { display:none } .page.active { display:block }
 
 /* ── Cards ── */
-.card { background:var(--surface); border:1px solid var(--border); border-radius:var(--r-xl); padding:16px; margin-bottom:12px }
+.card { background:var(--surface); border:1px solid var(--border); border-radius:var(--r-xl); padding:1rem; margin-bottom:12px }
 
 /* ── Form ── */
-.fg { margin-bottom:14px }
+.fg { margin-bottom:0.88rem }
 .fl { display:block; font-size:0.64rem; font-weight:700; color:var(--text3); text-transform:uppercase; letter-spacing:0.4px; margin-bottom:6px }
 .fl span { font-weight:400; text-transform:none; letter-spacing:0; color:var(--text3); font-size:0.86rem }
-.fi { width:100%; padding:11px 13px; background:var(--surface2); border:1px solid var(--border2); border-radius:var(--r); color:var(--text1); font-size:0.95rem; font-family:inherit; font-weight:600; outline:none; transition:border-color 0.15s }
+.fi { width:100%; padding:0.7rem 0.8rem; background:var(--surface2); border:1px solid var(--border2); border-radius:var(--r); color:var(--text1); font-size:0.95rem; font-family:inherit; font-weight:600; outline:none; transition:border-color 0.15s }
 .fi:focus { border-color:var(--blue) }
 .fi-sel { appearance:none; -webkit-appearance:none; background-image:url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%239898b0' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 12px center; padding-right:32px }
 .form-row2 { display:grid; grid-template-columns:1fr 1fr; gap:10px }
@@ -78,11 +78,11 @@ input[type="range"] { -webkit-appearance:none; width:100%; height:6px; border-ra
 input[type="range"]::-webkit-slider-thumb { -webkit-appearance:none; width:22px; height:22px; border-radius:50%; background:#fff; border:2px solid var(--blue); box-shadow:0 1px 4px rgba(0,0,0,0.3); cursor:pointer }
 
 /* ── Result Card ── */
-.result-card { background:var(--surface2); border:1px solid var(--border2); border-radius:var(--r); padding:14px; margin-top:14px }
+.result-card { background:var(--surface2); border:1px solid var(--border2); border-radius:var(--r); padding:0.88rem; margin-top:14px }
 .result-label { font-size:0.6rem; font-weight:700; color:var(--text3); text-transform:uppercase; letter-spacing:0.3px; margin-bottom:4px }
-.result-val { font-size:1.5rem; font-weight:800; color:var(--text1) }
+.result-val { font-size:1.6rem; font-weight:800; color:var(--text1) }
 .result-sub { font-size:0.7rem; color:var(--text3); margin-top:3px }
-.result-row { display:flex; justify-content:space-between; align-items:center; padding:8px 0; border-bottom:1px solid var(--border2) }
+.result-row { display:flex; justify-content:space-between; align-items:center; padding:0.5rem 0; border-bottom:1px solid var(--border2) }
 .result-row:last-child { border-bottom:none }
 .result-row-label { font-size:0.76rem; color:var(--text2) }
 .result-row-val { font-size:0.82rem; font-weight:700; color:var(--text1) }
@@ -466,10 +466,10 @@ input[type="range"]::-webkit-slider-thumb { -webkit-appearance:none; width:22px;
             <span style="font-size:0.86rem;font-weight:600">Text Size</span>
           </div>
           <div class="size-picker" id="size-picker">
-            <button class="size-btn" onclick="setTextSize(14)" data-size="14">S</button>
+            <button class="size-btn" onclick="setTextSize(15)" data-size="15">S</button>
             <button class="size-btn active" onclick="setTextSize(16)" data-size="16">M</button>
-            <button class="size-btn" onclick="setTextSize(18)" data-size="18">L</button>
-            <button class="size-btn" onclick="setTextSize(20)" data-size="20">XL</button>
+            <button class="size-btn" onclick="setTextSize(17)" data-size="17">L</button>
+            <button class="size-btn" onclick="setTextSize(18)" data-size="18">XL</button>
           </div>
         </div>
       </div>
