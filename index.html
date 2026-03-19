@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover"/>
-<title>SIP & SWP Calculator</title>
+<title>Calculator</title>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Calculator">
@@ -12,841 +12,185 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
 <style>
-:root {
-  --bg: #0d0d10; --surface: #141417; --surface2: #1e1e25; --surface3: #26262f;
-  --border: #4a4a60; --border2: #383850; --scrim: rgba(0,0,0,0.72);
-  --text1: #f4f4fa; --text2: #c8c8e0; --text3: #b0b0cc;
-  --green: #22c55e; --green-bg: rgba(34,197,94,0.1);
-  --red: #f87171; --red-bg: rgba(248,113,113,0.1);
-  --amber: #fbbf24; --amber-bg: rgba(251,191,36,0.1);
-  --blue: #3B82F6; --accent2: rgba(255,255,255,0.06);
-  --mono: 'Inter', sans-serif;
-  --r: 12px; --r-lg: 16px; --r-xl: 20px;
-  --ease: cubic-bezier(0.16,1,0.3,1); --spring: cubic-bezier(0.34,1.56,0.64,1);
-  --nav-h: 60px; --safe-b: env(safe-area-inset-bottom, 0px); --safe-t: env(safe-area-inset-top, 0px);
-}
-[data-theme="light"] {
-  --bg: #f2f2f7; --surface: #ffffff; --surface2: #f5f5fa; --surface3: #e8e8f0;
-  --border: #c8c8d8; --border2: #d8d8e4; --text1: #1a1a25; --text2: #505068; --text3: #808098;
-  --accent2: rgba(0,0,0,0.04); --scrim: rgba(0,0,0,0.45);
-  --blue: #2563EB; --green: #16a34a; --green-bg: rgba(22,163,74,0.08);
-  --red: #dc2626; --red-bg: rgba(220,38,38,0.06);
-  --amber: #b45309; --amber-bg: rgba(180,83,9,0.07);
-}
-[data-theme="light"] .top-header { background: var(--bg); border-bottom: 1px solid var(--border) }
-[data-theme="light"] .tab-bar { background: var(--bg); border-top: 1px solid var(--border) }
-
-*,*::before,*::after { box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent }
-html { height:100%; overflow-x:hidden; font-size:16px; background:var(--bg) }
-body {
-  font-family:'Inter',-apple-system,sans-serif; background:var(--bg); color:var(--text1);
-  min-height:100vh; max-width:100vw; padding-bottom:calc(var(--nav-h) + var(--safe-b) + 4px);
-  -webkit-font-smoothing:antialiased; overflow-x:hidden;
-}
-
-/* ── Header ── */
-.top-header { position:sticky; top:0; z-index:90; background:rgba(13,13,16,0.95); backdrop-filter:blur(18px); -webkit-backdrop-filter:blur(18px); padding:calc(12px + var(--safe-t)) 20px 10px; display:flex; align-items:center; gap:12px }
-.hdr-title { font-size:1.15rem; font-weight:800 }
-
-/* ── Tab Bar ── */
-.tab-bar { position:fixed; bottom:0; left:0; right:0; z-index:100; display:flex; justify-content:space-around; align-items:center; height:var(--nav-h); padding-bottom:var(--safe-b); background:rgba(13,13,16,0.97); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px); border-top:1px solid var(--border2) }
-.tab-item { display:flex; flex-direction:column; align-items:center; gap:2px; cursor:pointer; padding:6px 8px; border:none; background:none; color:var(--text3); font-size:0.58rem; font-weight:600; font-family:inherit; letter-spacing:0.2px; transition:color 0.2s }
-.tab-item.active { color:var(--blue) }
-.tab-icon svg { width:18px; height:18px; stroke-width:1.8; opacity:0.5; transition:opacity 0.2s }
-.tab-item.active .tab-icon svg { opacity:1; stroke:var(--blue) }
-
-/* ── Container ── */
-.container { padding:0 16px }
-.page { display:none } .page.active { display:block }
-
-/* ── Cards ── */
-.card { background:var(--surface); border:1px solid var(--border); border-radius:var(--r-xl); padding:14px 16px; margin-bottom:10px }
-
-/* ── Form ── */
-.fg { margin-bottom:11px }
-.fl { display:block; font-size:0.64rem; font-weight:700; color:var(--text3); text-transform:uppercase; letter-spacing:0.4px; margin-bottom:5px }
-.fl span { font-weight:400; text-transform:none; letter-spacing:0; color:var(--text3); font-size:0.86rem }
-.fi { width:100%; padding:10px 12px; background:var(--surface2); border:1px solid var(--border2); border-radius:var(--r); color:var(--text1); font-size:1rem; font-family:inherit; font-weight:600; outline:none; -webkit-appearance:none; transition:border-color 0.15s }
-.fi:focus { border-color:var(--blue) }
-.fi-sel { appearance:none; -webkit-appearance:none; background-image:url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%239898b0' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 12px center; padding-right:32px }
-.form-row2 { display:grid; grid-template-columns:1fr 1fr; gap:10px }
-
-/* ── Range Slider ── */
-.range-wrap { position:relative; margin-top:4px }
-.range-val { position:absolute; right:0; top:-22px; font-size:0.82rem; font-weight:700; color:var(--blue) }
-input[type="range"] { -webkit-appearance:none; width:100%; height:6px; border-radius:99px; background:var(--surface3); outline:none; cursor:pointer }
-input[type="range"]::-webkit-slider-thumb { -webkit-appearance:none; width:22px; height:22px; border-radius:50%; background:#fff; border:2px solid var(--blue); box-shadow:0 1px 4px rgba(0,0,0,0.3); cursor:pointer }
-
-/* ── Result Card ── */
-.result-card { background:var(--surface2); border:1px solid var(--border2); border-radius:var(--r); padding:12px 14px; margin-top:10px }
-.result-label { font-size:0.6rem; font-weight:700; color:var(--text3); text-transform:uppercase; letter-spacing:0.3px; margin-bottom:3px }
-.result-val { font-size:1.5rem; font-weight:800; color:var(--text1) }
-.result-sub { font-size:0.7rem; color:var(--text3); margin-top:2px }
-.result-row { display:flex; justify-content:space-between; align-items:center; padding:7px 0; border-bottom:1px solid var(--border2) }
-.result-row:last-child { border-bottom:none }
-.result-row-label { font-size:0.76rem; color:var(--text2) }
-.result-row-val { font-size:0.82rem; font-weight:700; color:var(--text1) }
-
-/* ── Year Table ── */
-.yr-table-wrap { margin-top:10px }
-.yr-toggle { display:flex; align-items:center; justify-content:center; gap:4px; background:none; border:none; color:var(--blue); font-size:0.72rem; font-weight:700; cursor:pointer; padding:8px 12px; font-family:inherit; width:100% }
-.yr-toggle svg { width:10px; height:10px; transition:transform 0.2s ease }
-.yr-table { width:100%; border-collapse:collapse }
-.yr-table th { font-size:0.58rem; font-weight:700; color:var(--text3); text-transform:uppercase; letter-spacing:0.3px; padding:8px 6px; text-align:right; border-bottom:1px solid var(--border2) }
-.yr-table th:first-child { text-align:left }
-.yr-table td { font-size:0.74rem; font-weight:600; color:var(--text1); padding:7px 6px; text-align:right; border-bottom:1px solid var(--border2) }
-.yr-table td:first-child { color:var(--text3); font-weight:500; text-align:left }
-.yr-table tr:last-child td { border-bottom:none; font-weight:800; color:var(--blue) }
-.yr-body.closed { display:none }
-
-/* ── Section Header ── */
-.sec-hdr { display:flex; align-items:center; gap:8px; padding:14px 0 8px }
-.sec-title { font-size:0.68rem; font-weight:700; color:var(--text3); text-transform:uppercase; letter-spacing:0.4px }
-
-/* ── Toggle Switch ── */
-.toggle { position:relative; display:inline-block; width:44px; height:26px; flex-shrink:0 }
-.toggle input { opacity:0; width:0; height:0 }
-.toggle-slider { position:absolute; cursor:pointer; top:0; left:0; right:0; bottom:0; background:var(--surface3); border:1px solid var(--border); border-radius:99px; transition:0.2s }
-.toggle-slider::before { content:''; position:absolute; height:20px; width:20px; left:2px; bottom:2px; background:var(--text3); border-radius:50%; transition:0.2s }
-.toggle input:checked+.toggle-slider { background:var(--blue); border-color:var(--blue) }
-.toggle input:checked+.toggle-slider::before { transform:translateX(18px); background:#fff }
-
-/* ── Settings Button ── */
-.settings-btn { display:flex; align-items:center; gap:8px; width:100%; padding:12px 0; background:none; border:none; color:var(--text2); font-size:0.88rem; font-weight:600; cursor:pointer; font-family:inherit }
-
-/* ── Data Tool Cards ── */
-.dt-card { display:flex; flex-direction:column; align-items:center; gap:4px; padding:16px 10px; background:var(--surface2); border:1px solid var(--border2); border-radius:var(--r); cursor:pointer; font-family:inherit; color:var(--text2); transition:border-color 0.15s }
-.dt-card:hover { border-color:var(--text3) }
-.dt-card svg { opacity:0.6; margin-bottom:2px }
-.dt-label { font-size:0.82rem; font-weight:700; color:var(--text1) }
-.dt-sub { font-size:0.65rem; color:var(--text3) }
-.dt-card.dt-danger { border-color:rgba(220,38,38,0.15) }
-.dt-card.dt-danger:hover { border-color:rgba(220,38,38,0.35) }
-
-/* ── Settings Collapsible ── */
-.set-hdr { display:flex; align-items:center; justify-content:space-between; padding:14px 16px; cursor:pointer }
-.set-caret { transition:transform 0.2s ease; color:var(--text3) }
-.set-body { overflow:hidden }
-.set-body.closed { display:none }
-
-/* ── Size Picker ── */
-.size-picker { display:grid; grid-template-columns:1fr 1fr 1fr 1fr; gap:8px }
-.size-btn { padding:10px 0; border-radius:var(--r); border:1px solid var(--border2); background:var(--surface2); color:var(--text3); font-size:0.82rem; font-weight:700; cursor:pointer; font-family:inherit; transition:all 0.15s }
-.size-btn.active { background:var(--blue); color:#fff; border-color:var(--blue) }
-.size-btn:not(.active):hover { border-color:var(--text3) }
-
-/* ── Info note ── */
-.info-note { display:flex; align-items:flex-start; gap:5px; padding:10px 0 4px; margin-top:8px; border-top:1px solid var(--border2) }
-.info-note span { font-size:0.62rem; color:var(--text3); line-height:1.5 }
+:root{--bg:#0d0d10;--surface:#141417;--surface2:#1e1e25;--surface3:#26262f;--border:#4a4a60;--border2:#383850;--scrim:rgba(0,0,0,0.72);--text1:#f4f4fa;--text2:#c8c8e0;--text3:#b0b0cc;--green:#22c55e;--green-bg:rgba(34,197,94,0.1);--red:#f87171;--red-bg:rgba(248,113,113,0.1);--amber:#fbbf24;--amber-bg:rgba(251,191,36,0.1);--blue:#3B82F6;--accent2:rgba(255,255,255,0.06);--mono:'Inter',sans-serif;--nav-h:60px;--safe-b:env(safe-area-inset-bottom,0px);--safe-t:env(safe-area-inset-top,0px);--r:12px;--r-lg:16px;--r-xl:20px;--ease:cubic-bezier(0.16,1,0.3,1);--spring:cubic-bezier(0.34,1.56,0.64,1)}
+[data-theme="light"]{--bg:#f2f2f7;--surface:#ffffff;--surface2:#f5f5fa;--surface3:#e8e8f0;--border:#c8c8d8;--border2:#d8d8e4;--text1:#1a1a25;--text2:#505068;--text3:#808098;--accent2:rgba(0,0,0,0.04);--scrim:rgba(0,0,0,0.45);--blue:#2563EB;--green:#16a34a;--green-bg:rgba(22,163,74,0.08);--red:#dc2626;--red-bg:rgba(220,38,38,0.06);--amber:#b45309;--amber-bg:rgba(180,83,9,0.07)}
+[data-theme="light"] .top-header{background:var(--bg);border-bottom:1px solid var(--border)}
+[data-theme="light"] .tab-bar{background:var(--bg);border-top:1px solid var(--border)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{height:100%;overflow-x:hidden;font-size:16px;background:var(--bg)}
+body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var(--text1);min-height:100vh;max-width:100vw;padding-bottom:calc(var(--nav-h) + var(--safe-b) + 4px);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+::-webkit-scrollbar{width:0;height:0}
+.top-header{position:sticky;top:0;z-index:90;background:rgba(13,13,16,0.95);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);padding:calc(12px + var(--safe-t)) 20px 10px}
+.hdr-title{font-size:1.1rem;font-weight:800}
+.tab-bar{position:fixed;bottom:0;left:0;right:0;z-index:100;display:flex;justify-content:center;height:var(--nav-h);padding-bottom:var(--safe-b);background:rgba(13,13,16,0.97);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid var(--border2)}
+.tab-bar-inner{width:100%;max-width:480px;display:flex;align-items:flex-start;justify-content:space-around}
+.tab-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;padding:8px 0 0;background:none;border:none;color:var(--text3);transition:color 120ms;font-family:inherit}
+.tab-item.active{color:var(--blue)}
+.tab-icon{height:26px;display:flex;align-items:center;justify-content:center}
+.tab-icon svg{width:1.3rem;height:1.3rem;stroke:currentColor;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;opacity:0.35;transition:opacity 200ms}
+.tab-item.active .tab-icon svg{opacity:1;stroke:var(--blue)}
+.tab-label{font-size:0.68rem;font-weight:700;letter-spacing:0.2px}
+.container{padding:0 16px}.page{display:none}.page.active{display:block}
+.sec-hdr-card{display:flex;align-items:center;justify-content:space-between;padding:11px 14px;cursor:pointer;user-select:none;background:var(--surface2);border:1px solid var(--border);border-radius:var(--r-lg);margin-bottom:8px}
+.sec-hdr-card:active{background:var(--surface3)}
+.sec-hdr-left{display:flex;align-items:center;gap:8px;min-width:0}
+.sec-hdr-title{font-size:0.86rem;font-weight:600;color:var(--text1);display:inline-flex;align-items:center;gap:8px}
+.sec-hdr-title svg{opacity:0.45;flex-shrink:0}
+.sec-caret{color:var(--text3);transition:transform 0.25s var(--ease);display:flex;align-items:center}
+.sec-caret svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.sec-caret.open{transform:rotate(180deg)}
+.sec-body{overflow:hidden;max-height:5000px;transition:max-height 0.32s var(--ease),opacity 0.2s ease;opacity:1}
+.sec-body.closed{max-height:0;opacity:0;pointer-events:none}
+.card-inner{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);padding:14px 16px;margin-bottom:8px;margin-top:-4px}
+.fg{margin-bottom:13px}
+.fl{font-size:0.68rem;font-weight:700;color:var(--text3);letter-spacing:0;margin-bottom:5px;display:block}
+.fl span{font-weight:400;letter-spacing:0;color:var(--text3);font-size:0.86rem}
+.fi{width:100%;max-width:100%;font-size:1rem !important;padding:10px 12px;border:1px solid var(--border);border-radius:var(--r);font-family:'Inter',sans-serif;font-weight:500;background:var(--surface2);color:var(--text1);outline:none;-webkit-appearance:none;transition:border-color 150ms,box-shadow 150ms;box-sizing:border-box}
+.fi:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(59,130,246,0.12);background:var(--surface)}
+.fi::placeholder{color:var(--text3)}
+.form-row2{display:grid;grid-template-columns:1fr 1fr;gap:9px;align-items:start}
+.form-row2 .fg{display:flex;flex-direction:column}.form-row2 .fg .fi{flex:1;min-height:44px}
+.result-card{background:var(--surface2);border:1px solid var(--border2);border-radius:var(--r);padding:12px 14px;margin-top:10px}
+.result-label{font-size:0.62rem;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:0.3px;margin-bottom:3px}
+.result-val{font-size:1.45rem;font-weight:800;color:var(--text1)}
+.result-sub{font-size:0.72rem;color:var(--text3);margin-top:2px}
+.result-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--border2)}
+.result-row:last-child{border-bottom:none}
+.result-row-label{font-size:0.78rem;color:var(--text2)}
+.result-row-val{font-size:0.82rem;font-weight:700;color:var(--text1)}
+.yr-table-wrap{margin-top:10px}
+.yr-toggle{display:flex;align-items:center;justify-content:center;gap:4px;background:none;border:none;color:var(--blue);font-size:0.72rem;font-weight:700;cursor:pointer;padding:8px 12px;font-family:inherit;width:100%}
+.yr-toggle svg{width:10px;height:10px;transition:transform 0.2s ease}
+.yr-table{width:100%;border-collapse:collapse}
+.yr-table th{font-size:0.58rem;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:0.3px;padding:8px 4px;text-align:right;border-bottom:1px solid var(--border2)}
+.yr-table th:first-child{text-align:left}
+.yr-table td{font-size:0.74rem;font-weight:600;color:var(--text1);padding:6px 4px;text-align:right;border-bottom:1px solid var(--border2)}
+.yr-table td:first-child{color:var(--text3);font-weight:500;text-align:left}
+.yr-table tr:last-child td{border-bottom:none;font-weight:800;color:var(--blue)}
+.yr-body.closed{display:none}
+.info-note{display:flex;align-items:flex-start;gap:5px;padding:10px 0 2px;margin-top:8px;border-top:1px solid var(--border2)}
+.info-note span{font-size:0.62rem;color:var(--text3);line-height:1.5}
+.toggle{position:relative;display:inline-block;width:44px;height:26px;flex-shrink:0}
+.toggle input{opacity:0;width:0;height:0}
+.toggle-slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background:var(--surface3);border:1px solid var(--border);border-radius:99px;transition:0.2s}
+.toggle-slider::before{content:'';position:absolute;height:20px;width:20px;left:2px;bottom:2px;background:var(--text3);border-radius:50%;transition:0.2s}
+.toggle input:checked+.toggle-slider{background:var(--blue);border-color:var(--blue)}
+.toggle input:checked+.toggle-slider::before{transform:translateX(18px);background:#fff}
+.size-picker{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px}
+.size-btn{padding:10px 0;border-radius:var(--r);border:1px solid var(--border2);background:var(--surface2);color:var(--text3);font-size:0.82rem;font-weight:700;cursor:pointer;font-family:inherit;transition:all 0.15s}
+.size-btn.active{background:var(--blue);color:#fff;border-color:var(--blue)}
+.dt-card{display:flex;flex-direction:column;align-items:center;gap:4px;padding:14px 10px;background:var(--surface2);border:1px solid var(--border2);border-radius:var(--r);cursor:pointer;font-family:inherit;color:var(--text2)}
+.dt-card svg{opacity:0.6;margin-bottom:2px}
+.dt-label{font-size:0.82rem;font-weight:700;color:var(--text1)}
+.dt-sub{font-size:0.65rem;color:var(--text3)}
+.dt-card.dt-danger{border-color:rgba(220,38,38,0.15)}
 </style>
 </head>
 <body data-theme="dark">
+<div class="top-header"><div class="hdr-title">Calculator</div></div>
 
-<div class="top-header">
-  <div style="flex:1">
-    <div class="hdr-title">Calculator</div>
-  </div>
-</div>
+<!-- ═══ CALCULATE ═══ -->
+<div class="page active" id="page-calc"><div class="container" style="padding-top:8px">
 
-<!-- ═══ SIP PAGE ═══ -->
-<div class="page active" id="page-sip">
-  <div class="container" style="padding-top:8px">
-    <div class="card">
-      <div class="fg">
-        <label class="fl">Monthly SIP Amount (₹)</label>
-        <input class="fi" id="sip-amt" type="number" inputmode="numeric" placeholder="e.g. 10000" value="10000" oninput="calcSIP()"/>
-      </div>
-      <div class="form-row2">
-        <div class="fg">
-          <label class="fl">Expected Return (% p.a.)</label>
-          <input class="fi" id="sip-rate" type="number" step="0.5" placeholder="12" value="12" oninput="calcSIP()"/>
-        </div>
-        <div class="fg">
-          <label class="fl">Time Period (years)</label>
-          <input class="fi" id="sip-years" type="number" placeholder="10" value="10" oninput="calcSIP()"/>
-        </div>
-      </div>
-      <div class="fg">
-        <label class="fl">Inflation (% p.a.) <span>optional</span></label>
-        <input class="fi" id="sip-infl" type="number" step="0.5" placeholder="0" value="7" oninput="calcSIP()"/>
-      </div>
+  <div class="sec-hdr-card" onclick="toggleSec('sec-sip')"><div class="sec-hdr-left"><span class="sec-hdr-title"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg> SIP Calculator</span></div><span class="sec-caret" id="caret-sec-sip"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></span></div>
+  <div class="sec-body" id="sec-sip"><div class="card-inner">
+    <div class="fg"><label class="fl">Monthly SIP Amount (₹)</label><input class="fi" id="sip-amt" type="number" inputmode="numeric" placeholder="e.g. 10000" value="10000" oninput="calcSIP()"/></div>
+    <div class="form-row2"><div class="fg"><label class="fl">Expected Return (% p.a.)</label><input class="fi" id="sip-rate" type="number" step="0.5" placeholder="12" value="12" oninput="calcSIP()"/></div><div class="fg"><label class="fl">Time Period (years)</label><input class="fi" id="sip-years" type="number" placeholder="10" value="10" oninput="calcSIP()"/></div></div>
+    <div class="fg"><label class="fl">Inflation (% p.a.) <span>optional</span></label><input class="fi" id="sip-infl" type="number" step="0.5" placeholder="0" value="7" oninput="calcSIP()"/></div>
+    <div id="sip-results" style="display:none">
+      <div class="result-card"><div class="result-label">Future Value</div><div class="result-val" id="sip-fv">₹0</div><div class="result-sub" id="sip-fv-real"></div></div>
+      <div style="margin-top:8px"><div class="result-row"><span class="result-row-label">Total Invested</span><span class="result-row-val" id="sip-invested">₹0</span></div><div class="result-row"><span class="result-row-label">Wealth Gained</span><span class="result-row-val" id="sip-gain" style="color:var(--green)">₹0</span></div><div class="result-row" id="sip-real-row" style="display:none"><span class="result-row-label">Real Value (inflation-adjusted)</span><span class="result-row-val" id="sip-real-val">₹0</span></div></div>
+      <div class="yr-table-wrap"><button class="yr-toggle" onclick="toggleYr(this,'sip-tb')"><span>Yearly Breakdown</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button><div id="sip-tb" class="yr-body closed"><table class="yr-table"><thead><tr><th>Year</th><th>Invested</th><th>Value</th><th>Returns</th></tr></thead><tbody id="sip-rows"></tbody></table></div></div>
+      <div class="info-note"><span style="opacity:0.5">ⓘ</span><span>Returns are estimated. Actual returns depend on market conditions.</span></div>
+    </div>
+  </div></div>
 
-      <!-- Results -->
-      <div id="sip-results" style="display:none">
-        <div class="result-card">
-          <div class="result-label">Future Value</div>
-          <div class="result-val" id="sip-fv">₹0</div>
-          <div class="result-sub" id="sip-fv-real"></div>
-        </div>
+  <div class="sec-hdr-card" onclick="toggleSec('sec-swp')"><div class="sec-hdr-left"><span class="sec-hdr-title"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 18 8.5 10.5 13.5 15.5 23 6"/><polyline points="17 18 23 18 23 12"/></svg> SWP Calculator</span></div><span class="sec-caret" id="caret-sec-swp"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></span></div>
+  <div class="sec-body closed" id="sec-swp"><div class="card-inner">
+    <div class="fg"><label class="fl">Total Corpus (₹)</label><input class="fi" id="swp-corpus" type="number" inputmode="numeric" placeholder="e.g. 5000000" value="5000000" oninput="calcSWP()"/></div>
+    <div class="form-row2"><div class="fg"><label class="fl">Monthly Withdrawal (₹)</label><input class="fi" id="swp-withdraw" type="number" inputmode="numeric" placeholder="e.g. 30000" value="30000" oninput="calcSWP()"/></div><div class="fg"><label class="fl">Expected Return (% p.a.)</label><input class="fi" id="swp-rate" type="number" step="0.5" placeholder="8" value="8" oninput="calcSWP()"/></div></div>
+    <div class="form-row2"><div class="fg"><label class="fl">Withdrawal Period (years)</label><input class="fi" id="swp-years" type="number" placeholder="20" value="20" oninput="calcSWP()"/></div><div class="fg"><label class="fl">Annual Step-up (%) <span>optional</span></label><input class="fi" id="swp-stepup" type="number" step="1" placeholder="0" value="5" oninput="calcSWP()"/></div></div>
+    <div id="swp-results" style="display:none">
+      <div class="result-card"><div class="result-label">Total Withdrawn</div><div class="result-val" id="swp-total">₹0</div><div class="result-sub" id="swp-status"></div></div>
+      <div style="margin-top:8px"><div class="result-row"><span class="result-row-label">Starting Corpus</span><span class="result-row-val" id="swp-start">₹0</span></div><div class="result-row"><span class="result-row-label">Remaining Corpus</span><span class="result-row-val" id="swp-remaining">₹0</span></div><div class="result-row"><span class="result-row-label">Corpus Lasts</span><span class="result-row-val" id="swp-lasts"></span></div><div class="result-row"><span class="result-row-label">Last Monthly Withdrawal</span><span class="result-row-val" id="swp-last-wd">₹0</span></div></div>
+      <div class="yr-table-wrap"><button class="yr-toggle" onclick="toggleYr(this,'swp-tb')"><span>Yearly Breakdown</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button><div id="swp-tb" class="yr-body closed"><table class="yr-table"><thead><tr><th>Year</th><th>Withdrawn</th><th>Balance</th><th>Monthly</th></tr></thead><tbody id="swp-rows"></tbody></table></div></div>
+      <div class="info-note"><span style="opacity:0.5">ⓘ</span><span>SWP returns are estimated. Step-up increases withdrawal annually to match inflation.</span></div>
+    </div>
+  </div></div>
 
-        <div style="margin-top:8px">
-          <div class="result-row">
-            <span class="result-row-label">Total Invested</span>
-            <span class="result-row-val" id="sip-invested">₹0</span>
-          </div>
-          <div class="result-row">
-            <span class="result-row-label">Wealth Gained</span>
-            <span class="result-row-val" id="sip-gain" style="color:var(--green)">₹0</span>
-          </div>
-          <div class="result-row" id="sip-real-row" style="display:none">
-            <span class="result-row-label">Real Value (inflation-adjusted)</span>
-            <span class="result-row-val" id="sip-real-val">₹0</span>
-          </div>
-        </div>
+  <div class="sec-hdr-card" onclick="toggleSec('sec-loan')"><div class="sec-hdr-left"><span class="sec-hdr-title"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg> Loan Calculator</span></div><span class="sec-caret" id="caret-sec-loan"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></span></div>
+  <div class="sec-body closed" id="sec-loan"><div class="card-inner">
+    <div class="fg"><label class="fl">Loan Amount (₹)</label><input class="fi" id="loan-amt" type="number" inputmode="numeric" placeholder="e.g. 500000" value="500000" oninput="calcLoan()"/></div>
+    <div class="form-row2"><div class="fg"><label class="fl">Interest Rate (% p.a.)</label><input class="fi" id="loan-rate" type="number" step="0.1" placeholder="12" value="12" oninput="calcLoan()"/></div><div class="fg"><label class="fl">Tenure (months)</label><input class="fi" id="loan-tenure" type="number" placeholder="36" value="36" oninput="calcLoan()"/></div></div>
+    <div class="fg"><label class="fl">Part Payment (₹ per year) <span>optional</span></label><input class="fi" id="loan-extra" type="number" inputmode="numeric" placeholder="0" value="" oninput="calcLoan()"/></div>
+    <div id="loan-results" style="display:none">
+      <div class="result-card"><div class="result-label">Monthly EMI</div><div class="result-val" id="loan-emi">₹0</div><div class="result-sub" id="loan-emi-sub"></div></div>
+      <div style="margin-top:8px"><div class="result-row"><span class="result-row-label">Total Payable</span><span class="result-row-val" id="loan-total">₹0</span></div><div class="result-row"><span class="result-row-label">Total Interest</span><span class="result-row-val" id="loan-interest" style="color:var(--red)">₹0</span></div><div class="result-row"><span class="result-row-label">Interest % of Loan</span><span class="result-row-val" id="loan-int-pct">0%</span></div><div class="result-row" id="loan-save-row" style="display:none"><span class="result-row-label">Interest Saved</span><span class="result-row-val" id="loan-saved" style="color:var(--green)">₹0</span></div><div class="result-row" id="loan-early-row" style="display:none"><span class="result-row-label">Closes Early By</span><span class="result-row-val" id="loan-early" style="color:var(--green)"></span></div></div>
+      <div class="yr-table-wrap"><button class="yr-toggle" onclick="toggleYr(this,'loan-tb')"><span>Amortization Schedule</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button><div id="loan-tb" class="yr-body closed"><table class="yr-table"><thead><tr><th>Year</th><th>Principal</th><th>Interest</th><th>Balance</th></tr></thead><tbody id="loan-rows"></tbody></table></div></div>
+      <div class="info-note"><span style="opacity:0.5">ⓘ</span><span>Even small part payments reduce total interest significantly. Pay off high-interest loans before investing.</span></div>
+    </div>
+  </div></div>
 
-        <div class="yr-table-wrap">
-          <button class="yr-toggle" onclick="const b=document.getElementById('sip-table-body');b.classList.toggle('closed');const o=!b.classList.contains('closed');this.querySelector('span').textContent=o?'Hide Yearly Breakdown':'Yearly Breakdown';this.querySelector('svg').style.transform=o?'rotate(180deg)':''">
-            <span>Yearly Breakdown</span>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-          </button>
-          <div id="sip-table-body" class="yr-body closed">
-            <table class="yr-table"><thead><tr><th>Year</th><th>Invested</th><th>Value</th><th>Returns</th></tr></thead><tbody id="sip-table-rows"></tbody></table>
-          </div>
-        </div>
+</div></div>
 
-        <div class="info-note">
-          <span style="opacity:0.5">ⓘ</span>
-          <span>Returns are estimated and not guaranteed. Actual returns depend on market conditions.</span>
-        </div>
-      </div>
+<!-- ═══ FIRE ═══ -->
+<div class="page" id="page-fire"><div class="container" style="padding-top:8px">
+  <div class="card-inner" style="margin-top:0">
+    <div class="fg"><label class="fl">Monthly Expenses (₹)</label><input class="fi" id="fi-expenses" type="number" inputmode="numeric" placeholder="e.g. 70000" value="70000" oninput="calcFI()"/></div>
+    <div class="form-row2"><div class="fg"><label class="fl">Expense Inflation (% p.a.)</label><input class="fi" id="fi-infl" type="number" step="0.5" placeholder="7" value="7" oninput="calcFI()"/></div><div class="fg"><label class="fl">Years to FIRE</label><input class="fi" id="fi-years" type="number" placeholder="15" value="15" oninput="calcFI()"/></div></div>
+    <div class="form-row2"><div class="fg"><label class="fl">Post-FIRE Return (% p.a.)</label><input class="fi" id="fi-return" type="number" step="0.5" placeholder="8" value="8" oninput="calcFI()"/></div><div class="fg"><label class="fl">Withdrawal Rate (%)</label><input class="fi" id="fi-wr" type="number" step="0.5" placeholder="3.5" value="3.5" oninput="calcFI()"/></div></div>
+    <div class="fg"><label class="fl">Current Savings (₹) <span>optional</span></label><input class="fi" id="fi-current" type="number" inputmode="numeric" placeholder="0" value="" oninput="calcFI()"/></div>
+    <div id="fi-results" style="display:none">
+      <div class="result-card"><div class="result-label">FIRE Corpus Needed</div><div class="result-val" id="fi-corpus">₹0</div><div class="result-sub" id="fi-corpus-sub"></div></div>
+      <div style="margin-top:8px"><div class="result-row"><span class="result-row-label">Monthly Expenses at FIRE</span><span class="result-row-val" id="fi-future-exp">₹0</span></div><div class="result-row"><span class="result-row-label">Annual Expenses at FIRE</span><span class="result-row-val" id="fi-annual-exp">₹0</span></div><div class="result-row"><span class="result-row-label">Withdrawal Rate</span><span class="result-row-val" id="fi-wr-display">0%</span></div><div class="result-row" id="fi-gap-row" style="display:none"><span class="result-row-label">Gap to Fill</span><span class="result-row-val" id="fi-gap" style="color:var(--amber)">₹0</span></div><div class="result-row" id="fi-sip-row" style="display:none"><span class="result-row-label">Monthly SIP Needed</span><span class="result-row-val" id="fi-sip" style="color:var(--blue)">₹0</span></div></div>
+      <div class="yr-table-wrap"><button class="yr-toggle" onclick="toggleYr(this,'fi-tb')"><span>Yearly Projection</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button><div id="fi-tb" class="yr-body closed"><table class="yr-table"><thead><tr><th>Year</th><th>Expenses/yr</th><th>Corpus Needed</th></tr></thead><tbody id="fi-rows"></tbody></table></div></div>
+      <div class="info-note"><span style="opacity:0.5">ⓘ</span><span>FIRE corpus = annual expenses ÷ withdrawal rate. Lower rate = larger but safer corpus.</span></div>
     </div>
   </div>
-</div>
+</div></div>
 
-<!-- ═══ SWP PAGE ═══ -->
-<div class="page" id="page-swp">
-  <div class="container" style="padding-top:8px">
-    <div class="card">
-      <div class="fg">
-        <label class="fl">Total Corpus (₹)</label>
-        <input class="fi" id="swp-corpus" type="number" inputmode="numeric" placeholder="e.g. 5000000" value="5000000" oninput="calcSWP()"/>
-      </div>
-      <div class="form-row2">
-        <div class="fg">
-          <label class="fl">Monthly Withdrawal (₹)</label>
-          <input class="fi" id="swp-withdraw" type="number" inputmode="numeric" placeholder="e.g. 30000" value="30000" oninput="calcSWP()"/>
-        </div>
-        <div class="fg">
-          <label class="fl">Expected Return (% p.a.)</label>
-          <input class="fi" id="swp-rate" type="number" step="0.5" placeholder="8" value="8" oninput="calcSWP()"/>
-        </div>
-      </div>
-      <div class="form-row2">
-        <div class="fg">
-          <label class="fl">Withdrawal Period (years)</label>
-          <input class="fi" id="swp-years" type="number" placeholder="20" value="20" oninput="calcSWP()"/>
-        </div>
-        <div class="fg">
-          <label class="fl">Annual Step-up (%) <span>optional</span></label>
-          <input class="fi" id="swp-stepup" type="number" step="1" placeholder="0" value="5" oninput="calcSWP()"/>
-        </div>
-      </div>
-
-      <div id="swp-results" style="display:none">
-        <div class="result-card">
-          <div class="result-label">Total Withdrawn</div>
-          <div class="result-val" id="swp-total">₹0</div>
-          <div class="result-sub" id="swp-status"></div>
-        </div>
-
-        <div style="margin-top:8px">
-          <div class="result-row">
-            <span class="result-row-label">Starting Corpus</span>
-            <span class="result-row-val" id="swp-start">₹0</span>
-          </div>
-          <div class="result-row">
-            <span class="result-row-label">Remaining Corpus</span>
-            <span class="result-row-val" id="swp-remaining">₹0</span>
-          </div>
-          <div class="result-row">
-            <span class="result-row-label">Corpus Lasts</span>
-            <span class="result-row-val" id="swp-lasts"></span>
-          </div>
-          <div class="result-row">
-            <span class="result-row-label">Last Monthly Withdrawal</span>
-            <span class="result-row-val" id="swp-last-wd">₹0</span>
-          </div>
-        </div>
-
-        <div class="yr-table-wrap">
-          <button class="yr-toggle" onclick="const b=document.getElementById('swp-table-body');b.classList.toggle('closed');const o=!b.classList.contains('closed');this.querySelector('span').textContent=o?'Hide Yearly Breakdown':'Yearly Breakdown';this.querySelector('svg').style.transform=o?'rotate(180deg)':''">
-            <span>Yearly Breakdown</span>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-          </button>
-          <div id="swp-table-body" class="yr-body closed">
-            <table class="yr-table"><thead><tr><th>Year</th><th>Withdrawn</th><th>Balance</th><th>Monthly</th></tr></thead><tbody id="swp-table-rows"></tbody></table>
-          </div>
-        </div>
-
-        <div class="info-note">
-          <span style="opacity:0.5">ⓘ</span>
-          <span>SWP returns are estimated. Step-up increases withdrawal annually to match inflation.</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ═══ SETTINGS PAGE ═══ -->
-<!-- ═══ FI (Financial Independence) PAGE ═══ -->
-<div class="page" id="page-fi">
-  <div class="container" style="padding-top:8px">
-    <div class="card">
-      <div class="fg">
-        <label class="fl">Monthly Expenses (₹)</label>
-        <input class="fi" id="fi-expenses" type="number" inputmode="numeric" placeholder="e.g. 70000" value="70000" oninput="calcFI()"/>
-      </div>
-      <div class="form-row2">
-        <div class="fg">
-          <label class="fl">Expense Inflation (% p.a.)</label>
-          <input class="fi" id="fi-infl" type="number" step="0.5" placeholder="7" value="7" oninput="calcFI()"/>
-        </div>
-        <div class="fg">
-          <label class="fl">Years to FI</label>
-          <input class="fi" id="fi-years" type="number" placeholder="15" value="15" oninput="calcFI()"/>
-        </div>
-      </div>
-      <div class="form-row2">
-        <div class="fg">
-          <label class="fl">Post-FI Return (% p.a.)</label>
-          <input class="fi" id="fi-return" type="number" step="0.5" placeholder="8" value="8" oninput="calcFI()"/>
-        </div>
-        <div class="fg">
-          <label class="fl">Withdrawal Rate (%)</label>
-          <input class="fi" id="fi-wr" type="number" step="0.5" placeholder="3.5" value="3.5" oninput="calcFI()"/>
-        </div>
-      </div>
-      <div class="fg">
-        <label class="fl">Current Savings (₹) <span>optional</span></label>
-        <input class="fi" id="fi-current" type="number" inputmode="numeric" placeholder="0" value="" oninput="calcFI()"/>
-      </div>
-
-      <div id="fi-results" style="display:none">
-        <div class="result-card">
-          <div class="result-label">FI Corpus Needed</div>
-          <div class="result-val" id="fi-corpus">₹0</div>
-          <div class="result-sub" id="fi-corpus-sub"></div>
-        </div>
-
-        <div style="margin-top:8px">
-          <div class="result-row">
-            <span class="result-row-label">Monthly Expenses at FI</span>
-            <span class="result-row-val" id="fi-future-exp">₹0</span>
-          </div>
-          <div class="result-row">
-            <span class="result-row-label">Annual Expenses at FI</span>
-            <span class="result-row-val" id="fi-annual-exp">₹0</span>
-          </div>
-          <div class="result-row">
-            <span class="result-row-label">Withdrawal Rate</span>
-            <span class="result-row-val" id="fi-wr-display">0%</span>
-          </div>
-          <div class="result-row" id="fi-gap-row" style="display:none">
-            <span class="result-row-label">Gap to Fill</span>
-            <span class="result-row-val" id="fi-gap" style="color:var(--amber)">₹0</span>
-          </div>
-          <div class="result-row" id="fi-sip-row" style="display:none">
-            <span class="result-row-label">Monthly SIP Needed</span>
-            <span class="result-row-val" id="fi-sip" style="color:var(--blue)">₹0</span>
-          </div>
-        </div>
-
-        <div class="yr-table-wrap">
-          <button class="yr-toggle" onclick="const b=document.getElementById('fi-table-body');b.classList.toggle('closed');const o=!b.classList.contains('closed');this.querySelector('span').textContent=o?'Hide Yearly Projection':'Yearly Projection';this.querySelector('svg').style.transform=o?'rotate(180deg)':''">
-            <span>Yearly Projection</span>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:10px;height:10px;transition:transform 0.2s ease"><polyline points="6 9 12 15 18 9"/></svg>
-          </button>
-          <div id="fi-table-body" class="yr-body closed">
-            <table class="yr-table"><thead><tr><th>Year</th><th>Expenses/yr</th><th>Corpus Needed</th></tr></thead><tbody id="fi-table-rows"></tbody></table>
-          </div>
-        </div>
-
-        <div class="info-note">
-          <span style="opacity:0.5">ⓘ</span>
-          <span>FI corpus = annual expenses ÷ withdrawal rate. A lower withdrawal rate means a larger but safer corpus.</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ═══ LOAN PAGE ═══ -->
-<div class="page" id="page-loan">
-  <div class="container" style="padding-top:8px">
-    <div class="card">
-      <div class="fg">
-        <label class="fl">Loan Amount (₹)</label>
-        <input class="fi" id="loan-amt" type="number" inputmode="numeric" placeholder="e.g. 500000" value="500000" oninput="calcLoan()"/>
-      </div>
-      <div class="form-row2">
-        <div class="fg">
-          <label class="fl">Interest Rate (% p.a.)</label>
-          <input class="fi" id="loan-rate" type="number" step="0.1" placeholder="12" value="12" oninput="calcLoan()"/>
-        </div>
-        <div class="fg">
-          <label class="fl">Tenure (months)</label>
-          <input class="fi" id="loan-tenure" type="number" placeholder="36" value="36" oninput="calcLoan()"/>
-        </div>
-      </div>
-      <div class="fg">
-        <label class="fl">Part Payment (₹ per year) <span>optional</span></label>
-        <input class="fi" id="loan-extra" type="number" inputmode="numeric" placeholder="0" value="" oninput="calcLoan()"/>
-      </div>
-
-      <div id="loan-results" style="display:none">
-        <div class="result-card">
-          <div class="result-label">Monthly EMI</div>
-          <div class="result-val" id="loan-emi">₹0</div>
-          <div class="result-sub" id="loan-emi-sub"></div>
-        </div>
-
-        <div style="margin-top:8px">
-          <div class="result-row">
-            <span class="result-row-label">Total Payable</span>
-            <span class="result-row-val" id="loan-total">₹0</span>
-          </div>
-          <div class="result-row">
-            <span class="result-row-label">Total Interest</span>
-            <span class="result-row-val" id="loan-interest" style="color:var(--red)">₹0</span>
-          </div>
-          <div class="result-row">
-            <span class="result-row-label">Interest % of Loan</span>
-            <span class="result-row-val" id="loan-int-pct">0%</span>
-          </div>
-          <div class="result-row" id="loan-save-row" style="display:none">
-            <span class="result-row-label">Interest Saved (part payment)</span>
-            <span class="result-row-val" id="loan-saved" style="color:var(--green)">₹0</span>
-          </div>
-          <div class="result-row" id="loan-early-row" style="display:none">
-            <span class="result-row-label">Closes Early By</span>
-            <span class="result-row-val" id="loan-early" style="color:var(--green)"></span>
-          </div>
-        </div>
-
-        <div class="yr-table-wrap">
-          <button class="yr-toggle" onclick="const b=document.getElementById('loan-table-body');b.classList.toggle('closed');const o=!b.classList.contains('closed');this.querySelector('span').textContent=o?'Hide Amortization':'Amortization Schedule';this.querySelector('svg').style.transform=o?'rotate(180deg)':''">
-            <span>Amortization Schedule</span>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:10px;height:10px;transition:transform 0.2s ease"><polyline points="6 9 12 15 18 9"/></svg>
-          </button>
-          <div id="loan-table-body" class="yr-body closed">
-            <table class="yr-table"><thead><tr><th>Year</th><th>Principal</th><th>Interest</th><th>Balance</th></tr></thead><tbody id="loan-table-rows"></tbody></table>
-          </div>
-        </div>
-
-        <div class="info-note">
-          <span style="opacity:0.5">ⓘ</span>
-          <span>Even small part payments reduce total interest significantly. Pay off high-interest loans before investing.</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="page" id="page-settings">
-  <div class="container" style="padding-top:8px">
-    <div class="card" style="padding:0;overflow:hidden">
-      <div class="set-hdr" onclick="toggleSet('set-appearance')">
-        <div class="sec-title">Appearance</div>
-        <svg class="set-caret" id="caret-set-appearance" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-      </div>
-      <div class="set-body closed" id="set-appearance">
-        <div style="padding:10px 16px 14px">
-          <div style="display:flex;align-items:center;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border2);padding-bottom:12px;margin-bottom:12px">
-            <div style="display:flex;align-items:center;gap:8px">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
-              <span style="font-size:0.86rem;font-weight:600">Dark Mode</span>
-            </div>
-            <label class="toggle">
-              <input type="checkbox" id="theme-toggle" onchange="toggleTheme(this.checked)"/>
-              <span class="toggle-slider"></span>
-            </label>
-          </div>
-          <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg>
-            <span style="font-size:0.86rem;font-weight:600">Text Size</span>
-          </div>
-          <div class="size-picker" id="size-picker">
-            <button class="size-btn" onclick="setTextSize(15)" data-size="15">S</button>
-            <button class="size-btn active" onclick="setTextSize(16)" data-size="16">M</button>
-            <button class="size-btn" onclick="setTextSize(17)" data-size="17">L</button>
-            <button class="size-btn" onclick="setTextSize(18)" data-size="18">XL</button>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="card" style="padding:0;overflow:hidden">
-      <div class="set-hdr" onclick="toggleSet('set-data')">
-        <div class="sec-title">Data Tools</div>
-        <svg class="set-caret" id="caret-set-data" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-      </div>
-      <div class="set-body closed" id="set-data">
-        <div style="padding:6px 16px 14px;display:grid;grid-template-columns:1fr 1fr;gap:8px">
-          <button class="dt-card" onclick="loadSample()">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-            <div class="dt-label">Sample Data</div>
-            <div class="dt-sub">Load demo values</div>
-          </button>
-          <button class="dt-card dt-danger" onclick="resetCalc()">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>
-            <div class="dt-label" style="color:var(--red)">Reset</div>
-            <div class="dt-sub">Clear everything</div>
-          </button>
-        </div>
-      </div>
-    </div>
-    <div style="text-align:center;padding:20px 0;font-size:0.72rem;color:var(--text3)">
-      Data calculated locally. Nothing stored or sent anywhere.
-    </div>
-  </div>
-</div>
+<!-- ═══ SETTINGS ═══ -->
+<div class="page" id="page-settings"><div class="container" style="padding-top:8px">
+  <div class="sec-hdr-card" onclick="toggleSec('sec-appear')"><div class="sec-hdr-left"><span class="sec-hdr-title">Appearance</span></div><span class="sec-caret" id="caret-sec-appear"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></span></div>
+  <div class="sec-body closed" id="sec-appear"><div class="card-inner">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:2px 0 10px;border-bottom:1px solid var(--border2);margin-bottom:10px"><div style="display:flex;align-items:center;gap:8px"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><span style="font-size:0.88rem;font-weight:600">Dark Mode</span></div><label class="toggle"><input type="checkbox" id="theme-toggle" onchange="toggleTheme(this.checked)"/><span class="toggle-slider"></span></label></div>
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg><span style="font-size:0.88rem;font-weight:600">Text Size</span></div>
+    <div class="size-picker"><button class="size-btn" onclick="setSize(15)" data-size="15">S</button><button class="size-btn active" onclick="setSize(16)" data-size="16">M</button><button class="size-btn" onclick="setSize(17)" data-size="17">L</button><button class="size-btn" onclick="setSize(18)" data-size="18">XL</button></div>
+  </div></div>
+  <div class="sec-hdr-card" onclick="toggleSec('sec-data')"><div class="sec-hdr-left"><span class="sec-hdr-title">Data Tools</span></div><span class="sec-caret" id="caret-sec-data"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></span></div>
+  <div class="sec-body closed" id="sec-data"><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;margin-top:-4px">
+    <button class="dt-card" onclick="loadSample()"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg><div class="dt-label">Sample Data</div><div class="dt-sub">Load demo values</div></button>
+    <button class="dt-card dt-danger" onclick="resetCalc()"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg><div class="dt-label" style="color:var(--red)">Reset</div><div class="dt-sub">Clear everything</div></button>
+  </div></div>
+  <div style="text-align:center;padding:16px 0;font-size:0.72rem;color:var(--text3)">Data calculated locally. Nothing stored or sent anywhere.</div>
+</div></div>
 
 <!-- ═══ TAB BAR ═══ -->
-<nav class="tab-bar">
-  <button class="tab-item active" onclick="navigate('sip',this)">
-    <div class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></div>
-    SIP
-  </button>
-  <button class="tab-item" onclick="navigate('swp',this)">
-    <div class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 18 8.5 10.5 13.5 15.5 23 6"/><polyline points="17 18 23 18 23 12"/></svg></div>
-    SWP
-  </button>
-  <button class="tab-item" onclick="navigate('fi',this)">
-    <div class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
-    FIRE
-  </button>
-  <button class="tab-item" onclick="navigate('loan',this)">
-    <div class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg></div>
-    Loan
-  </button>
-  <button class="tab-item" onclick="navigate('settings',this)">
-    <div class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 112.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg></div>
-    Settings
-  </button>
-</nav>
+<nav class="tab-bar"><div class="tab-bar-inner">
+  <button class="tab-item active" onclick="nav('calc',this)"><div class="tab-icon"><svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></div><div class="tab-label">Calculate</div></button>
+  <button class="tab-item" onclick="nav('fire',this)"><div class="tab-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div class="tab-label">FIRE</div></button>
+  <button class="tab-item" onclick="nav('settings',this)"><div class="tab-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 112.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg></div><div class="tab-label">Settings</div></button>
+</div></nav>
 
 <script>
-// ── Format ──
 function fmt(n){const v=Math.abs(Number(n)||0);let s='';if(v>=10000000)s=(v/10000000).toFixed(2)+'Cr';else if(v>=100000)s=(v/100000).toFixed(2)+'L';else if(v>=1000)s=(v/1000).toFixed(1)+'K';else s=v.toFixed(0);return(n<0?'-':'')+'₹'+s}
+function nav(p,btn){document.querySelectorAll('.page').forEach(e=>e.classList.remove('active'));document.getElementById('page-'+p).classList.add('active');document.querySelectorAll('.tab-item').forEach(t=>t.classList.remove('active'));if(btn)btn.classList.add('active')}
+function toggleSec(id){const el=document.getElementById(id);if(!el)return;const c=el.classList.toggle('closed');const caret=document.getElementById('caret-'+id);if(caret)caret.classList.toggle('open',!c)}
+function toggleYr(btn,id){const b=document.getElementById(id);b.classList.toggle('closed');const o=!b.classList.contains('closed');const label=btn.querySelector('span').textContent.replace('Hide ','');btn.querySelector('span').textContent=o?'Hide '+label:label;btn.querySelector('svg').style.transform=o?'rotate(180deg)':''}
+function toggleTheme(d){document.body.setAttribute('data-theme',d?'dark':'light');localStorage.setItem('calc_theme',d?'dark':'light')}
+function setSize(v){document.documentElement.style.fontSize=v+'px';document.querySelectorAll('.size-btn').forEach(b=>b.classList.toggle('active',Number(b.dataset.size)===v));localStorage.setItem('calc_fs',v)}
+function loadSample(){document.getElementById('sip-amt').value='25000';document.getElementById('sip-rate').value='12';document.getElementById('sip-years').value='15';document.getElementById('sip-infl').value='7';document.getElementById('swp-corpus').value='10000000';document.getElementById('swp-withdraw').value='50000';document.getElementById('swp-rate').value='8';document.getElementById('swp-years').value='25';document.getElementById('swp-stepup').value='5';document.getElementById('fi-expenses').value='70000';document.getElementById('fi-infl').value='7';document.getElementById('fi-years').value='15';document.getElementById('fi-return').value='8';document.getElementById('fi-wr').value='3.5';document.getElementById('fi-current').value='1500000';document.getElementById('loan-amt').value='500000';document.getElementById('loan-rate').value='12';document.getElementById('loan-tenure').value='36';document.getElementById('loan-extra').value='50000';calcSIP();calcSWP();calcFI();calcLoan();nav('calc',document.querySelectorAll('.tab-item')[0])}
+function resetCalc(){['sip-amt','sip-rate','sip-years','sip-infl','swp-corpus','swp-withdraw','swp-rate','swp-years','swp-stepup','fi-expenses','fi-infl','fi-years','fi-return','fi-wr','fi-current','loan-amt','loan-rate','loan-tenure','loan-extra'].forEach(id=>{document.getElementById(id).value=''});['sip-results','swp-results','fi-results','loan-results'].forEach(id=>{document.getElementById(id).style.display='none'});nav('calc',document.querySelectorAll('.tab-item')[0])}
 
-// ── Navigation ──
-function navigate(page,btn){
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.getElementById('page-'+page).classList.add('active');
-  document.querySelectorAll('.tab-item').forEach(t=>t.classList.remove('active'));
-  if(btn)btn.classList.add('active');
-}
+function calcSIP(){const P=Number(document.getElementById('sip-amt').value||0),rate=Number(document.getElementById('sip-rate').value||0)/100,years=Number(document.getElementById('sip-years').value||0),infl=Number(document.getElementById('sip-infl').value||0)/100;const w=document.getElementById('sip-results');if(!P||!rate||!years){w.style.display='none';return}w.style.display='';const r=rate/12,n=years*12,inv=P*n,fv=P*((Math.pow(1+r,n)-1)/r)*(1+r),gain=fv-inv,rv=infl>0?fv/Math.pow(1+infl,years):fv;document.getElementById('sip-fv').textContent=fmt(fv);document.getElementById('sip-fv-real').textContent=infl>0?`Worth ${fmt(rv)} in today's money at ${(infl*100).toFixed(0)}% inflation`:'';document.getElementById('sip-invested').textContent=fmt(inv);document.getElementById('sip-gain').textContent=fmt(gain);const rr=document.getElementById('sip-real-row');if(infl>0){rr.style.display='';document.getElementById('sip-real-val').textContent=fmt(rv)}else rr.style.display='none';let rows='';for(let y=1;y<=years;y++){const nm=y*12,i=P*nm,v=P*((Math.pow(1+r,nm)-1)/r)*(1+r);rows+=`<tr><td>${y}</td><td>${fmt(i)}</td><td>${fmt(v)}</td><td style="color:var(--green)">${fmt(v-i)}</td></tr>`}document.getElementById('sip-rows').innerHTML=rows}
 
-// ── Settings toggle ──
-function toggleSet(id){
-  const el=document.getElementById(id);if(!el)return;
-  el.classList.toggle('closed');
-  const caret=document.getElementById('caret-'+id);
-  if(caret)caret.style.transform=el.classList.contains('closed')?'':'rotate(180deg)';
-}
+function calcSWP(){const corpus=Number(document.getElementById('swp-corpus').value||0),wd=Number(document.getElementById('swp-withdraw').value||0),rate=Number(document.getElementById('swp-rate').value||0)/100,years=Number(document.getElementById('swp-years').value||0),stepup=Number(document.getElementById('swp-stepup').value||0)/100;const w=document.getElementById('swp-results');if(!corpus||!wd||!years){w.style.display='none';return}w.style.display='';const r=rate/12;let bal=corpus,tot=0,mwd=wd,cl=years,dep=false;const yd=[];for(let y=1;y<=years;y++){for(let m=0;m<12;m++){if(bal<=0){dep=true;break}const w=Math.min(mwd,bal);bal=bal*(1+r)-w;if(bal<0)bal=0;tot+=w}yd.push({y,bal:Math.max(0,bal),tot});if(dep){cl=y;break}mwd*=(1+stepup)}const lw=wd*Math.pow(1+stepup,Math.min(years,cl)-1);document.getElementById('swp-total').textContent=fmt(tot);document.getElementById('swp-start').textContent=fmt(corpus);document.getElementById('swp-remaining').textContent=fmt(Math.max(0,bal));document.getElementById('swp-remaining').style.color=bal>0?'var(--green)':'var(--red)';document.getElementById('swp-lasts').textContent=dep?cl+' years (depleted)':years+'+ years';document.getElementById('swp-lasts').style.color=dep?'var(--red)':'var(--green)';document.getElementById('swp-last-wd').textContent=fmt(lw)+'/mo';document.getElementById('swp-status').textContent=dep?`Corpus runs out in year ${cl}`:`${fmt(bal)} remaining after ${years} years`;document.getElementById('swp-rows').innerHTML=yd.map(d=>`<tr><td>${d.y}</td><td>${fmt(d.tot)}</td><td style="color:${d.bal>0?'var(--text1)':'var(--red)'}">${fmt(d.bal)}</td><td>${fmt(wd*Math.pow(1+stepup,d.y-1))}</td></tr>`).join('')}
 
-// ── Text Size ──
-function setTextSize(v){
-  const n=Number(v);
-  document.documentElement.style.fontSize=n+'px';
-  document.querySelectorAll('.size-btn').forEach(b=>{
-    b.classList.toggle('active',Number(b.dataset.size)===n);
-  });
-  localStorage.setItem('calc_fontsize',n);
-}
-(function(){
-  const saved=localStorage.getItem('calc_fontsize');
-  if(saved){
-    const n=Number(saved);
-    document.documentElement.style.fontSize=n+'px';
-    document.querySelectorAll('.size-btn').forEach(b=>{
-      b.classList.toggle('active',Number(b.dataset.size)===n);
-    });
-  }
-})();
+function calcFI(){const exp=Number(document.getElementById('fi-expenses').value||0),infl=Number(document.getElementById('fi-infl').value||0)/100,years=Number(document.getElementById('fi-years').value||0),ret=Number(document.getElementById('fi-return').value||0)/100,wr=Number(document.getElementById('fi-wr').value||0)/100,cur=Number(document.getElementById('fi-current').value||0);const w=document.getElementById('fi-results');if(!exp||!years||!wr){w.style.display='none';return}w.style.display='';const fm=exp*Math.pow(1+infl,years),fa=fm*12,corpus=Math.round(fa/wr);document.getElementById('fi-corpus').textContent=fmt(corpus);document.getElementById('fi-corpus-sub').textContent=`${fmt(exp)}/mo today becomes ${fmt(fm)}/mo in ${years} years`;document.getElementById('fi-future-exp').textContent=fmt(fm)+'/mo';document.getElementById('fi-annual-exp').textContent=fmt(fa)+'/yr';document.getElementById('fi-wr-display').textContent=parseFloat((wr*100).toFixed(2))+'%';const gr=document.getElementById('fi-gap-row'),sr=document.getElementById('fi-sip-row');if(cur>0){const proj=cur*Math.pow(1+ret,years),gap=Math.max(0,corpus-proj);gr.style.display='';document.getElementById('fi-gap').textContent=gap>0?fmt(gap):'₹0 (on track!)';document.getElementById('fi-gap').style.color=gap>0?'var(--amber)':'var(--green)';if(gap>0&&ret>0){sr.style.display='';const r=ret/12,n=years*12;document.getElementById('fi-sip').textContent=fmt(gap*r/(Math.pow(1+r,n)-1))+'/mo'}else sr.style.display=gap>0?'':'none'}else{gr.style.display='none';if(ret>0){sr.style.display='';const r=ret/12,n=years*12;document.getElementById('fi-sip').textContent=fmt(corpus*r/(Math.pow(1+r,n)-1))+'/mo'}}let rows='';for(let y=1;y<=years;y++){const fe=exp*Math.pow(1+infl,y)*12;rows+=`<tr><td>${y}</td><td>${fmt(fe)}</td><td>${fmt(Math.round(fe/wr))}</td></tr>`}document.getElementById('fi-rows').innerHTML=rows}
 
-// ── Theme ──
-function toggleTheme(isDark){
-  const theme=isDark?'dark':'light';
-  document.body.setAttribute('data-theme',theme);
-  localStorage.setItem('calc_theme',theme);
-}
-function loadSample(){
-  document.getElementById('sip-amt').value='25000';
-  document.getElementById('sip-rate').value='12';
-  document.getElementById('sip-years').value='15';
-  document.getElementById('sip-infl').value='7';
-  document.getElementById('swp-corpus').value='10000000';
-  document.getElementById('swp-withdraw').value='50000';
-  document.getElementById('swp-rate').value='8';
-  document.getElementById('swp-years').value='25';
-  document.getElementById('swp-stepup').value='5';
-  document.getElementById('fi-expenses').value='70000';
-  document.getElementById('fi-infl').value='7';
-  document.getElementById('fi-years').value='15';
-  document.getElementById('fi-return').value='8';
-  document.getElementById('fi-wr').value='3.5';
-  document.getElementById('fi-current').value='1500000';
-  document.getElementById('loan-amt').value='500000';
-  document.getElementById('loan-rate').value='12';
-  document.getElementById('loan-tenure').value='36';
-  document.getElementById('loan-extra').value='5000';
-  calcSIP();calcSWP();calcFI();calcLoan();
-  navigate('sip',document.querySelectorAll('.tab-item')[0]);
-}
-function resetCalc(){
-  ['sip-amt','sip-rate','sip-years','sip-infl','swp-corpus','swp-withdraw','swp-rate','swp-years','swp-stepup','fi-expenses','fi-infl','fi-years','fi-return','fi-wr','fi-current','loan-amt','loan-rate','loan-tenure','loan-extra'].forEach(id=>{document.getElementById(id).value=''});
-  ['sip-results','swp-results','fi-results','loan-results'].forEach(id=>{document.getElementById(id).style.display='none'});
-  navigate('sip',document.querySelectorAll('.tab-item')[0]);
-}
+function calcLoan(){const P=Number(document.getElementById('loan-amt').value||0),ar=Number(document.getElementById('loan-rate').value||0)/100,tenure=Number(document.getElementById('loan-tenure').value||0),extra=Number(document.getElementById('loan-extra').value||0);const w=document.getElementById('loan-results');if(!P||!ar||!tenure){w.style.display='none';return}w.style.display='';const r=ar/12,emi=P*r*Math.pow(1+r,tenure)/(Math.pow(1+r,tenure)-1),tp=emi*tenure,ti=tp-P;document.getElementById('loan-emi').textContent=fmt(emi);document.getElementById('loan-emi-sub').textContent=`for ${tenure} months (${(tenure/12).toFixed(1)} years)`;document.getElementById('loan-total').textContent=fmt(tp);document.getElementById('loan-interest').textContent=fmt(ti);document.getElementById('loan-int-pct').textContent=Math.round(ti/P*100)+'% of loan';if(extra>0){let b=P,mo=0,paid=0;while(b>0&&mo<tenure*2){const ip=b*r,pp=Math.min(b,emi-ip);b-=pp;paid+=Math.min(emi,pp+ip);mo++;if(mo%12===0&&b>0){const pa=Math.min(extra,b);b-=pa;paid+=pa}if(b<=0)break}document.getElementById('loan-save-row').style.display='';document.getElementById('loan-early-row').style.display='';document.getElementById('loan-saved').textContent=fmt(Math.max(0,ti-(paid-P)));document.getElementById('loan-early').textContent=(tenure-mo)>0?(tenure-mo)+' months':'0 months'}else{document.getElementById('loan-save-row').style.display='none';document.getElementById('loan-early-row').style.display='none'}let b=P,rows='';for(let y=1;y<=Math.ceil(tenure/12);y++){let yp=0,yi=0;for(let m=0;m<Math.min(12,tenure-(y-1)*12);m++){if(b<=0)break;const ip=b*r,pp=Math.min(b,emi-ip);yp+=pp;yi+=ip;b-=pp}rows+=`<tr><td>${y}</td><td>${fmt(yp)}</td><td style="color:var(--red)">${fmt(yi)}</td><td>${fmt(Math.max(0,b))}</td></tr>`}document.getElementById('loan-rows').innerHTML=rows}
 
-// ── FI Calculator ──
-function calcFI(){
-  const expenses=Number(document.getElementById('fi-expenses').value||0);
-  const infl=Number(document.getElementById('fi-infl').value||0)/100;
-  const years=Number(document.getElementById('fi-years').value||0);
-  const ret=Number(document.getElementById('fi-return').value||0)/100;
-  const wr=Number(document.getElementById('fi-wr').value||0)/100;
-  const current=Number(document.getElementById('fi-current').value||0);
-
-  const wrap=document.getElementById('fi-results');
-  if(!expenses||!years||!wr){wrap.style.display='none';return}
-  wrap.style.display='';
-
-  const futureMonthly=expenses*Math.pow(1+infl,years);
-  const futureAnnual=futureMonthly*12;
-  const corpus=Math.round(futureAnnual/wr);
-
-  document.getElementById('fi-corpus').textContent=fmt(corpus);
-  document.getElementById('fi-corpus-sub').textContent=`${fmt(expenses)}/mo today becomes ${fmt(futureMonthly)}/mo in ${years} years`;
-  document.getElementById('fi-future-exp').textContent=fmt(futureMonthly)+'/mo';
-  document.getElementById('fi-annual-exp').textContent=fmt(futureAnnual)+'/yr';
-  document.getElementById('fi-wr-display').textContent=(wr*100)+'%';
-
-  // Gap and SIP needed
-  const gapRow=document.getElementById('fi-gap-row');
-  const sipRow=document.getElementById('fi-sip-row');
-  if(current>0){
-    const projectedCurrent=current*Math.pow(1+ret,years);
-    const gap=Math.max(0,corpus-projectedCurrent);
-    gapRow.style.display='';
-    document.getElementById('fi-gap').textContent=gap>0?fmt(gap):'₹0 (already on track!)';
-    document.getElementById('fi-gap').style.color=gap>0?'var(--amber)':'var(--green)';
-    if(gap>0&&ret>0){
-      sipRow.style.display='';
-      const r=ret/12;const n=years*12;
-      const sip=gap*r/(Math.pow(1+r,n)-1);
-      document.getElementById('fi-sip').textContent=fmt(sip)+'/mo';
-    } else {
-      sipRow.style.display=gap>0?'':'none';
-    }
-  } else {
-    gapRow.style.display='none';
-    // Show SIP needed from zero
-    if(ret>0){
-      sipRow.style.display='';
-      const r=ret/12;const n=years*12;
-      const sip=corpus*r/(Math.pow(1+r,n)-1);
-      document.getElementById('fi-sip').textContent=fmt(sip)+'/mo';
-    }
-  }
-
-  // Yearly projection table
-  const tableBody=document.getElementById('fi-table-rows');
-  let rows='';
-  for(let y=1;y<=years;y++){
-    const futExp=expenses*Math.pow(1+infl,y)*12;
-    const corpusNeeded=Math.round(futExp/wr);
-    rows+=`<tr><td>${y}</td><td>${fmt(futExp)}</td><td>${fmt(corpusNeeded)}</td></tr>`;
-  }
-  tableBody.innerHTML=rows;
-}
-
-// ── Loan Calculator ──
-function calcLoan(){
-  const P=Number(document.getElementById('loan-amt').value||0);
-  const annualRate=Number(document.getElementById('loan-rate').value||0)/100;
-  const tenure=Number(document.getElementById('loan-tenure').value||0);
-  const extra=Number(document.getElementById('loan-extra').value||0);
-
-  const wrap=document.getElementById('loan-results');
-  if(!P||!annualRate||!tenure){wrap.style.display='none';return}
-  wrap.style.display='';
-
-  const r=annualRate/12;
-  const emi=P*r*Math.pow(1+r,tenure)/(Math.pow(1+r,tenure)-1);
-  const totalPayable=emi*tenure;
-  const totalInterest=totalPayable-P;
-
-  document.getElementById('loan-emi').textContent=fmt(emi);
-  document.getElementById('loan-emi-sub').textContent=`for ${tenure} months (${(tenure/12).toFixed(1)} years)`;
-  document.getElementById('loan-total').textContent=fmt(totalPayable);
-  document.getElementById('loan-interest').textContent=fmt(totalInterest);
-  document.getElementById('loan-int-pct').textContent=Math.round(totalInterest/P*100)+'% of loan';
-
-  // Part payment calculation (annual lumpsum)
-  const saveRow=document.getElementById('loan-save-row');
-  const earlyRow=document.getElementById('loan-early-row');
-  if(extra>0){
-    let balance=P;let months=0;let totalPaidExtra=0;
-    while(balance>0&&months<tenure*2){
-      const intPart=balance*r;
-      const prinPart=Math.min(balance,emi-intPart);
-      balance-=prinPart;
-      totalPaidExtra+=Math.min(emi,prinPart+intPart);
-      months++;
-      // Apply annual part payment at end of each year
-      if(months%12===0&&balance>0){
-        const pp=Math.min(extra,balance);
-        balance-=pp;
-        totalPaidExtra+=pp;
-      }
-      if(balance<=0)break;
-    }
-    const interestWithExtra=totalPaidExtra-P;
-    const saved=totalInterest-interestWithExtra;
-    const monthsSaved=tenure-months;
-    saveRow.style.display='';
-    earlyRow.style.display='';
-    document.getElementById('loan-saved').textContent=fmt(Math.max(0,saved));
-    document.getElementById('loan-early').textContent=monthsSaved>0?monthsSaved+' months':'0 months';
-  } else {
-    saveRow.style.display='none';
-    earlyRow.style.display='none';
-  }
-
-  // Yearly amortization table
-  const tableBody=document.getElementById('loan-table-rows');
-  let balance=P;let rows='';
-  const totalYears=Math.ceil(tenure/12);
-  for(let y=1;y<=totalYears;y++){
-    let yearPrincipal=0,yearInterest=0;
-    const monthsThisYear=Math.min(12,tenure-(y-1)*12);
-    for(let m=0;m<monthsThisYear;m++){
-      if(balance<=0)break;
-      const intPart=balance*r;
-      const prinPart=Math.min(balance,emi-intPart);
-      yearPrincipal+=prinPart;
-      yearInterest+=intPart;
-      balance-=prinPart;
-    }
-    rows+=`<tr><td>${y}</td><td>${fmt(yearPrincipal)}</td><td style="color:var(--red)">${fmt(yearInterest)}</td><td>${fmt(Math.max(0,balance))}</td></tr>`;
-  }
-  tableBody.innerHTML=rows;
-}
-(function(){
-  const saved=localStorage.getItem('calc_theme');
-  const toggle=document.getElementById('theme-toggle');
-  if(saved){
-    document.body.setAttribute('data-theme',saved);
-    if(toggle)toggle.checked=saved==='dark';
-  } else if(window.matchMedia('(prefers-color-scheme:light)').matches){
-    document.body.setAttribute('data-theme','light');
-    if(toggle)toggle.checked=false;
-  } else {
-    if(toggle)toggle.checked=true;
-  }
-})();
-
-// ── SIP Calculator ──
-function calcSIP(){
-  const P=Number(document.getElementById('sip-amt').value||0);
-  const rate=Number(document.getElementById('sip-rate').value||0)/100;
-  const years=Number(document.getElementById('sip-years').value||0);
-  const infl=Number(document.getElementById('sip-infl').value||0)/100;
-
-  const wrap=document.getElementById('sip-results');
-  if(!P||!rate||!years){wrap.style.display='none';return}
-  wrap.style.display='';
-
-  const r=rate/12;
-  const n=years*12;
-  const invested=P*n;
-  const fv=P*((Math.pow(1+r,n)-1)/r)*(1+r);
-  const gain=fv-invested;
-  const realValue=infl>0?fv/Math.pow(1+infl,years):fv;
-
-  document.getElementById('sip-fv').textContent=fmt(fv);
-  document.getElementById('sip-fv-real').textContent=infl>0?`Worth ${fmt(realValue)} in today\'s money at ${(infl*100).toFixed(0)}% inflation`:'';
-  document.getElementById('sip-invested').textContent=fmt(invested);
-  document.getElementById('sip-gain').textContent=fmt(gain);
-  
-  const realRow=document.getElementById('sip-real-row');
-  const realVal=document.getElementById('sip-real-val');
-  if(infl>0){realRow.style.display='';realVal.textContent=fmt(realValue);}
-  else{realRow.style.display='none';}
-
-  // Year-by-year table
-  const tableBody=document.getElementById('sip-table-rows');
-  let rows='';
-  for(let y=1;y<=years;y++){
-    const nm=y*12;
-    const inv=P*nm;
-    const val=P*((Math.pow(1+r,nm)-1)/r)*(1+r);
-    const ret=val-inv;
-    rows+=`<tr><td>${y}</td><td>${fmt(inv)}</td><td>${fmt(val)}</td><td style="color:var(--green)">${fmt(ret)}</td></tr>`;
-  }
-  tableBody.innerHTML=rows;
-}
-
-// ── SWP Calculator ──
-function calcSWP(){
-  const corpus=Number(document.getElementById('swp-corpus').value||0);
-  const withdraw=Number(document.getElementById('swp-withdraw').value||0);
-  const rate=Number(document.getElementById('swp-rate').value||0)/100;
-  const years=Number(document.getElementById('swp-years').value||0);
-  const stepup=Number(document.getElementById('swp-stepup').value||0)/100;
-
-  const wrap=document.getElementById('swp-results');
-  if(!corpus||!withdraw||!years){wrap.style.display='none';return}
-  wrap.style.display='';
-
-  const r=rate/12;
-  let balance=corpus;
-  let totalWithdrawn=0;
-  let monthlyWd=withdraw;
-  let corpusLasts=years;
-  let depleted=false;
-  const yearData=[];
-
-  for(let y=1;y<=years;y++){
-    let yearWd=0;
-    for(let m=0;m<12;m++){
-      if(balance<=0){depleted=true;break}
-      const wd=Math.min(monthlyWd,balance);
-      balance=balance*(1+r)-wd;
-      if(balance<0)balance=0;
-      yearWd+=wd;
-      totalWithdrawn+=wd;
-    }
-    yearData.push({year:y, balance:Math.max(0,balance), withdrawn:totalWithdrawn});
-    if(depleted){corpusLasts=y;break}
-    monthlyWd=monthlyWd*(1+stepup); // annual step-up
-  }
-
-  const lastWd=withdraw*Math.pow(1+stepup,Math.min(years,corpusLasts)-1);
-
-  document.getElementById('swp-total').textContent=fmt(totalWithdrawn);
-  document.getElementById('swp-start').textContent=fmt(corpus);
-  document.getElementById('swp-remaining').textContent=fmt(Math.max(0,balance));
-  document.getElementById('swp-remaining').style.color=balance>0?'var(--green)':'var(--red)';
-  document.getElementById('swp-lasts').textContent=depleted?corpusLasts+' years (depleted)':years+'+ years';
-  document.getElementById('swp-lasts').style.color=depleted?'var(--red)':'var(--green)';
-  document.getElementById('swp-last-wd').textContent=fmt(lastWd)+'/mo';
-  document.getElementById('swp-status').textContent=depleted?`Corpus runs out in year ${corpusLasts}`:`₹${fmt(balance).replace('₹','')} remaining after ${years} years`;
-
-  // Year-by-year table
-  const tableBody=document.getElementById('swp-table-rows');
-  tableBody.innerHTML=yearData.map(d=>{
-    const monthlyAtYear=withdraw*Math.pow(1+stepup,d.year-1);
-    return`<tr><td>${d.year}</td><td>${fmt(d.withdrawn)}</td><td style="color:${d.balance>0?'var(--text1)':'var(--red)'}">${fmt(d.balance)}</td><td>${fmt(monthlyAtYear)}</td></tr>`;
-  }).join('');
-}
-
-// Init
-calcSIP();
-calcSWP();
-calcFI();
-calcLoan();
+(function(){const t=localStorage.getItem('calc_theme'),tgl=document.getElementById('theme-toggle');if(t){document.body.setAttribute('data-theme',t);if(tgl)tgl.checked=t==='dark'}else if(matchMedia('(prefers-color-scheme:light)').matches){document.body.setAttribute('data-theme','light');if(tgl)tgl.checked=false}else{if(tgl)tgl.checked=true}const fs=localStorage.getItem('calc_fs');if(fs){document.documentElement.style.fontSize=fs+'px';document.querySelectorAll('.size-btn').forEach(b=>b.classList.toggle('active',Number(b.dataset.size)===Number(fs)))}calcSIP();calcSWP();calcFI();calcLoan()})();
 </script>
 </body>
 </html>
