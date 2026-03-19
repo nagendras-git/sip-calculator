@@ -49,10 +49,10 @@ body {
 .hdr-title { font-size:1.15rem; font-weight:800 }
 
 /* ── Tab Bar ── */
-.tab-bar { position:fixed; bottom:0; left:0; right:0; z-index:100; display:flex; justify-content:space-around; align-items:center; height:var(--nav-h); padding-bottom:var(--safe-b); background:rgba(13,13,16,0.97); backdrop-filter:blur(18px); -webkit-backdrop-filter:blur(18px); border-top:1px solid var(--border2) }
-.tab-item { display:flex; flex-direction:column; align-items:center; gap:2px; cursor:pointer; padding:6px 8px; border:none; background:none; color:var(--text3); font-size:0.55rem; font-weight:600; font-family:inherit; letter-spacing:0.2px; transition:color 0.2s }
+.tab-bar { position:fixed; bottom:0; left:0; right:0; z-index:100; display:flex; justify-content:space-around; align-items:center; height:var(--nav-h); padding-bottom:var(--safe-b); background:rgba(13,13,16,0.97); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px); border-top:1px solid var(--border2) }
+.tab-item { display:flex; flex-direction:column; align-items:center; gap:2px; cursor:pointer; padding:6px 8px; border:none; background:none; color:var(--text3); font-size:0.58rem; font-weight:600; font-family:inherit; letter-spacing:0.2px; transition:color 0.2s }
 .tab-item.active { color:var(--blue) }
-.tab-icon svg { width:20px; height:20px; stroke-width:1.8; opacity:0.55; transition:opacity 0.2s }
+.tab-icon svg { width:18px; height:18px; stroke-width:1.8; opacity:0.5; transition:opacity 0.2s }
 .tab-item.active .tab-icon svg { opacity:1; stroke:var(--blue) }
 
 /* ── Container ── */
@@ -60,13 +60,13 @@ body {
 .page { display:none } .page.active { display:block }
 
 /* ── Cards ── */
-.card { background:var(--surface); border:1px solid var(--border); border-radius:var(--r-xl); padding:1rem; margin-bottom:12px }
+.card { background:var(--surface); border:1px solid var(--border); border-radius:var(--r-xl); padding:14px 16px; margin-bottom:10px }
 
 /* ── Form ── */
-.fg { margin-bottom:0.88rem }
-.fl { display:block; font-size:0.64rem; font-weight:700; color:var(--text3); text-transform:uppercase; letter-spacing:0.4px; margin-bottom:6px }
+.fg { margin-bottom:11px }
+.fl { display:block; font-size:0.64rem; font-weight:700; color:var(--text3); text-transform:uppercase; letter-spacing:0.4px; margin-bottom:5px }
 .fl span { font-weight:400; text-transform:none; letter-spacing:0; color:var(--text3); font-size:0.86rem }
-.fi { width:100%; padding:0.7rem 0.8rem; background:var(--surface2); border:1px solid var(--border2); border-radius:var(--r); color:var(--text1); font-size:0.95rem; font-family:inherit; font-weight:600; outline:none; transition:border-color 0.15s }
+.fi { width:100%; padding:10px 12px; background:var(--surface2); border:1px solid var(--border2); border-radius:var(--r); color:var(--text1); font-size:1rem; font-family:inherit; font-weight:600; outline:none; -webkit-appearance:none; transition:border-color 0.15s }
 .fi:focus { border-color:var(--blue) }
 .fi-sel { appearance:none; -webkit-appearance:none; background-image:url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%239898b0' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 12px center; padding-right:32px }
 .form-row2 { display:grid; grid-template-columns:1fr 1fr; gap:10px }
@@ -78,17 +78,17 @@ input[type="range"] { -webkit-appearance:none; width:100%; height:6px; border-ra
 input[type="range"]::-webkit-slider-thumb { -webkit-appearance:none; width:22px; height:22px; border-radius:50%; background:#fff; border:2px solid var(--blue); box-shadow:0 1px 4px rgba(0,0,0,0.3); cursor:pointer }
 
 /* ── Result Card ── */
-.result-card { background:var(--surface2); border:1px solid var(--border2); border-radius:var(--r); padding:0.88rem; margin-top:14px }
-.result-label { font-size:0.6rem; font-weight:700; color:var(--text3); text-transform:uppercase; letter-spacing:0.3px; margin-bottom:4px }
-.result-val { font-size:1.6rem; font-weight:800; color:var(--text1) }
-.result-sub { font-size:0.7rem; color:var(--text3); margin-top:3px }
-.result-row { display:flex; justify-content:space-between; align-items:center; padding:0.5rem 0; border-bottom:1px solid var(--border2) }
+.result-card { background:var(--surface2); border:1px solid var(--border2); border-radius:var(--r); padding:12px 14px; margin-top:10px }
+.result-label { font-size:0.6rem; font-weight:700; color:var(--text3); text-transform:uppercase; letter-spacing:0.3px; margin-bottom:3px }
+.result-val { font-size:1.5rem; font-weight:800; color:var(--text1) }
+.result-sub { font-size:0.7rem; color:var(--text3); margin-top:2px }
+.result-row { display:flex; justify-content:space-between; align-items:center; padding:7px 0; border-bottom:1px solid var(--border2) }
 .result-row:last-child { border-bottom:none }
 .result-row-label { font-size:0.76rem; color:var(--text2) }
 .result-row-val { font-size:0.82rem; font-weight:700; color:var(--text1) }
 
 /* ── Year Table ── */
-.yr-table-wrap { margin-top:14px }
+.yr-table-wrap { margin-top:10px }
 .yr-toggle { display:flex; align-items:center; justify-content:center; gap:4px; background:none; border:none; color:var(--blue); font-size:0.72rem; font-weight:700; cursor:pointer; padding:8px 12px; font-family:inherit; width:100% }
 .yr-toggle svg { width:10px; height:10px; transition:transform 0.2s ease }
 .yr-table { width:100%; border-collapse:collapse }
@@ -150,7 +150,7 @@ input[type="range"]::-webkit-slider-thumb { -webkit-appearance:none; width:22px;
 
 <!-- ═══ SIP PAGE ═══ -->
 <div class="page active" id="page-sip">
-  <div class="container" style="padding-top:12px">
+  <div class="container" style="padding-top:8px">
     <div class="card">
       <div class="fg">
         <label class="fl">Monthly SIP Amount (₹)</label>
@@ -179,7 +179,7 @@ input[type="range"]::-webkit-slider-thumb { -webkit-appearance:none; width:22px;
           <div class="result-sub" id="sip-fv-real"></div>
         </div>
 
-        <div style="margin-top:12px">
+        <div style="margin-top:8px">
           <div class="result-row">
             <span class="result-row-label">Total Invested</span>
             <span class="result-row-val" id="sip-invested">₹0</span>
@@ -215,7 +215,7 @@ input[type="range"]::-webkit-slider-thumb { -webkit-appearance:none; width:22px;
 
 <!-- ═══ SWP PAGE ═══ -->
 <div class="page" id="page-swp">
-  <div class="container" style="padding-top:12px">
+  <div class="container" style="padding-top:8px">
     <div class="card">
       <div class="fg">
         <label class="fl">Total Corpus (₹)</label>
@@ -249,7 +249,7 @@ input[type="range"]::-webkit-slider-thumb { -webkit-appearance:none; width:22px;
           <div class="result-sub" id="swp-status"></div>
         </div>
 
-        <div style="margin-top:12px">
+        <div style="margin-top:8px">
           <div class="result-row">
             <span class="result-row-label">Starting Corpus</span>
             <span class="result-row-val" id="swp-start">₹0</span>
@@ -290,7 +290,7 @@ input[type="range"]::-webkit-slider-thumb { -webkit-appearance:none; width:22px;
 <!-- ═══ SETTINGS PAGE ═══ -->
 <!-- ═══ FI (Financial Independence) PAGE ═══ -->
 <div class="page" id="page-fi">
-  <div class="container" style="padding-top:12px">
+  <div class="container" style="padding-top:8px">
     <div class="card">
       <div class="fg">
         <label class="fl">Monthly Expenses (₹)</label>
@@ -328,7 +328,7 @@ input[type="range"]::-webkit-slider-thumb { -webkit-appearance:none; width:22px;
           <div class="result-sub" id="fi-corpus-sub"></div>
         </div>
 
-        <div style="margin-top:12px">
+        <div style="margin-top:8px">
           <div class="result-row">
             <span class="result-row-label">Monthly Expenses at FI</span>
             <span class="result-row-val" id="fi-future-exp">₹0</span>
@@ -372,7 +372,7 @@ input[type="range"]::-webkit-slider-thumb { -webkit-appearance:none; width:22px;
 
 <!-- ═══ LOAN PAGE ═══ -->
 <div class="page" id="page-loan">
-  <div class="container" style="padding-top:12px">
+  <div class="container" style="padding-top:8px">
     <div class="card">
       <div class="fg">
         <label class="fl">Loan Amount (₹)</label>
@@ -400,7 +400,7 @@ input[type="range"]::-webkit-slider-thumb { -webkit-appearance:none; width:22px;
           <div class="result-sub" id="loan-emi-sub"></div>
         </div>
 
-        <div style="margin-top:12px">
+        <div style="margin-top:8px">
           <div class="result-row">
             <span class="result-row-label">Total Payable</span>
             <span class="result-row-val" id="loan-total">₹0</span>
@@ -443,7 +443,7 @@ input[type="range"]::-webkit-slider-thumb { -webkit-appearance:none; width:22px;
 </div>
 
 <div class="page" id="page-settings">
-  <div class="container" style="padding-top:12px">
+  <div class="container" style="padding-top:8px">
     <div class="card" style="padding:0;overflow:hidden">
       <div class="set-hdr" onclick="toggleSet('set-appearance')">
         <div class="sec-title">Appearance</div>
