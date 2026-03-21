@@ -50,7 +50,9 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 .fi::placeholder{color:var(--text3)}
 .form-row2{display:grid;grid-template-columns:1fr 1fr;gap:9px;align-items:start}
 @media (max-width:340px){.form-row2{grid-template-columns:1fr}}
-.form-row2 .fg{display:flex;flex-direction:column}.form-row2 .fg .fi{flex:1;min-height:44px}
+.form-row2 .fg{display:flex;flex-direction:column}
+.form-row2 .fg .fl{min-height:2.2em;display:flex;align-items:flex-end;margin-bottom:5px}
+.form-row2 .fg .fi{flex:1;min-height:44px}
 .result-card{background:var(--surface2);border:1px solid var(--border2);border-radius:var(--r);padding:12px 14px;margin-top:10px}
 .result-label{font-size:0.62rem;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:0.3px;margin-bottom:3px}
 .result-val{font-size:1.45rem;font-weight:800;color:var(--text1)}
@@ -59,27 +61,44 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 .result-row:last-child{border-bottom:none}
 .result-row-label{font-size:0.78rem;color:var(--text2)}
 .result-row-val{font-size:0.82rem;font-weight:700;color:var(--text1)}
-.yr-table-wrap{margin-top:10px}
-.yr-toggle{display:flex;align-items:center;justify-content:center;gap:4px;background:none;border:none;color:var(--blue);font-size:0.72rem;font-weight:700;cursor:pointer;padding:8px 12px;font-family:inherit;width:100%}
+.yr-table-wrap{margin-top:12px;border-radius:var(--r);overflow:hidden;border:1px solid var(--border2)}
+.yr-toggle{display:flex;align-items:center;justify-content:center;gap:5px;background:none;border:none;border-bottom:1px solid transparent;color:var(--blue);font-size:0.72rem;font-weight:700;cursor:pointer;padding:10px 14px;font-family:inherit;width:100%;letter-spacing:0.2px;transition:border-color 0.2s}
+.yr-toggle.open{border-bottom-color:var(--border2)}
 .yr-toggle svg{width:10px;height:10px;transition:transform 0.2s ease}
-.yr-table{width:100%;border-collapse:collapse}
-.yr-table th{font-size:0.58rem;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:0.3px;padding:8px 4px;text-align:right;border-bottom:1px solid var(--border2)}
-.yr-table th:first-child{text-align:left}
-.yr-table td{font-size:0.74rem;font-weight:600;color:var(--text1);padding:6px 4px;text-align:right;border-bottom:1px solid var(--border2)}
+.yr-table{width:100%;border-collapse:collapse;table-layout:fixed}
+.yr-table thead tr{background:var(--surface2)}
+.yr-table th{font-size:0.58rem;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:0.5px;padding:9px 12px;text-align:right;border-bottom:1px solid var(--border2)}
+.yr-table th:first-child{text-align:left;width:14%}
+.yr-table td{font-size:0.78rem;font-weight:600;color:var(--text1);padding:10px 12px;text-align:right;border-bottom:1px solid var(--border2)}
 .yr-table td:first-child{color:var(--text3);font-weight:500;text-align:left}
-.yr-table tr:last-child td{border-bottom:none;font-weight:800;color:var(--blue)}
+.yr-table tbody tr:last-child td{border-bottom:none}
+.yr-table tbody tr:nth-child(even){background:var(--surface2)}
 .yr-body.closed{display:none}
+.yr-table td.td-red{color:var(--red)!important}
+.yr-table td.td-green{color:var(--green)!important}
+.yr-table tbody tr.depleted td{color:var(--red);opacity:0.65}
+.yr-table tbody tr.last-row td{font-weight:700;color:var(--blue)}
 .info-note{display:flex;align-items:flex-start;gap:5px;padding:10px 0 2px;margin-top:8px;border-top:1px solid var(--border2)}
 .info-note span{font-size:0.62rem;color:var(--text3);line-height:1.5}
+.depletion-banner{display:none;align-items:flex-start;gap:8px;background:var(--red-bg);border:1px solid rgba(248,113,113,0.25);border-radius:var(--r);padding:10px 12px;margin-top:10px}
+.depletion-banner.show{display:flex}
+.depletion-banner svg{flex-shrink:0;margin-top:1px;stroke:var(--red)}
+.depletion-banner-text{font-size:0.75rem;color:var(--red);line-height:1.5;font-weight:600}
 .toggle{position:relative;display:inline-block;width:44px;height:26px;flex-shrink:0}
 .toggle input{opacity:0;width:0;height:0}
 .toggle-slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background:var(--surface3);border:1px solid var(--border);border-radius:99px;transition:0.2s}
 .toggle-slider::before{content:'';position:absolute;height:20px;width:20px;left:2px;bottom:2px;background:var(--text3);border-radius:50%;transition:0.2s}
 .toggle input:checked+.toggle-slider{background:var(--blue);border-color:var(--blue)}
 .toggle input:checked+.toggle-slider::before{transform:translateX(18px);background:#fff}
-.size-picker{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px}
-.size-btn{padding:10px 0;border-radius:var(--r);border:1px solid var(--border2);background:var(--surface2);color:var(--text3);font-size:0.82rem;font-weight:700;cursor:pointer;font-family:inherit;transition:all 0.15s}
+.size-picker{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-bottom:10px}
+.size-btn{padding:9px 0;border-radius:var(--r);border:1px solid var(--border2);background:var(--surface2);color:var(--text3);font-size:0.78rem;font-weight:700;cursor:pointer;font-family:inherit;transition:all 0.15s}
+.size-btn:active{transform:scale(0.93)}
 .size-btn.active{background:var(--blue);color:#fff;border-color:var(--blue)}
+.range-track{position:relative;height:4px;background:var(--border2);border-radius:99px;margin:4px 0 2px}
+.range-fill{position:absolute;left:0;height:100%;background:var(--blue);border-radius:99px;transition:width .1s;pointer-events:none}
+.custom-range{-webkit-appearance:none;appearance:none;width:100%;height:4px;background:transparent;outline:none;cursor:pointer;position:relative;z-index:1}
+.custom-range::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:var(--blue);border:2px solid var(--surface);box-shadow:0 1px 4px rgba(0,0,0,0.3);cursor:pointer}
+.custom-range::-moz-range-thumb{width:18px;height:18px;border-radius:50%;background:var(--blue);border:2px solid var(--surface);cursor:pointer}
 .dt-card{display:flex;flex-direction:column;align-items:center;gap:4px;padding:14px 10px;background:var(--surface2);border:1px solid var(--border2);border-radius:var(--r);cursor:pointer;font-family:inherit;color:var(--text2)}
 .dt-card svg{opacity:0.6;margin-bottom:2px}
 .dt-label{font-size:0.82rem;font-weight:700;color:var(--text1)}
@@ -99,7 +118,7 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
     <div id="sip-results" style="display:none">
       <div class="result-card"><div class="result-label">Future Value</div><div class="result-val" id="sip-fv">₹0</div><div class="result-sub" id="sip-fv-real"></div></div>
       <div style="margin-top:8px"><div class="result-row"><span class="result-row-label">Total Invested</span><span class="result-row-val" id="sip-invested">₹0</span></div><div class="result-row"><span class="result-row-label">Wealth Gained</span><span class="result-row-val" id="sip-gain" style="color:var(--green)">₹0</span></div><div class="result-row" id="sip-real-row" style="display:none"><span class="result-row-label">Real Value (inflation-adjusted)</span><span class="result-row-val" id="sip-real-val">₹0</span></div></div>
-      <div class="yr-table-wrap"><button class="yr-toggle" onclick="toggleYr(this,'sip-tb')"><span>Yearly Breakdown</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button><div id="sip-tb" class="yr-body closed"><table class="yr-table"><thead><tr><th>Year</th><th>Invested</th><th>Value</th><th>Returns</th></tr></thead><tbody id="sip-rows"></tbody></table></div></div>
+      <div class="yr-table-wrap"><button class="yr-toggle" onclick="toggleYr(this,'sip-tb')"><span>Yearly Breakdown</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button><div id="sip-tb" class="yr-body closed"><table class="yr-table"><thead><tr><th>YR</th><th>Invested</th><th>Value</th><th style="color:var(--green)">Returns</th></tr></thead><tbody id="sip-rows"></tbody></table></div></div>
       <div class="info-note"><span style="opacity:0.5">ⓘ</span><span>Returns are estimated. Actual returns depend on market conditions.</span></div>
     </div>
   </div>
@@ -112,9 +131,10 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
     <div class="form-row2"><div class="fg"><label class="fl">Monthly Withdrawal (₹)</label><input class="fi" id="swp-withdraw" type="number" inputmode="numeric" placeholder="e.g. 30000" value="30000" oninput="calcSWP()"/></div><div class="fg"><label class="fl">Expected Return (% p.a.)</label><input class="fi" id="swp-rate" type="number" step="0.5" placeholder="8" value="8" oninput="calcSWP()"/></div></div>
     <div class="form-row2"><div class="fg"><label class="fl">Withdrawal Period (years)</label><input class="fi" id="swp-years" type="number" placeholder="20" value="20" oninput="calcSWP()"/></div><div class="fg"><label class="fl">Annual Step-up (%) <span>optional</span></label><input class="fi" id="swp-stepup" type="number" step="1" placeholder="0" value="5" oninput="calcSWP()"/></div></div>
     <div id="swp-results" style="display:none">
+      <div id="swp-depletion-banner" class="depletion-banner"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><span class="depletion-banner-text" id="swp-depletion-msg"></span></div>
       <div class="result-card"><div class="result-label">Total Withdrawn</div><div class="result-val" id="swp-total">₹0</div><div class="result-sub" id="swp-status"></div></div>
       <div style="margin-top:8px"><div class="result-row"><span class="result-row-label">Starting Corpus</span><span class="result-row-val" id="swp-start">₹0</span></div><div class="result-row"><span class="result-row-label">Remaining Corpus</span><span class="result-row-val" id="swp-remaining">₹0</span></div><div class="result-row"><span class="result-row-label">Corpus Lasts</span><span class="result-row-val" id="swp-lasts"></span></div><div class="result-row"><span class="result-row-label">Last Monthly Withdrawal</span><span class="result-row-val" id="swp-last-wd">₹0</span></div></div>
-      <div class="yr-table-wrap"><button class="yr-toggle" onclick="toggleYr(this,'swp-tb')"><span>Yearly Breakdown</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button><div id="swp-tb" class="yr-body closed"><table class="yr-table"><thead><tr><th>Year</th><th>Withdrawn</th><th>Balance</th><th>Monthly</th></tr></thead><tbody id="swp-rows"></tbody></table></div></div>
+      <div class="yr-table-wrap"><button class="yr-toggle" onclick="toggleYr(this,'swp-tb')"><span>Yearly Breakdown</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button><div id="swp-tb" class="yr-body closed"><table class="yr-table"><thead><tr><th>YR</th><th>Withdrawn</th><th>Balance</th><th>Monthly</th></tr></thead><tbody id="swp-rows"></tbody></table></div></div>
       <div class="info-note"><span style="opacity:0.5">ⓘ</span><span>SWP returns are estimated. Step-up increases withdrawal annually to match inflation.</span></div>
     </div>
   </div>
@@ -126,7 +146,8 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
   <div class="sec-body closed" id="sec-appear"><div class="card-inner">
     <div style="display:flex;align-items:center;justify-content:space-between;padding:2px 0 10px;border-bottom:1px solid var(--border2);margin-bottom:10px"><div style="display:flex;align-items:center;gap:8px"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><span style="font-size:0.88rem;font-weight:600">Dark Mode</span></div><label class="toggle"><input type="checkbox" id="theme-toggle" onchange="toggleTheme(this.checked)"/><span class="toggle-slider"></span></label></div>
     <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg><span style="font-size:0.88rem;font-weight:600">Text Size</span></div>
-    <div class="size-picker"><button class="size-btn" onclick="setSize(15)" data-size="15">S</button><button class="size-btn active" onclick="setSize(16)" data-size="16">M</button><button class="size-btn" onclick="setSize(17)" data-size="17">L</button><button class="size-btn" onclick="setSize(18)" data-size="18">XL</button></div>
+    <div class="size-picker"><button class="size-btn" onclick="setSize(13)" data-size="13">XS</button><button class="size-btn" onclick="setSize(14)" data-size="14">S</button><button class="size-btn active" onclick="setSize(16)" data-size="16">M</button><button class="size-btn" onclick="setSize(18)" data-size="18">L</button><button class="size-btn" onclick="setSize(20)" data-size="20">XL</button></div>
+    <div class="range-track"><div class="range-fill" id="range-fill" style="width:50%"></div><input type="range" class="custom-range" id="font-size-bar" min="0" max="4" step="1" value="2" oninput="const s=[13,14,16,18,20];setSize(s[this.value]);updateRangeFill(Number(this.value))"/></div>
   </div></div>
   <div class="sec-hdr-card" onclick="toggleSec('sec-data')"><div class="sec-hdr-left"><span class="sec-hdr-title">Data Tools</span></div><span class="sec-caret" id="caret-sec-data"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></span></div>
   <div class="sec-body closed" id="sec-data"><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;margin-top:-4px">
@@ -144,20 +165,150 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 </div></nav>
 
 <script>
+/* ── helpers ── */
 function fmt(n){const v=Math.abs(Number(n)||0);let s='';if(v>=10000000)s=(v/10000000).toFixed(2)+'Cr';else if(v>=100000)s=(v/100000).toFixed(2)+'L';else if(v>=1000)s=(v/1000).toFixed(1)+'K';else s=v.toFixed(0);return(n<0?'-':'')+'₹'+s}
+
+/* ── navigation ── */
 function nav(p,btn){document.querySelectorAll('.page').forEach(e=>e.classList.remove('active'));document.getElementById('page-'+p).classList.add('active');document.querySelectorAll('.tab-item').forEach(t=>t.classList.remove('active'));if(btn)btn.classList.add('active')}
+
+/* ── collapsible sections ── */
 function toggleSec(id){const el=document.getElementById(id);if(!el)return;const c=el.classList.toggle('closed');document.getElementById('caret-'+id)?.classList.toggle('open',!c)}
-function toggleYr(btn,id){const b=document.getElementById(id);b.classList.toggle('closed');const o=!b.classList.contains('closed');const t=btn.querySelector('span').textContent.replace('Hide ','');btn.querySelector('span').textContent=o?'Hide '+t:t;btn.querySelector('svg').style.transform=o?'rotate(180deg)':''}
+
+/* ── yearly breakdown toggle ── */
+function toggleYr(btn,id){const b=document.getElementById(id);b.classList.toggle('closed');const o=!b.classList.contains('closed');btn.classList.toggle('open',o);const t=btn.querySelector('span').textContent.replace('Hide ','');btn.querySelector('span').textContent=o?'Hide '+t:t;btn.querySelector('svg').style.transform=o?'rotate(180deg)':''}
+
+/* ── theme ── */
 function toggleTheme(d){document.body.setAttribute('data-theme',d?'dark':'light');localStorage.setItem('calc_theme',d?'dark':'light')}
-function setSize(v){document.documentElement.style.fontSize=v+'px';document.querySelectorAll('.size-btn').forEach(b=>b.classList.toggle('active',Number(b.dataset.size)===v));localStorage.setItem('calc_fs',v)}
+
+/* ── font size — 5 steps matching Goal Tracker ── */
+const FS_MAP={13:0,14:1,16:2,18:3,20:4};
+function updateRangeFill(idx){const f=document.getElementById('range-fill');if(f)f.style.width=(idx/4*100)+'%'}
+function setSize(v){
+  document.documentElement.style.fontSize=v+'px';
+  localStorage.setItem('calc_fs',v);
+  document.querySelectorAll('.size-btn').forEach(b=>b.classList.toggle('active',Number(b.dataset.size)===v));
+  const bar=document.getElementById('font-size-bar');
+  const idx=FS_MAP[v]??2;
+  if(bar)bar.value=idx;
+  updateRangeFill(idx);
+}
+
+/* ── sample / reset ── */
 function loadSample(){document.getElementById('sip-amt').value='25000';document.getElementById('sip-rate').value='12';document.getElementById('sip-years').value='15';document.getElementById('sip-infl').value='7';document.getElementById('swp-corpus').value='10000000';document.getElementById('swp-withdraw').value='50000';document.getElementById('swp-rate').value='8';document.getElementById('swp-years').value='25';document.getElementById('swp-stepup').value='5';calcSIP();calcSWP();nav('sip',document.querySelectorAll('.tab-item')[0])}
 function resetCalc(){['sip-amt','sip-rate','sip-years','sip-infl','swp-corpus','swp-withdraw','swp-rate','swp-years','swp-stepup'].forEach(id=>{document.getElementById(id).value=''});document.getElementById('sip-results').style.display='none';document.getElementById('swp-results').style.display='none';nav('sip',document.querySelectorAll('.tab-item')[0])}
 
-function calcSIP(){const P=Number(document.getElementById('sip-amt').value||0),rate=Number(document.getElementById('sip-rate').value||0)/100,years=Number(document.getElementById('sip-years').value||0),infl=Number(document.getElementById('sip-infl').value||0)/100;const w=document.getElementById('sip-results');if(!P||!rate||!years){w.style.display='none';return}w.style.display='';const r=rate/12,n=years*12,inv=P*n,fv=P*((Math.pow(1+r,n)-1)/r)*(1+r),gain=fv-inv,rv=infl>0?fv/Math.pow(1+infl,years):fv;document.getElementById('sip-fv').textContent=fmt(fv);document.getElementById('sip-fv-real').textContent=infl>0?`Worth ${fmt(rv)} in today's money at ${(infl*100).toFixed(0)}% inflation`:'';document.getElementById('sip-invested').textContent=fmt(inv);document.getElementById('sip-gain').textContent=fmt(gain);const rr=document.getElementById('sip-real-row');if(infl>0){rr.style.display='';document.getElementById('sip-real-val').textContent=fmt(rv)}else rr.style.display='none';let rows='';for(let y=1;y<=years;y++){const nm=y*12,i=P*nm,v=P*((Math.pow(1+r,nm)-1)/r)*(1+r);rows+=`<tr><td>${y}</td><td>${fmt(i)}</td><td>${fmt(v)}</td><td style="color:var(--green)">${fmt(v-i)}</td></tr>`}document.getElementById('sip-rows').innerHTML=rows}
+/* ── SIP calculator ── */
+function calcSIP(){
+  const P=Number(document.getElementById('sip-amt').value||0);
+  const rate=Number(document.getElementById('sip-rate').value||0)/100;
+  const years=Number(document.getElementById('sip-years').value||0);
+  const infl=Number(document.getElementById('sip-infl').value||0)/100;
+  const w=document.getElementById('sip-results');
+  if(!P||P<=0||!rate||rate<=0||!years||years<=0){w.style.display='none';return}
+  w.style.display='';
+  const r=rate/12,n=years*12;
+  const inv=P*n;
+  const fv=P*((Math.pow(1+r,n)-1)/r)*(1+r);
+  const gain=fv-inv;
+  const rv=infl>0?fv/Math.pow(1+infl,years):fv;
+  document.getElementById('sip-fv').textContent=fmt(fv);
+  document.getElementById('sip-fv-real').textContent=infl>0?`Worth ${fmt(rv)} in today's money at ${(infl*100).toFixed(0)}% inflation`:'';
+  document.getElementById('sip-invested').textContent=fmt(inv);
+  document.getElementById('sip-gain').textContent=fmt(gain);
+  const rr=document.getElementById('sip-real-row');
+  if(infl>0){rr.style.display='';document.getElementById('sip-real-val').textContent=fmt(rv)}else rr.style.display='none';
+  let rows='';
+  for(let y=1;y<=years;y++){
+    const nm=y*12,i=P*nm,v=P*((Math.pow(1+r,nm)-1)/r)*(1+r);
+    const isLast=y===years;
+    rows+=`<tr${isLast?' class="last-row"':''}><td>${y}</td><td>${fmt(i)}</td><td>${fmt(v)}</td><td class="td-green">${fmt(v-i)}</td></tr>`;
+  }
+  document.getElementById('sip-rows').innerHTML=rows;
+}
 
-function calcSWP(){const corpus=Number(document.getElementById('swp-corpus').value||0),wd=Number(document.getElementById('swp-withdraw').value||0),rate=Number(document.getElementById('swp-rate').value||0)/100,years=Number(document.getElementById('swp-years').value||0),stepup=Number(document.getElementById('swp-stepup').value||0)/100;const w=document.getElementById('swp-results');if(!corpus||!wd||!years){w.style.display='none';return}w.style.display='';const r=rate/12;let bal=corpus,tot=0,mwd=wd,cl=years,dep=false;const yd=[];for(let y=1;y<=years;y++){for(let m=0;m<12;m++){if(bal<=0){dep=true;break}const w=Math.min(mwd,bal);bal=bal*(1+r)-w;if(bal<0)bal=0;tot+=w}yd.push({y,bal:Math.max(0,bal),tot});if(dep){cl=y;break}mwd*=(1+stepup)}const lw=wd*Math.pow(1+stepup,Math.min(years,cl)-1);document.getElementById('swp-total').textContent=fmt(tot);document.getElementById('swp-start').textContent=fmt(corpus);document.getElementById('swp-remaining').textContent=fmt(Math.max(0,bal));document.getElementById('swp-remaining').style.color=bal>0?'var(--green)':'var(--red)';document.getElementById('swp-lasts').textContent=dep?cl+' years (depleted)':years+'+ years';document.getElementById('swp-lasts').style.color=dep?'var(--red)':'var(--green)';document.getElementById('swp-last-wd').textContent=fmt(lw)+'/mo';document.getElementById('swp-status').textContent=dep?`Corpus runs out in year ${cl}`:`${fmt(bal)} remaining after ${years} years`;document.getElementById('swp-rows').innerHTML=yd.map(d=>`<tr><td>${d.y}</td><td>${fmt(d.tot)}</td><td style="color:${d.bal>0?'var(--text1)':'var(--red)'}">${fmt(d.bal)}</td><td>${fmt(wd*Math.pow(1+stepup,d.y-1))}</td></tr>`).join('')}
+/* ── SWP calculator — fixed ── */
+function calcSWP(){
+  const corpus=Number(document.getElementById('swp-corpus').value||0);
+  const wd=Number(document.getElementById('swp-withdraw').value||0);
+  const rate=Number(document.getElementById('swp-rate').value||0)/100;
+  const years=Number(document.getElementById('swp-years').value||0);
+  const stepup=Number(document.getElementById('swp-stepup').value||0)/100;
+  const w=document.getElementById('swp-results');
+  const banner=document.getElementById('swp-depletion-banner');
+  const bannerMsg=document.getElementById('swp-depletion-msg');
+  if(!corpus||corpus<=0||!wd||wd<=0||!years||years<=0){w.style.display='none';return}
+  w.style.display='';
+  const r=rate/12;
+  let bal=corpus,tot=0,mwd=wd,depYear=0;
+  const yd=[];
 
-(function(){const t=localStorage.getItem('calc_theme'),tgl=document.getElementById('theme-toggle');if(t){document.body.setAttribute('data-theme',t);if(tgl)tgl.checked=t==='dark'}else if(matchMedia('(prefers-color-scheme:light)').matches){document.body.setAttribute('data-theme','light');if(tgl)tgl.checked=false}else{if(tgl)tgl.checked=true}const fs=localStorage.getItem('calc_fs');if(fs){document.documentElement.style.fontSize=fs+'px';document.querySelectorAll('.size-btn').forEach(b=>b.classList.toggle('active',Number(b.dataset.size)===Number(fs)))}calcSIP();calcSWP()})();
+  for(let y=1;y<=years;y++){
+    let yearWd=0;
+    let depleted=false;
+    const mwdThisYear=mwd; // snapshot BEFORE step-up — this is what was actually withdrawn this year
+    for(let m=0;m<12;m++){
+      if(bal<=0){depleted=true;break}
+      const actual=Math.min(mwd,bal);
+      bal=bal*(1+r)-actual;
+      yearWd+=actual;
+      tot+=actual;
+      if(bal<0)bal=0;
+    }
+    const isDepletedRow=depleted||(bal<=0);
+    yd.push({y,bal:Math.max(0,bal),yearWd,mwd:mwdThisYear,depleted:isDepletedRow});
+    if(isDepletedRow){if(depYear===0)depYear=y;break;} // stop immediately — no ghost rows
+    mwd*=(1+stepup); // step-up only after surviving the year
+  }
+
+  const isDepleted=depYear>0;
+  // last withdrawal monthly amount — the mwd at the last active year
+  const lastEntry=yd[yd.length-1];
+  const lastMWD=lastEntry.mwd;
+
+  // depletion banner
+  if(isDepleted){
+    banner.classList.add('show');
+    bannerMsg.textContent=`Corpus runs out in year ${depYear}. Consider reducing withdrawals, increasing return, or adding to the corpus.`;
+  } else {
+    banner.classList.remove('show');
+  }
+
+  document.getElementById('swp-total').textContent=fmt(tot);
+  document.getElementById('swp-start').textContent=fmt(corpus);
+  const finalBal=yd[yd.length-1].bal;
+  const remEl=document.getElementById('swp-remaining');
+  remEl.textContent=fmt(finalBal);
+  remEl.style.color=finalBal>0?'var(--green)':'var(--red)';
+  document.getElementById('swp-lasts').textContent=isDepleted?`${depYear} years (depleted)`:`${years}+ years`;
+  document.getElementById('swp-lasts').style.color=isDepleted?'var(--red)':'var(--green)';
+  document.getElementById('swp-last-wd').textContent=fmt(lastMWD)+'/mo';
+  document.getElementById('swp-status').textContent=isDepleted
+    ?`Corpus depleted in year ${depYear}`
+    :`${fmt(finalBal)} remaining after ${years} years`;
+
+  // Build table rows
+  document.getElementById('swp-rows').innerHTML=yd.map((d,i)=>{
+    const isLast=i===yd.length-1;
+    const rowClass=(d.depleted||d.bal===0)?'depleted':(isLast&&!isDepleted?'last-row':'');
+    const balClass=d.bal>0?'':'td-red';
+    const monthlyCell=(d.depleted||d.bal===0)?'<td style="color:var(--text3)">—</td>':`<td>${fmt(d.mwd)}</td>`;
+    return `<tr${rowClass?' class="'+rowClass+'"':''}><td>${d.y}</td><td>${fmt(d.yearWd)}</td><td class="${balClass}">${fmt(d.bal)}</td>${monthlyCell}</tr>`;
+  }).join('');
+}
+
+/* ── init ── */
+(function(){
+  const t=localStorage.getItem('calc_theme');
+  const tgl=document.getElementById('theme-toggle');
+  if(t){document.body.setAttribute('data-theme',t);if(tgl)tgl.checked=t==='dark'}
+  else if(matchMedia('(prefers-color-scheme:light)').matches){document.body.setAttribute('data-theme','light');if(tgl)tgl.checked=false}
+  else{if(tgl)tgl.checked=true}
+  // restore font size
+  const fs=parseInt(localStorage.getItem('calc_fs'))||16;
+  setSize(fs);
+  calcSIP();
+  calcSWP();
+})();
 </script>
 </body>
 </html>
