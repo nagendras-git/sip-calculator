@@ -5,243 +5,496 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover"/>
 <title>Calculator</title>
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Calculator">
-<meta name="theme-color" content="#0d0d10" media="(prefers-color-scheme: dark)">
-<meta name="theme-color" content="#f2f2f7" media="(prefers-color-scheme: light)">
-<link rel="apple-touch-icon" sizes="180x180" id="pwa-icon" href="data:image/png;base64,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">
+<meta name="theme-color" content="#ffffff">
+<link rel="apple-touch-icon" sizes="180x180" id="pwa-icon" href="data:image/png;base64,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">
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
 <script>
-// ── PWA: inline manifest + service worker ──
 (function(){
-  const iconHref = document.getElementById('pwa-icon').href;
-  const manifest = JSON.stringify({
-    name: 'Calculator',
-    short_name: 'Calc',
-    start_url: './',
-    display: 'standalone',
-    background_color: '#0d0d10',
-    theme_color: '#0d0d10',
-    orientation: 'portrait',
-    icons: [
-      {src: iconHref, sizes: '192x192', type: 'image/png'},
-      {src: iconHref, sizes: '512x512', type: 'image/png', purpose: 'any maskable'}
-    ]
-  });
-  const mBlob = new Blob([manifest], {type:'application/json'});
-  const mLink = document.createElement('link');
-  mLink.rel = 'manifest';
-  mLink.href = URL.createObjectURL(mBlob);
-  document.head.appendChild(mLink);
-  if ('serviceWorker' in navigator) {
-    const swCode = `
-      self.addEventListener('install',()=>self.skipWaiting());
-      self.addEventListener('activate',e=>e.waitUntil(clients.claim()));
-      self.addEventListener('fetch',e=>e.respondWith(fetch(e.request).catch(()=>caches.match(e.request))));
-    `;
-    const swBlob = new Blob([swCode], {type:'application/javascript'});
-    navigator.serviceWorker.register(URL.createObjectURL(swBlob), {scope:'/'}).catch(()=>{});
-  }
+  const iconHref=document.getElementById('pwa-icon').href;
+  const manifest=JSON.stringify({name:'Calculator',short_name:'Calc',start_url:'./',display:'standalone',background_color:'#ffffff',theme_color:'#ffffff',orientation:'portrait',icons:[{src:iconHref,sizes:'192x192',type:'image/png'},{src:iconHref,sizes:'512x512',type:'image/png',purpose:'any maskable'}]});
+  const mBlob=new Blob([manifest],{type:'application/json'});
+  const mLink=document.createElement('link');mLink.rel='manifest';mLink.href=URL.createObjectURL(mBlob);document.head.appendChild(mLink);
+  if('serviceWorker' in navigator){const swCode=`self.addEventListener('install',()=>self.skipWaiting());self.addEventListener('activate',e=>e.waitUntil(clients.claim()));self.addEventListener('fetch',e=>e.respondWith(fetch(e.request).catch(()=>caches.match(e.request))));`;const swBlob=new Blob([swCode],{type:'application/javascript'});navigator.serviceWorker.register(URL.createObjectURL(swBlob),{scope:'/'}).catch(()=>{});}
 })();
 </script>
 <style>
+/* ── Design tokens ── */
 :root{
-  --bg:#0d0d10;--surface:#141417;--surface2:#1e1e25;--surface3:#26262f;
-  --border:#4a4a60;--border2:#383850;--scrim:rgba(0,0,0,0.72);
-  --text1:#f4f4fa;--text2:#c8c8e0;--text3:#b0b0cc;
-  --green:#22c55e;--green-bg:rgba(34,197,94,0.1);
-  --red:#f87171;--red-bg:rgba(248,113,113,0.1);
-  --blue:#3B82F6;
-  --nav-h:3.75rem;
+  --bg:#ffffff;
+  --surface:#ffffff;
+  --bg-secondary:#f8f9fa;
+  --divider:#e8eaed;
+  --text-primary:#202124;
+  --text-secondary:#5f6368;
+  --text-hint:#9aa0a6;
+  --blue:#1a73e8;
+  --blue-light:#e8f0fe;
+  --green:#188038;
+  --red:#c5221f;
+  --red-light:#fce8e6;
+  --nav-h:3.5rem;
   --safe-b:env(safe-area-inset-bottom,0px);
   --safe-t:env(safe-area-inset-top,0px);
-  --r:0.75rem;--r-lg:1rem;--r-xl:1.25rem;
-  --ease:cubic-bezier(0.16,1,0.3,1);
-  --spring:cubic-bezier(0.34,1.56,0.64,1)
+  --ease:cubic-bezier(0.16,1,0.3,1)
 }
-[data-theme="light"]{
-  --bg:#f2f2f7;--surface:#ffffff;--surface2:#f5f5fa;--surface3:#e8e8f0;
-  --border:#c8c8d8;--border2:#d8d8e4;--text1:#1a1a25;--text2:#505068;--text3:#808098;
-  --scrim:rgba(0,0,0,0.45);--blue:#2563EB;
-  --green:#16a34a;--green-bg:rgba(22,163,74,0.08);
-  --red:#dc2626;--red-bg:rgba(220,38,38,0.06)
-}
-[data-theme="light"] .top-header{background:var(--bg);border-bottom:1px solid var(--border)}
-[data-theme="light"] .tab-bar{background:var(--bg);border-top:1px solid var(--border)}
+
+/* ── Reset ── */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-html{height:100%;overflow-x:hidden;font-size:16px;background:var(--bg)}
-body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var(--text1);min-height:100vh;max-width:100vw;padding-bottom:calc(var(--nav-h) + var(--safe-b) + 0.5rem);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+html{height:100%;overflow-x:hidden;font-size:16px;background:var(–bg)}
+body{font-family:‘Inter’,-apple-system,sans-serif;background:var(–bg);color:var(–text-primary);min-height:100vh;padding-bottom:calc(var(–nav-h) + var(–safe-b) + 1rem);-webkit-font-smoothing:antialiased;overflow-x:hidden}
 ::-webkit-scrollbar{width:0;height:0}
-/* ── header ── */
-.top-header{position:sticky;top:0;z-index:90;background:rgba(13,13,16,0.95);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);padding:calc(0.75rem + var(--safe-t)) 1.25rem 0.625rem}
-.hdr-title{font-size:1.1rem;font-weight:800}
-/* ── tab bar — matches Goal Tracker exactly ── */
-.tab-bar{position:fixed;bottom:0;left:0;right:0;z-index:100;display:flex;justify-content:center;align-items:flex-start;height:calc(var(--nav-h) + var(--safe-b));padding-bottom:var(--safe-b);padding-top:0.4375rem;background:rgba(13,13,16,0.97);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid var(--border2)}
-.tab-bar-inner{width:100%;max-width:480px;display:flex;align-items:flex-start;justify-content:space-around}
-.tab-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:0.125rem;cursor:pointer;padding:0;background:none;border:none;color:var(--text3);transition:color 120ms;font-family:inherit}
-.tab-item.active{color:var(--blue)}
-.tab-icon{height:1.625rem;display:flex;align-items:center;justify-content:center}
-.tab-icon svg{width:1.3rem;height:1.3rem;stroke:currentColor;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;opacity:0.35;transition:opacity 200ms}
-.tab-item.active .tab-icon svg{opacity:1;stroke:var(--blue)}
-.tab-label{font-size:0.68rem;font-weight:700;letter-spacing:0.2px}
-/* ── layout ── */
-.container{padding:0 1rem}.page{display:none}.page.active{display:block}
-.card-inner{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);padding:0.875rem 1rem;margin-bottom:0.625rem}
-/* ── collapsible sections ── */
-.sec-hdr-card{display:flex;align-items:center;justify-content:space-between;padding:0.6875rem 0.875rem;cursor:pointer;user-select:none;background:var(--surface2);border:1px solid var(--border);border-radius:var(--r-lg);margin-bottom:0.5rem}
-.sec-hdr-card:active{background:var(--surface3)}
-.sec-hdr-left{display:flex;align-items:center;gap:0.5rem;min-width:0}
-.sec-hdr-title{font-size:0.86rem;font-weight:600;color:var(--text1);display:inline-flex;align-items:center;gap:0.5rem}
-.sec-hdr-title svg{opacity:0.45;flex-shrink:0}
-.sec-caret{color:var(--text3);transition:transform 0.25s var(--ease);display:flex;align-items:center}
-.sec-caret svg{width:0.9375rem;height:0.9375rem;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
-.sec-caret.open{transform:rotate(180deg)}
-.sec-body{overflow:hidden;max-height:5000px;transition:max-height 0.32s var(--ease),opacity 0.2s ease;opacity:1}
-.sec-body.closed{max-height:0;opacity:0;pointer-events:none}
-/* ── form fields — identical to Goal Tracker ── */
-.fg{margin-bottom:0.8125rem}
-.fl{font-size:0.68rem;font-weight:700;color:var(--text3);letter-spacing:0;margin-bottom:0.3125rem;display:block}
-.fl span{font-weight:400;color:var(--text3);font-size:0.86rem}
-.fi{
-  width:100%;max-width:100%;
-  font-size:1rem !important; /* keeps iOS from auto-zooming */
-  padding:0.625rem 0.75rem;
-  border:1px solid var(--border);border-radius:var(--r);
-  font-family:'Inter',sans-serif;font-weight:500;
-  background:var(--surface2);color:var(--text1);
-  outline:none;-webkit-appearance:none;
-  transition:border-color 150ms,box-shadow 150ms;
-  box-sizing:border-box
+
+/* ── Header ── */
+.top-header{
+position:sticky;top:0;z-index:90;
+background:var(–bg);
+border-bottom:1px solid var(–divider);
+padding:calc(0.875rem + var(–safe-t)) 1rem 0.875rem;
+display:flex;align-items:center;gap:0.75rem
 }
-.fi:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(59,130,246,0.12);background:var(--surface)}
-.fi::placeholder{color:var(--text3)}
-/* ── two-col form grid — label min-height ensures inputs always align ── */
-.form-row2{display:flex;flex-direction:column;gap:0rem}
-.form-row2 .fg{display:flex;flex-direction:column}
-.form-row2 .fg .fl{margin-bottom:0.3125rem}
-.form-row2 .fg .fi{min-height:2.75rem}
-/* ── results ── */
-.result-card{background:var(--surface2);border:1px solid var(--border2);border-radius:var(--r);padding:0.75rem 0.875rem;margin-top:0.625rem}
-.result-label{font-size:0.62rem;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:0.3px;margin-bottom:0.1875rem}
-.result-val{font-size:1.45rem;font-weight:800;color:var(--text1)}
-.result-sub{font-size:0.72rem;color:var(--text3);margin-top:0.125rem}
-.result-row{display:flex;justify-content:space-between;align-items:center;padding:0.4375rem 0;border-bottom:1px solid var(--border2)}
+.hdr-back{width:2rem;height:2rem;display:flex;align-items:center;justify-content:center;border:none;background:none;cursor:pointer;color:var(–text-secondary);border-radius:50%}
+.hdr-back svg{width:1.25rem;height:1.25rem;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.hdr-title{font-size:1.0625rem;font-weight:600;color:var(–text-primary);letter-spacing:-0.01em}
+
+/* ── Tab bar ── */
+.tab-bar{
+position:fixed;bottom:0;left:0;right:0;z-index:100;
+background:var(–bg);
+border-top:1px solid var(–divider);
+height:calc(var(–nav-h) + var(–safe-b));
+padding-bottom:var(–safe-b);
+padding-top:0;
+display:flex;justify-content:center;align-items:stretch
+}
+.tab-bar-inner{width:100%;max-width:480px;display:flex;align-items:stretch;justify-content:space-around}
+.tab-item{
+flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+gap:0.1875rem;cursor:pointer;padding:0;background:none;border:none;
+color:var(–text-hint);transition:color 120ms;font-family:inherit;
+position:relative
+}
+.tab-item.active{color:var(–blue)}
+.tab-item.active::after{
+content:’’;position:absolute;top:0;left:15%;right:15%;height:2px;
+background:var(–blue);border-radius:0 0 2px 2px
+}
+.tab-icon{height:1.5rem;display:flex;align-items:center;justify-content:center}
+.tab-icon svg{width:1.25rem;height:1.25rem;stroke:currentColor;fill:none;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round;transition:opacity 200ms}
+.tab-label{font-size:0.6875rem;font-weight:600;letter-spacing:0.01em}
+
+/* ── Layout ── */
+.container{padding:0;max-width:480px;margin:0 auto}
+.page{display:none}.page.active{display:block}
+
+/* ── Section group — Google-style card ── */
+.section-group{
+background:var(–bg);
+border:1px solid var(–divider);
+border-radius:0.75rem;
+margin:0.75rem 1rem;
+overflow:hidden
+}
+.section-group+.section-group{margin-top:0.5rem}
+
+/* ── Page title strip ── */
+.page-title{
+padding:1.25rem 1rem 0.5rem;
+font-size:0.75rem;font-weight:600;
+color:var(–text-secondary);
+text-transform:uppercase;letter-spacing:0.06em
+}
+
+/* ── Form fields ── */
+.field-wrap{padding:0 1rem}
+.fg{margin-bottom:0.875rem}
+.fl{
+font-size:0.6875rem;font-weight:600;
+color:var(–text-secondary);
+letter-spacing:0.02em;
+margin-bottom:0.3125rem;display:block
+}
+.fl-opt{font-weight:400;color:var(–text-hint)}
+.fi{
+width:100%;font-size:1rem !important;
+padding:0.6875rem 0.875rem;
+border:1.5px solid var(–divider);
+border-radius:0.5rem;
+font-family:‘Inter’,sans-serif;font-weight:500;
+background:var(–bg);color:var(–text-primary);
+outline:none;-webkit-appearance:none;
+transition:border-color 150ms;
+box-sizing:border-box
+}
+.fi:focus{border-color:var(–blue)}
+.fi::placeholder{color:var(–text-hint)}
+
+/* ── Divider ── */
+.divider{height:1px;background:var(–divider);margin:0 1rem}
+
+/* ── Result hero ── */
+.result-hero{padding:1.25rem 1rem 0.25rem}
+.result-hero-label{font-size:0.6875rem;font-weight:600;color:var(–text-secondary);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:0.25rem}
+.result-hero-val{font-size:2rem;font-weight:700;color:var(–text-primary);letter-spacing:-0.03em;line-height:1.1}
+.result-hero-sub{font-size:0.78rem;color:var(–text-secondary);margin-top:0.25rem}
+
+/* ── Result rows — Google list style ── */
+.result-list{padding:0.5rem 0}
+.result-row{
+display:flex;justify-content:space-between;align-items:center;
+padding:0.75rem 1rem;
+border-bottom:1px solid var(–divider)
+}
 .result-row:last-child{border-bottom:none}
-.result-row-label{font-size:0.78rem;color:var(--text2)}
-.result-row-val{font-size:0.82rem;font-weight:700;color:var(--text1)}
-/* ── yearly breakdown table ── */
-.yr-table-wrap{margin-top:0.75rem;border-radius:var(--r);overflow:hidden;border:1px solid var(--border2)}
-.yr-toggle{display:flex;align-items:center;justify-content:center;gap:0.3125rem;background:none;border:none;border-bottom:1px solid transparent;color:var(--blue);font-size:0.72rem;font-weight:700;cursor:pointer;padding:0.625rem 0.875rem;font-family:inherit;width:100%;letter-spacing:0.2px;transition:border-color 0.2s}
-.yr-toggle.open{border-bottom-color:var(--border2)}
-.yr-toggle svg{width:0.625rem;height:0.625rem;transition:transform 0.2s ease}
-.yr-table{width:100%;border-collapse:collapse;table-layout:fixed}
-.yr-table thead tr{background:var(--surface2)}
-.yr-table th{font-size:0.58rem;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:0.5px;padding:0.5625rem 0.75rem;text-align:right;border-bottom:1px solid var(--border2)}
-.yr-table th:first-child{text-align:left;width:14%}
-.yr-table td{font-size:0.78rem;font-weight:600;color:var(--text1);padding:0.625rem 0.75rem;text-align:right;border-bottom:1px solid var(--border2)}
-.yr-table td:first-child{color:var(--text3);font-weight:500;text-align:left}
-.yr-table tbody tr:last-child td{border-bottom:none}
-.yr-table tbody tr:nth-child(even){background:var(--surface2)}
+.result-row-label{font-size:0.875rem;color:var(–text-secondary);font-weight:400}
+.result-row-val{font-size:0.875rem;font-weight:600;color:var(–text-primary)}
+
+/* ── Yearly breakdown ── */
+.yr-section{border-top:1px solid var(–divider)}
+.yr-toggle{
+display:flex;align-items:center;justify-content:space-between;
+width:100%;background:none;border:none;
+padding:0.875rem 1rem;cursor:pointer;font-family:inherit;
+color:var(–blue);font-size:0.875rem;font-weight:600
+}
+.yr-toggle svg{width:1rem;height:1rem;stroke:var(–blue);fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;transition:transform 0.2s}
 .yr-body.closed{display:none}
-.yr-table td.td-red{color:var(--red)!important}
-.yr-table td.td-green{color:var(--green)!important}
-.yr-table tbody tr.depleted td{color:var(--red);opacity:0.65}
-.yr-table tbody tr.last-row td{font-weight:700;color:var(--blue)}
-/* ── info note ── */
-.info-note{display:flex;align-items:flex-start;gap:0.3125rem;padding:0.625rem 0 0.125rem;margin-top:0.5rem;border-top:1px solid var(--border2)}
-.info-note span{font-size:0.62rem;color:var(--text3);line-height:1.5}
-/* ── depletion banner ── */
-.depletion-banner{display:none;align-items:flex-start;gap:0.5rem;background:var(--red-bg);border:1px solid rgba(248,113,113,0.25);border-radius:var(--r);padding:0.625rem 0.75rem;margin-top:0.625rem}
+.yr-table{width:100%;border-collapse:collapse;table-layout:fixed}
+.yr-table thead tr{background:var(–bg-secondary)}
+.yr-table th{
+font-size:0.625rem;font-weight:700;
+color:var(–text-hint);text-transform:uppercase;letter-spacing:0.06em;
+padding:0.5625rem 1rem;text-align:right;
+border-bottom:1px solid var(–divider)
+}
+.yr-table th:first-child{text-align:left;width:16%}
+.yr-table td{
+font-size:0.8125rem;font-weight:500;
+color:var(–text-primary);
+padding:0.6875rem 1rem;text-align:right;
+border-bottom:1px solid var(–divider)
+}
+.yr-table td:first-child{color:var(–text-secondary);font-weight:400;text-align:left}
+.yr-table tbody tr:last-child td{border-bottom:none}
+.yr-table td.td-red{color:var(–red)!important}
+.yr-table td.td-green{color:var(–green)!important}
+.yr-table tbody tr.depleted td{color:var(–red);opacity:0.7}
+.yr-table tbody tr.last-row td{font-weight:600;color:var(–blue)}
+
+/* ── Info note ── */
+.info-note{
+display:flex;align-items:flex-start;gap:0.5rem;
+padding:0.875rem 1rem;
+border-top:1px solid var(–divider)
+}
+.info-note-icon{color:var(–text-hint);font-size:0.875rem;flex-shrink:0;margin-top:0.05rem}
+.info-note span{font-size:0.75rem;color:var(–text-secondary);line-height:1.5}
+
+/* ── Depletion banner ── */
+.depletion-banner{
+display:none;align-items:flex-start;gap:0.625rem;
+background:var(–red-light);border-radius:0.5rem;
+padding:0.75rem 1rem;margin:0.75rem 1rem 0
+}
 .depletion-banner.show{display:flex}
-.depletion-banner svg{flex-shrink:0;margin-top:1px;stroke:var(--red)}
-.depletion-banner-text{font-size:0.75rem;color:var(--red);line-height:1.5;font-weight:600}
-/* ── toggle switch ── */
+.depletion-banner svg{flex-shrink:0;margin-top:1px;stroke:var(–red)}
+.depletion-banner-text{font-size:0.8125rem;color:var(–red);line-height:1.5;font-weight:500}
+
+/* ── Settings rows — Google list item style ── */
+.setting-row{
+display:flex;align-items:center;justify-content:space-between;
+padding:0.875rem 1rem;
+border-bottom:1px solid var(–divider)
+}
+.setting-row:last-child{border-bottom:none}
+.setting-row-left{display:flex;align-items:center;gap:0.875rem}
+.setting-row-icon{color:var(–text-secondary)}
+.setting-row-icon svg{width:1.25rem;height:1.25rem;stroke:currentColor;fill:none;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}
+.setting-row-label{font-size:0.9375rem;color:var(–text-primary);font-weight:400}
+.setting-section-title{
+padding:1rem 1rem 0.375rem;
+font-size:0.75rem;font-weight:600;
+color:var(–blue);letter-spacing:0.05em;text-transform:uppercase
+}
+
+/* ── Toggle switch ── */
 .toggle{position:relative;display:inline-block;width:2.75rem;height:1.625rem;flex-shrink:0}
 .toggle input{opacity:0;width:0;height:0}
-.toggle-slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background:var(--surface3);border:1px solid var(--border);border-radius:99px;transition:0.2s}
-.toggle-slider::before{content:'';position:absolute;height:1.25rem;width:1.25rem;left:0.125rem;bottom:0.125rem;background:var(--text3);border-radius:50%;transition:0.2s}
-.toggle input:checked+.toggle-slider{background:var(--blue);border-color:var(--blue)}
-.toggle input:checked+.toggle-slider::before{transform:translateX(1.125rem);background:#fff}
-/* ── size picker — matches Goal Tracker ── */
-.size-picker{display:grid;grid-template-columns:repeat(5,1fr);gap:0.375rem;margin-bottom:0.625rem}
-.size-btn{padding:0.5625rem 0;border-radius:var(--r);border:1px solid var(--border2);background:var(--surface2);color:var(--text3);font-size:0.78rem;font-weight:700;cursor:pointer;font-family:inherit;transition:all 0.15s}
-.size-btn:active{transform:scale(0.93)}
-.size-btn.active{background:var(--blue);color:#fff;border-color:var(--blue)}
-/* ── range slider ── */
-.range-track{position:relative;height:4px;background:var(--border2);border-radius:99px;margin:0.25rem 0 0.125rem}
-.range-fill{position:absolute;left:0;height:100%;background:var(--blue);border-radius:99px;transition:width .1s;pointer-events:none}
+.toggle-slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background:#dadce0;border-radius:99px;transition:0.2s}
+.toggle-slider::before{content:’’;position:absolute;height:1.25rem;width:1.25rem;left:0.1875rem;bottom:0.1875rem;background:#fff;border-radius:50%;transition:0.2s;box-shadow:0 1px 3px rgba(0,0,0,0.3)}
+.toggle input:checked+.toggle-slider{background:var(–blue)}
+.toggle input:checked+.toggle-slider::before{transform:translateX(1.125rem)}
+
+/* ── Size picker ── */
+.size-picker{display:flex;gap:0.375rem;padding:0 1rem 1rem;flex-wrap:wrap}
+.size-btn{
+flex:1;padding:0.5625rem 0;
+border-radius:0.5rem;
+border:1.5px solid var(–divider);
+background:var(–bg);
+color:var(–text-secondary);
+font-size:0.8125rem;font-weight:600;
+cursor:pointer;font-family:inherit;transition:all 0.15s;
+min-width:2.5rem
+}
+.size-btn:active{background:var(–bg-secondary)}
+.size-btn.active{background:var(–blue-light);color:var(–blue);border-color:var(–blue)}
+
+/* ── Range slider ── */
+.range-wrap{padding:0 1rem 1rem}
+.range-track{position:relative;height:4px;background:#dadce0;border-radius:99px;margin-bottom:0.25rem}
+.range-fill{position:absolute;left:0;height:100%;background:var(–blue);border-radius:99px;transition:width .1s;pointer-events:none}
 .custom-range{-webkit-appearance:none;appearance:none;width:100%;height:4px;background:transparent;outline:none;cursor:pointer;position:relative;z-index:1}
-.custom-range::-webkit-slider-thumb{-webkit-appearance:none;width:1.125rem;height:1.125rem;border-radius:50%;background:var(--blue);border:2px solid var(--surface);box-shadow:0 1px 4px rgba(0,0,0,0.3);cursor:pointer}
-.custom-range::-moz-range-thumb{width:1.125rem;height:1.125rem;border-radius:50%;background:var(--blue);border:2px solid var(--surface);cursor:pointer}
-/* ── data tool cards ── */
-.dt-card{display:flex;flex-direction:column;align-items:center;gap:0.25rem;padding:0.875rem 0.625rem;background:var(--surface2);border:1px solid var(--border2);border-radius:var(--r);cursor:pointer;font-family:inherit;color:var(--text2)}
-.dt-card svg{opacity:0.6;margin-bottom:0.125rem}
-.dt-label{font-size:0.82rem;font-weight:700;color:var(--text1)}
-.dt-sub{font-size:0.65rem;color:var(--text3)}
-.dt-card.dt-danger{border-color:rgba(220,38,38,0.15)}
+.custom-range::-webkit-slider-thumb{-webkit-appearance:none;width:1.125rem;height:1.125rem;border-radius:50%;background:var(–blue);border:2px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,0.3);cursor:pointer}
+.custom-range::-moz-range-thumb{width:1.125rem;height:1.125rem;border-radius:50%;background:var(–blue);border:2px solid #fff;cursor:pointer}
+
+/* ── Data tool cards ── */
+.dt-row{display:flex;gap:0.75rem;padding:0 1rem 1rem}
+.dt-card{
+flex:1;display:flex;align-items:center;gap:0.625rem;
+padding:0.75rem;border-radius:0.5rem;
+border:1.5px solid var(–divider);
+background:var(–bg);cursor:pointer;font-family:inherit;
+color:var(–text-secondary);transition:background 0.15s
+}
+.dt-card:active{background:var(–bg-secondary)}
+.dt-card svg{flex-shrink:0}
+.dt-card-text{text-align:left}
+.dt-label{font-size:0.875rem;font-weight:600;color:var(–text-primary)}
+.dt-sub{font-size:0.75rem;color:var(–text-secondary)}
+.dt-card.dt-danger .dt-label{color:var(–red)}
+.dt-card.dt-danger{border-color:#fad2cf}
+
+/* ── Footer note ── */
+.footer-note{padding:1rem;text-align:center;font-size:0.75rem;color:var(–text-hint)}
 </style>
+
 </head>
-<body data-theme="dark">
-<div class="top-header"><div class="hdr-title">Calculator</div></div>
+<body>
 
-<!-- ═══ SIP ═══ -->
+<!-- ── HEADER ── -->
 
-<div class="page active" id="page-sip"><div class="container" style="padding-top:8px">
-  <div class="card-inner">
-    <div class="fg"><label class="fl">Monthly SIP Amount (₹)</label><input class="fi" id="sip-amt" type="number" inputmode="numeric" placeholder="e.g. 10000" value="10000" oninput="calcSIP()"/></div>
-    <div class="form-row2"><div class="fg"><label class="fl">Expected Return (% p.a.)</label><input class="fi" id="sip-rate" type="number" step="0.5" placeholder="12" value="12" oninput="calcSIP()"/></div><div class="fg"><label class="fl">Time Period (years)</label><input class="fi" id="sip-years" type="number" placeholder="10" value="10" oninput="calcSIP()"/></div></div>
-    <div class="fg"><label class="fl">Inflation (% p.a.) <span>optional</span></label><input class="fi" id="sip-infl" type="number" step="0.5" placeholder="0" value="7" oninput="calcSIP()"/></div>
-    <div id="sip-results" style="display:none">
-      <div class="result-card"><div class="result-label">Future Value</div><div class="result-val" id="sip-fv">₹0</div><div class="result-sub" id="sip-fv-real"></div></div>
-      <div style="margin-top:8px"><div class="result-row"><span class="result-row-label">Total Invested</span><span class="result-row-val" id="sip-invested">₹0</span></div><div class="result-row"><span class="result-row-label">Wealth Gained</span><span class="result-row-val" id="sip-gain" style="color:var(--green)">₹0</span></div><div class="result-row" id="sip-real-row" style="display:none"><span class="result-row-label">Real Value (inflation-adjusted)</span><span class="result-row-val" id="sip-real-val">₹0</span></div></div>
-      <div class="yr-table-wrap"><button class="yr-toggle" onclick="toggleYr(this,'sip-tb')"><span>Yearly Breakdown</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button><div id="sip-tb" class="yr-body closed"><table class="yr-table"><thead><tr><th>YR</th><th>Invested</th><th>Value</th><th style="color:var(--green)">Returns</th></tr></thead><tbody id="sip-rows"></tbody></table></div></div>
-      <div class="info-note"><span style="opacity:0.5">ⓘ</span><span>Returns are estimated. Actual returns depend on market conditions.</span></div>
+<div class="top-header">
+  <div class="hdr-title">SIP / SWP Calculator</div>
+</div>
+
+<!-- ═══ SIP PAGE ═══ -->
+
+<div class="page active" id="page-sip">
+  <div class="page-title" style="padding-bottom:0.25rem">SIP Calculator</div>
+
+  <div class="section-group">
+    <div class="field-wrap" style="padding-top:0.875rem">
+      <div class="fg">
+        <label class="fl">Monthly SIP Amount (₹)</label>
+        <input class="fi" id="sip-amt" type="number" inputmode="numeric" placeholder="e.g. 10000" value="10000" oninput="calcSIP()"/>
+      </div>
+      <div class="fg">
+        <label class="fl">Expected Return (% p.a.)</label>
+        <input class="fi" id="sip-rate" type="number" step="0.5" placeholder="12" value="12" oninput="calcSIP()"/>
+      </div>
+      <div class="fg">
+        <label class="fl">Time Period (years)</label>
+        <input class="fi" id="sip-years" type="number" placeholder="10" value="10" oninput="calcSIP()"/>
+      </div>
+      <div class="fg">
+        <label class="fl">Inflation (% p.a.) <span class="fl-opt">optional</span></label>
+        <input class="fi" id="sip-infl" type="number" step="0.5" placeholder="0" value="7" oninput="calcSIP()"/>
+      </div>
     </div>
   </div>
-</div></div>
 
-<!-- ═══ SWP ═══ -->
-
-<div class="page" id="page-swp"><div class="container" style="padding-top:8px">
-  <div class="card-inner">
-    <div class="fg"><label class="fl">Total Corpus (₹)</label><input class="fi" id="swp-corpus" type="number" inputmode="numeric" placeholder="e.g. 5000000" value="5000000" oninput="calcSWP()"/></div>
-    <div class="form-row2"><div class="fg"><label class="fl">Monthly Withdrawal (₹)</label><input class="fi" id="swp-withdraw" type="number" inputmode="numeric" placeholder="e.g. 30000" value="30000" oninput="calcSWP()"/></div><div class="fg"><label class="fl">Expected Return (% p.a.)</label><input class="fi" id="swp-rate" type="number" step="0.5" placeholder="8" value="8" oninput="calcSWP()"/></div></div>
-    <div class="form-row2"><div class="fg"><label class="fl">Withdrawal Period (years)</label><input class="fi" id="swp-years" type="number" placeholder="20" value="20" oninput="calcSWP()"/></div><div class="fg"><label class="fl">Annual Step-up (%) <span>optional</span></label><input class="fi" id="swp-stepup" type="number" step="1" placeholder="0" value="5" oninput="calcSWP()"/></div></div>
-    <div id="swp-results" style="display:none">
-      <div id="swp-depletion-banner" class="depletion-banner"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><span class="depletion-banner-text" id="swp-depletion-msg"></span></div>
-      <div class="result-card"><div class="result-label">Total Withdrawn</div><div class="result-val" id="swp-total">₹0</div><div class="result-sub" id="swp-status"></div></div>
-      <div style="margin-top:8px"><div class="result-row"><span class="result-row-label">Starting Corpus</span><span class="result-row-val" id="swp-start">₹0</span></div><div class="result-row"><span class="result-row-label">Remaining Corpus</span><span class="result-row-val" id="swp-remaining">₹0</span></div><div class="result-row"><span class="result-row-label">Corpus Lasts</span><span class="result-row-val" id="swp-lasts"></span></div><div class="result-row"><span class="result-row-label">Last Monthly Withdrawal</span><span class="result-row-val" id="swp-last-wd">₹0</span></div></div>
-      <div class="yr-table-wrap"><button class="yr-toggle" onclick="toggleYr(this,'swp-tb')"><span>Yearly Breakdown</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button><div id="swp-tb" class="yr-body closed"><table class="yr-table"><thead><tr><th>YR</th><th>Withdrawn</th><th>Balance</th><th>Monthly</th></tr></thead><tbody id="swp-rows"></tbody></table></div></div>
-      <div class="info-note"><span style="opacity:0.5">ⓘ</span><span>SWP returns are estimated. Step-up increases withdrawal annually to match inflation.</span></div>
+  <div id="sip-results" style="display:none">
+    <div class="section-group">
+      <div class="result-hero">
+        <div class="result-hero-label">Future Value</div>
+        <div class="result-hero-val" id="sip-fv">₹0</div>
+        <div class="result-hero-sub" id="sip-fv-real"></div>
+      </div>
+      <div class="divider"></div>
+      <div class="result-list">
+        <div class="result-row">
+          <span class="result-row-label">Total Invested</span>
+          <span class="result-row-val" id="sip-invested">₹0</span>
+        </div>
+        <div class="result-row">
+          <span class="result-row-label">Wealth Gained</span>
+          <span class="result-row-val" id="sip-gain" style="color:var(--green)">₹0</span>
+        </div>
+        <div class="result-row" id="sip-real-row" style="display:none">
+          <span class="result-row-label">Real Value (inflation-adj.)</span>
+          <span class="result-row-val" id="sip-real-val">₹0</span>
+        </div>
+      </div>
+      <div class="yr-section">
+        <button class="yr-toggle" onclick="toggleYr(this,'sip-tb')">
+          <span>Yearly breakdown</span>
+          <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div id="sip-tb" class="yr-body closed">
+          <table class="yr-table">
+            <thead><tr><th>YR</th><th>Invested</th><th>Value</th><th>Returns</th></tr></thead>
+            <tbody id="sip-rows"></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="info-note">
+        <span class="info-note-icon">ⓘ</span>
+        <span>Returns are estimated as per AMFI formula. Actual returns depend on market conditions.</span>
+      </div>
     </div>
   </div>
-</div></div>
+</div>
 
-<!-- ═══ SETTINGS ═══ -->
+<!-- ═══ SWP PAGE ═══ -->
 
-<div class="page" id="page-settings"><div class="container" style="padding-top:8px">
-  <div class="sec-hdr-card" onclick="toggleSec('sec-appear')"><div class="sec-hdr-left"><span class="sec-hdr-title">Appearance</span></div><span class="sec-caret" id="caret-sec-appear"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></span></div>
-  <div class="sec-body closed" id="sec-appear"><div class="card-inner">
-    <div style="display:flex;align-items:center;justify-content:space-between;padding:2px 0 10px;border-bottom:1px solid var(--border2);margin-bottom:10px"><div style="display:flex;align-items:center;gap:8px"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><span style="font-size:0.88rem;font-weight:600">Dark Mode</span></div><label class="toggle"><input type="checkbox" id="theme-toggle" onchange="toggleTheme(this.checked)"/><span class="toggle-slider"></span></label></div>
-    <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg><span style="font-size:0.88rem;font-weight:600">Text Size</span></div>
-    <div class="size-picker"><button class="size-btn" onclick="setSize(13)" data-size="13">XS</button><button class="size-btn" onclick="setSize(14)" data-size="14">S</button><button class="size-btn active" onclick="setSize(16)" data-size="16">M</button><button class="size-btn" onclick="setSize(18)" data-size="18">L</button><button class="size-btn" onclick="setSize(20)" data-size="20">XL</button></div>
-    <div class="range-track"><div class="range-fill" id="range-fill" style="width:50%"></div><input type="range" class="custom-range" id="font-size-bar" min="0" max="4" step="1" value="2" oninput="const s=[13,14,16,18,20];setSize(s[this.value]);updateRangeFill(Number(this.value))"/></div>
-  </div></div>
-  <div class="sec-hdr-card" onclick="toggleSec('sec-data')"><div class="sec-hdr-left"><span class="sec-hdr-title">Data Tools</span></div><span class="sec-caret" id="caret-sec-data"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></span></div>
-  <div class="sec-body closed" id="sec-data"><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;margin-top:-4px">
-    <button class="dt-card" onclick="loadSample()"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg><div class="dt-label">Sample Data</div><div class="dt-sub">Load demo values</div></button>
-    <button class="dt-card dt-danger" onclick="resetCalc()"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg><div class="dt-label" style="color:var(--red)">Reset</div><div class="dt-sub">Clear everything</div></button>
-  </div></div>
-  <div style="text-align:center;padding:16px 0;font-size:0.72rem;color:var(--text3)">Data calculated locally. Nothing stored or sent anywhere.</div>
-</div></div>
+<div class="page" id="page-swp">
+  <div class="page-title" style="padding-bottom:0.25rem">SWP Calculator</div>
+
+  <div class="section-group">
+    <div class="field-wrap" style="padding-top:0.875rem">
+      <div class="fg">
+        <label class="fl">Total Corpus (₹)</label>
+        <input class="fi" id="swp-corpus" type="number" inputmode="numeric" placeholder="e.g. 5000000" value="5000000" oninput="calcSWP()"/>
+      </div>
+      <div class="fg">
+        <label class="fl">Monthly Withdrawal (₹)</label>
+        <input class="fi" id="swp-withdraw" type="number" inputmode="numeric" placeholder="e.g. 30000" value="30000" oninput="calcSWP()"/>
+      </div>
+      <div class="fg">
+        <label class="fl">Expected Return (% p.a.)</label>
+        <input class="fi" id="swp-rate" type="number" step="0.5" placeholder="8" value="8" oninput="calcSWP()"/>
+      </div>
+      <div class="fg">
+        <label class="fl">Withdrawal Period (years)</label>
+        <input class="fi" id="swp-years" type="number" placeholder="20" value="20" oninput="calcSWP()"/>
+      </div>
+      <div class="fg">
+        <label class="fl">Annual Step-up (%) <span class="fl-opt">optional</span></label>
+        <input class="fi" id="swp-stepup" type="number" step="1" placeholder="0" value="5" oninput="calcSWP()"/>
+      </div>
+    </div>
+  </div>
+
+  <div id="swp-results" style="display:none">
+    <div id="swp-depletion-banner" class="depletion-banner">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      <span class="depletion-banner-text" id="swp-depletion-msg"></span>
+    </div>
+
+```
+<div class="section-group" style="margin-top:0.5rem">
+  <div class="result-hero">
+    <div class="result-hero-label">Total Withdrawn</div>
+    <div class="result-hero-val" id="swp-total">₹0</div>
+    <div class="result-hero-sub" id="swp-status"></div>
+  </div>
+  <div class="divider"></div>
+  <div class="result-list">
+    <div class="result-row">
+      <span class="result-row-label">Starting Corpus</span>
+      <span class="result-row-val" id="swp-start">₹0</span>
+    </div>
+    <div class="result-row">
+      <span class="result-row-label">Remaining Corpus</span>
+      <span class="result-row-val" id="swp-remaining">₹0</span>
+    </div>
+    <div class="result-row">
+      <span class="result-row-label">Corpus Lasts</span>
+      <span class="result-row-val" id="swp-lasts"></span>
+    </div>
+    <div class="result-row">
+      <span class="result-row-label">Last Monthly Withdrawal</span>
+      <span class="result-row-val" id="swp-last-wd">₹0</span>
+    </div>
+  </div>
+  <div class="yr-section">
+    <button class="yr-toggle" onclick="toggleYr(this,'swp-tb')">
+      <span>Yearly breakdown</span>
+      <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+    </button>
+    <div id="swp-tb" class="yr-body closed">
+      <table class="yr-table">
+        <thead><tr><th>YR</th><th>Withdrawn</th><th>Balance</th><th>Monthly</th></tr></thead>
+        <tbody id="swp-rows"></tbody>
+      </table>
+    </div>
+  </div>
+  <div class="info-note">
+    <span class="info-note-icon">ⓘ</span>
+    <span>SWP returns are estimated. Step-up increases withdrawal annually to match inflation.</span>
+  </div>
+</div>
+```
+
+  </div>
+</div>
+
+<!-- ═══ SETTINGS PAGE ═══ -->
+
+<div class="page" id="page-settings">
+
+  <div class="section-group" style="margin-top:0.75rem">
+    <div class="setting-section-title">Appearance</div>
+    <div class="setting-row">
+      <div class="setting-row-left">
+        <span class="setting-row-icon"><svg viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg></span>
+        <span class="setting-row-label">Dark mode</span>
+      </div>
+      <label class="toggle"><input type="checkbox" id="theme-toggle" onchange="toggleTheme(this.checked)"/><span class="toggle-slider"></span></label>
+    </div>
+    <div class="divider"></div>
+    <div class="setting-section-title">Text Size</div>
+    <div class="size-picker">
+      <button class="size-btn" onclick="setSize(13)" data-size="13">XS</button>
+      <button class="size-btn" onclick="setSize(14)" data-size="14">S</button>
+      <button class="size-btn active" onclick="setSize(16)" data-size="16">M</button>
+      <button class="size-btn" onclick="setSize(18)" data-size="18">L</button>
+      <button class="size-btn" onclick="setSize(20)" data-size="20">XL</button>
+    </div>
+    <div class="range-wrap">
+      <div class="range-track">
+        <div class="range-fill" id="range-fill" style="width:50%"></div>
+        <input type="range" class="custom-range" id="font-size-bar" min="0" max="4" step="1" value="2"
+          oninput="const s=[13,14,16,18,20];setSize(s[this.value]);updateRangeFill(Number(this.value))"/>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-group">
+    <div class="setting-section-title">Data</div>
+    <div class="dt-row">
+      <button class="dt-card" onclick="loadSample()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        <div class="dt-card-text"><div class="dt-label">Sample Data</div><div class="dt-sub">Load demo values</div></div>
+      </button>
+      <button class="dt-card dt-danger" onclick="resetCalc()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>
+        <div class="dt-card-text"><div class="dt-label">Reset</div><div class="dt-sub">Clear everything</div></div>
+      </button>
+    </div>
+  </div>
+
+  <div class="footer-note">Calculated locally · nothing sent anywhere</div>
+</div>
 
 <!-- ═══ TAB BAR ═══ -->
 
 <nav class="tab-bar"><div class="tab-bar-inner">
-  <button class="tab-item active" onclick="nav('sip',this)"><div class="tab-icon"><svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></div><div class="tab-label">SIP</div></button>
-  <button class="tab-item" onclick="nav('swp',this)"><div class="tab-icon"><svg viewBox="0 0 24 24"><polyline points="1 18 8.5 10.5 13.5 15.5 23 6"/><polyline points="17 18 23 18 23 12"/></svg></div><div class="tab-label">SWP</div></button>
-  <button class="tab-item" onclick="nav('settings',this)"><div class="tab-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 112.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg></div><div class="tab-label">Settings</div></button>
+  <button class="tab-item active" onclick="nav('sip',this)">
+    <div class="tab-icon"><svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></div>
+    <div class="tab-label">SIP</div>
+  </button>
+  <button class="tab-item" onclick="nav('swp',this)">
+    <div class="tab-icon"><svg viewBox="0 0 24 24"><polyline points="1 18 8.5 10.5 13.5 15.5 23 6"/><polyline points="17 18 23 18 23 12"/></svg></div>
+    <div class="tab-label">SWP</div>
+  </button>
+  <button class="tab-item" onclick="nav('settings',this)">
+    <div class="tab-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 112.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg></div>
+    <div class="tab-label">Settings</div>
+  </button>
 </div></nav>
 
 <script>
@@ -251,33 +504,41 @@ function fmt(n){const v=Math.abs(Number(n)||0);let s='';if(v>=10000000)s=(v/1000
 /* ── navigation ── */
 function nav(p,btn){document.querySelectorAll('.page').forEach(e=>e.classList.remove('active'));document.getElementById('page-'+p).classList.add('active');document.querySelectorAll('.tab-item').forEach(t=>t.classList.remove('active'));if(btn)btn.classList.add('active')}
 
-/* ── collapsible sections ── */
-function toggleSec(id){const el=document.getElementById(id);if(!el)return;const c=el.classList.toggle('closed');document.getElementById('caret-'+id)?.classList.toggle('open',!c)}
-
 /* ── yearly breakdown toggle ── */
-function toggleYr(btn,id){const b=document.getElementById(id);b.classList.toggle('closed');const o=!b.classList.contains('closed');btn.classList.toggle('open',o);const t=btn.querySelector('span').textContent.replace('Hide ','');btn.querySelector('span').textContent=o?'Hide '+t:t;btn.querySelector('svg').style.transform=o?'rotate(180deg)':''}
+function toggleYr(btn,id){const b=document.getElementById(id);b.classList.toggle('closed');const o=!b.classList.contains('closed');const t=btn.querySelector('span').textContent.replace('Hide ','');btn.querySelector('span').textContent=o?'Hide '+t:t;btn.querySelector('svg').style.transform=o?'rotate(180deg)':''}
 
-/* ── theme ── */
-function toggleTheme(d){document.body.setAttribute('data-theme',d?'dark':'light');localStorage.setItem('calc_theme',d?'dark':'light')}
+/* ── dark mode ── */
+function toggleTheme(dark){
+  document.body.style.setProperty('--bg',dark?'#1c1c1e':'#ffffff');
+  document.body.style.setProperty('--bg-secondary',dark?'#2c2c2e':'#f8f9fa');
+  document.body.style.setProperty('--divider',dark?'#38383a':'#e8eaed');
+  document.body.style.setProperty('--text-primary',dark?'#f2f2f7':'#202124');
+  document.body.style.setProperty('--text-secondary',dark?'#aeaeb2':'#5f6368');
+  document.body.style.setProperty('--text-hint',dark?'#636366':'#9aa0a6');
+  document.body.style.setProperty('--blue',dark?'#4da3ff':'#1a73e8');
+  document.body.style.setProperty('--blue-light',dark?'rgba(77,163,255,0.15)':'#e8f0fe');
+  document.body.style.setProperty('--green',dark?'#32d74b':'#188038');
+  document.body.style.setProperty('--red',dark?'#ff453a':'#c5221f');
+  document.body.style.setProperty('--red-light',dark?'rgba(255,69,58,0.12)':'#fce8e6');
+  localStorage.setItem('calc_theme',dark?'dark':'light');
+}
 
-/* ── font size — 5 steps matching Goal Tracker ── */
+/* ── font size ── */
 const FS_MAP={13:0,14:1,16:2,18:3,20:4};
 function updateRangeFill(idx){const f=document.getElementById('range-fill');if(f)f.style.width=(idx/4*100)+'%'}
 function setSize(v){
   document.documentElement.style.fontSize=v+'px';
   localStorage.setItem('calc_fs',v);
   document.querySelectorAll('.size-btn').forEach(b=>b.classList.toggle('active',Number(b.dataset.size)===v));
-  const bar=document.getElementById('font-size-bar');
-  const idx=FS_MAP[v]??2;
-  if(bar)bar.value=idx;
-  updateRangeFill(idx);
+  const bar=document.getElementById('font-size-bar');const idx=FS_MAP[v]??2;
+  if(bar)bar.value=idx;updateRangeFill(idx);
 }
 
 /* ── sample / reset ── */
 function loadSample(){document.getElementById('sip-amt').value='25000';document.getElementById('sip-rate').value='12';document.getElementById('sip-years').value='15';document.getElementById('sip-infl').value='7';document.getElementById('swp-corpus').value='10000000';document.getElementById('swp-withdraw').value='50000';document.getElementById('swp-rate').value='8';document.getElementById('swp-years').value='25';document.getElementById('swp-stepup').value='5';calcSIP();calcSWP();nav('sip',document.querySelectorAll('.tab-item')[0])}
 function resetCalc(){['sip-amt','sip-rate','sip-years','sip-infl','swp-corpus','swp-withdraw','swp-rate','swp-years','swp-stepup'].forEach(id=>{document.getElementById(id).value=''});document.getElementById('sip-results').style.display='none';document.getElementById('swp-results').style.display='none';nav('sip',document.querySelectorAll('.tab-item')[0])}
 
-/* ── SIP calculator ── */
+/* ── SIP — AMFI formula: FV = P×(((1+r)^n−1)/r)×(1+r) ── */
 function calcSIP(){
   const P=Number(document.getElementById('sip-amt').value||0);
   const rate=Number(document.getElementById('sip-rate').value||0)/100;
@@ -306,7 +567,7 @@ function calcSIP(){
   document.getElementById('sip-rows').innerHTML=rows;
 }
 
-/* ── SWP calculator — fixed ── */
+/* ── SWP ── */
 function calcSWP(){
   const corpus=Number(document.getElementById('swp-corpus').value||0);
   const wd=Number(document.getElementById('swp-withdraw').value||0);
@@ -321,38 +582,24 @@ function calcSWP(){
   const r=rate/12;
   let bal=corpus,tot=0,mwd=wd,depYear=0;
   const yd=[];
-
   for(let y=1;y<=years;y++){
-    let yearWd=0;
-    let depleted=false;
-    const mwdThisYear=mwd; // snapshot BEFORE step-up — this is what was actually withdrawn this year
+    let yearWd=0,depleted=false;
+    const mwdThisYear=mwd;
     for(let m=0;m<12;m++){
       if(bal<=0){depleted=true;break}
       const actual=Math.min(mwd,bal);
-      bal=bal*(1+r)-actual;
-      yearWd+=actual;
-      tot+=actual;
+      bal=bal*(1+r)-actual;yearWd+=actual;tot+=actual;
       if(bal<0)bal=0;
     }
     const isDepletedRow=depleted||(bal<=0);
     yd.push({y,bal:Math.max(0,bal),yearWd,mwd:mwdThisYear,depleted:isDepletedRow});
-    if(isDepletedRow){if(depYear===0)depYear=y;break;} // stop immediately — no ghost rows
-    mwd*=(1+stepup); // step-up only after surviving the year
+    if(isDepletedRow){if(depYear===0)depYear=y;break;}
+    mwd*=(1+stepup);
   }
-
   const isDepleted=depYear>0;
-  // last withdrawal monthly amount — the mwd at the last active year
   const lastEntry=yd[yd.length-1];
-  const lastMWD=lastEntry.mwd;
-
-  // depletion banner
-  if(isDepleted){
-    banner.classList.add('show');
-    bannerMsg.textContent=`Corpus runs out in year ${depYear}. Consider reducing withdrawals, increasing return, or adding to the corpus.`;
-  } else {
-    banner.classList.remove('show');
-  }
-
+  if(isDepleted){banner.classList.add('show');bannerMsg.textContent=`Corpus runs out in year ${depYear}. Consider reducing withdrawals, increasing return, or adding to the corpus.`;}
+  else banner.classList.remove('show');
   document.getElementById('swp-total').textContent=fmt(tot);
   document.getElementById('swp-start').textContent=fmt(corpus);
   const finalBal=yd[yd.length-1].bal;
@@ -361,17 +608,13 @@ function calcSWP(){
   remEl.style.color=finalBal>0?'var(--green)':'var(--red)';
   document.getElementById('swp-lasts').textContent=isDepleted?`${depYear} years (depleted)`:`${years}+ years`;
   document.getElementById('swp-lasts').style.color=isDepleted?'var(--red)':'var(--green)';
-  document.getElementById('swp-last-wd').textContent=fmt(lastMWD)+'/mo';
-  document.getElementById('swp-status').textContent=isDepleted
-    ?`Corpus depleted in year ${depYear}`
-    :`${fmt(finalBal)} remaining after ${years} years`;
-
-  // Build table rows
+  document.getElementById('swp-last-wd').textContent=fmt(lastEntry.mwd)+'/mo';
+  document.getElementById('swp-status').textContent=isDepleted?`Corpus depleted in year ${depYear}`:`${fmt(finalBal)} remaining after ${years} years`;
   document.getElementById('swp-rows').innerHTML=yd.map((d,i)=>{
     const isLast=i===yd.length-1;
     const rowClass=(d.depleted||d.bal===0)?'depleted':(isLast&&!isDepleted?'last-row':'');
     const balClass=d.bal>0?'':'td-red';
-    const monthlyCell=(d.depleted||d.bal===0)?'<td style="color:var(--text3)">—</td>':`<td>${fmt(d.mwd)}</td>`;
+    const monthlyCell=(d.depleted||d.bal===0)?'<td style="color:var(--text-hint)">—</td>':`<td>${fmt(d.mwd)}</td>`;
     return `<tr${rowClass?' class="'+rowClass+'"':''}><td>${d.y}</td><td>${fmt(d.yearWd)}</td><td class="${balClass}">${fmt(d.bal)}</td>${monthlyCell}</tr>`;
   }).join('');
 }
@@ -380,14 +623,12 @@ function calcSWP(){
 (function(){
   const t=localStorage.getItem('calc_theme');
   const tgl=document.getElementById('theme-toggle');
-  if(t){document.body.setAttribute('data-theme',t);if(tgl)tgl.checked=t==='dark'}
-  else if(matchMedia('(prefers-color-scheme:light)').matches){document.body.setAttribute('data-theme','light');if(tgl)tgl.checked=false}
-  else{if(tgl)tgl.checked=true}
-  // restore font size
+  if(t==='dark'){toggleTheme(true);if(tgl)tgl.checked=true}
+  else if(t==='light'){if(tgl)tgl.checked=false}
+  else if(matchMedia('(prefers-color-scheme:dark)').matches){toggleTheme(true);if(tgl)tgl.checked=true}
   const fs=parseInt(localStorage.getItem('calc_fs'))||16;
   setSize(fs);
-  calcSIP();
-  calcSWP();
+  calcSIP();calcSWP();
 })();
 </script>
 
