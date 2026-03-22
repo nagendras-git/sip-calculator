@@ -52,7 +52,10 @@ body{font-family:‘Inter’,-apple-system,sans-serif;background:var(–bg);colo
 position:sticky;top:0;z-index:90;
 background:var(–bg);
 border-bottom:1px solid var(–divider);
-padding:calc(0.875rem + var(–safe-t)) 1rem 0.875rem;
+/* safe-t works in standalone PWA; in browser we need padding for status bar */
+padding-top:calc(0.875rem + env(safe-area-inset-top, 0px));
+padding-bottom:0.875rem;
+padding-left:1rem;padding-right:1rem;
 display:flex;align-items:center;gap:0.75rem
 }
 .hdr-back{width:2rem;height:2rem;display:flex;align-items:center;justify-content:center;border:none;background:none;cursor:pointer;color:var(–text-secondary);border-radius:50%}
@@ -243,12 +246,30 @@ min-width:2.5rem
 .size-btn.active{background:var(–blue-light);color:var(–blue);border-color:var(–blue)}
 
 /* ── Range slider ── */
-.range-wrap{padding:0 1rem 1rem}
-.range-track{position:relative;height:4px;background:#dadce0;border-radius:99px;margin-bottom:0.25rem}
-.range-fill{position:absolute;left:0;height:100%;background:var(–blue);border-radius:99px;transition:width .1s;pointer-events:none}
-.custom-range{-webkit-appearance:none;appearance:none;width:100%;height:4px;background:transparent;outline:none;cursor:pointer;position:relative;z-index:1}
-.custom-range::-webkit-slider-thumb{-webkit-appearance:none;width:1.125rem;height:1.125rem;border-radius:50%;background:var(–blue);border:2px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,0.3);cursor:pointer}
-.custom-range::-moz-range-thumb{width:1.125rem;height:1.125rem;border-radius:50%;background:var(–blue);border:2px solid #fff;cursor:pointer}
+.range-wrap{padding:0 1rem 1.25rem}
+.range-track{position:relative;height:1.125rem;display:flex;align-items:center}
+.range-track-bar{position:absolute;left:0;right:0;height:4px;background:#dadce0;border-radius:99px}
+.range-fill{position:absolute;left:0;top:0;height:100%;background:var(–blue);border-radius:99px;transition:width .1s}
+.custom-range{
+-webkit-appearance:none;appearance:none;
+position:absolute;left:0;right:0;width:100%;
+height:1.125rem;
+background:transparent;outline:none;cursor:pointer;
+margin:0;padding:0
+}
+.custom-range::-webkit-slider-thumb{
+-webkit-appearance:none;
+width:1.125rem;height:1.125rem;border-radius:50%;
+background:var(–blue);border:2px solid #fff;
+box-shadow:0 1px 3px rgba(0,0,0,0.3);cursor:pointer
+}
+.custom-range::-webkit-slider-runnable-track{height:1.125rem;background:transparent}
+.custom-range::-moz-range-thumb{
+width:1.125rem;height:1.125rem;border-radius:50%;
+background:var(–blue);border:2px solid #fff;
+box-shadow:0 1px 3px rgba(0,0,0,0.3);cursor:pointer
+}
+.custom-range::-moz-range-track{height:4px;background:transparent}
 
 /* ── Data tool cards ── */
 .dt-row{display:flex;gap:0.75rem;padding:0 1rem 1rem}
@@ -456,7 +477,9 @@ color:var(–text-secondary);transition:background 0.15s
     </div>
     <div class="range-wrap">
       <div class="range-track">
-        <div class="range-fill" id="range-fill" style="width:50%"></div>
+        <div class="range-track-bar">
+          <div class="range-fill" id="range-fill" style="width:50%"></div>
+        </div>
         <input type="range" class="custom-range" id="font-size-bar" min="0" max="4" step="1" value="2"
           oninput="const s=[13,14,16,18,20];setSize(s[this.value]);updateRangeFill(Number(this.value))"/>
       </div>
@@ -525,7 +548,10 @@ function toggleTheme(dark){
 
 /* ── font size ── */
 const FS_MAP={13:0,14:1,16:2,18:3,20:4};
-function updateRangeFill(idx){const f=document.getElementById('range-fill');if(f)f.style.width=(idx/4*100)+'%'}
+function updateRangeFill(idx){
+  const f=document.getElementById('range-fill');
+  if(f)f.style.width=(idx/4*100)+'%';
+}
 function setSize(v){
   document.documentElement.style.fontSize=v+'px';
   localStorage.setItem('calc_fs',v);
@@ -628,6 +654,13 @@ function calcSWP(){
   else if(matchMedia('(prefers-color-scheme:dark)').matches){toggleTheme(true);if(tgl)tgl.checked=true}
   const fs=parseInt(localStorage.getItem('calc_fs'))||16;
   setSize(fs);
+  // Ensure slider thumb and fill are in sync after layout
+  requestAnimationFrame(()=>{
+    const idx=FS_MAP[fs]??2;
+    const bar=document.getElementById('font-size-bar');
+    if(bar)bar.value=idx;
+    updateRangeFill(idx);
+  });
   calcSIP();calcSWP();
 })();
 </script>
