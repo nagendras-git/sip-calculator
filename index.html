@@ -13,34 +13,28 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
 <script>
 (function(){
-  const iconHref=document.getElementById('pwa-icon').href;
-  const manifest={
-    name:'SIP / SWP Calculator',
-    short_name:'Calc',
-    start_url:'./',
-    display:'standalone',
-    background_color:'#ffffff',
-    theme_color:'#ffffff',
-    orientation:'portrait',
-    icons:[
-      {src:iconHref,sizes:'192x192',type:'image/png'},
-      {src:iconHref,sizes:'512x512',type:'image/png',purpose:'any maskable'}
-    ]
-  };
-  const mBlob=new Blob([JSON.stringify(manifest)],{type:'application/json'});
-  const mLink=document.createElement('link');
-  mLink.rel='manifest';
-  mLink.href=URL.createObjectURL(mBlob);
-  document.head.appendChild(mLink);
-  if('serviceWorker' in navigator){
-    const swCode=[
-      "self.addEventListener('install',()=>self.skipWaiting());",
-      "self.addEventListener('activate',e=>e.waitUntil(clients.claim()));",
-      "self.addEventListener('fetch',e=>e.respondWith(fetch(e.request).catch(()=>caches.match(e.request))));"
-    ].join('');
-    const swBlob=new Blob([swCode],{type:'application/javascript'});
-    navigator.serviceWorker.register(URL.createObjectURL(swBlob),{scope:'/'}).catch(()=>{});
-  }
+  // Inject web app manifest via blob URL (works on GitHub Pages)
+  try {
+    var iconSrc = document.getElementById('pwa-icon').href;
+    var manifest = {
+      name: 'SIP / SWP Calculator',
+      short_name: 'Calc',
+      start_url: './',
+      display: 'standalone',
+      background_color: '#ffffff',
+      theme_color: '#ffffff',
+      orientation: 'portrait',
+      icons: [
+        {src: iconSrc, sizes: '192x192', type: 'image/png'},
+        {src: iconSrc, sizes: '512x512', type: 'image/png', purpose: 'any maskable'}
+      ]
+    };
+    var blob = new Blob([JSON.stringify(manifest)], {type: 'application/json'});
+    var link = document.createElement('link');
+    link.rel = 'manifest';
+    link.href = URL.createObjectURL(blob);
+    document.head.appendChild(link);
+  } catch(e) {}
 })();
 </script>
 <style>
@@ -65,7 +59,7 @@
 /* ── Reset ── */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html{height:100%;overflow-x:hidden;font-size:16px;background:var(–bg)}
-body{font-family:‘Inter’,-apple-system,sans-serif;background:var(–bg);color:var(–text-primary);min-height:100vh;padding-bottom:calc(var(–nav-h) + env(safe-area-inset-bottom,0px) + 1rem);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body{font-family:‘Inter’,-apple-system,sans-serif;background:var(–bg);color:var(–text-primary);min-height:100vh;padding-bottom:calc(var(–nav-h) + env(safe-area-inset-bottom,0px) + 5rem);-webkit-font-smoothing:antialiased;overflow-x:hidden}
 ::-webkit-scrollbar{width:0;height:0}
 
 /* ── Header ── */
@@ -73,17 +67,19 @@ body{font-family:‘Inter’,-apple-system,sans-serif;background:var(–bg);colo
 position:sticky;top:0;z-index:90;
 background:var(–bg);
 border-bottom:1px solid var(–divider);
-padding:0.875rem 1rem;
+/* 54px = iOS status bar height; safe fallback for browser mode on GitHub Pages */
+padding-top:54px;
+padding-bottom:0.75rem;
+padding-left:1rem;padding-right:1rem;
 display:flex;align-items:center;gap:0.75rem
 }
-/* Standalone PWA: add safe area top padding */
+/* Standalone PWA mode */
 @media all and (display-mode: standalone){
-.top-header{padding-top:calc(0.875rem + env(safe-area-inset-top,0px))}
+.top-header{padding-top:calc(env(safe-area-inset-top,44px) + 0.75rem)}
+.tab-bar{
+height:calc(var(–nav-h) + env(safe-area-inset-bottom,0px));
+padding-bottom:env(safe-area-inset-bottom,0px)
 }
-/* Browser mode: tab bar sits above browser chrome — add extra bottom space to body */
-@media not all and (display-mode: standalone){
-body{padding-bottom:calc(var(–nav-h) + env(safe-area-inset-bottom,0px) + 5rem)}
-.tab-bar{bottom:env(safe-area-inset-bottom,0px)}
 }
 .hdr-back{width:2rem;height:2rem;display:flex;align-items:center;justify-content:center;border:none;background:none;cursor:pointer;color:var(–text-secondary);border-radius:50%}
 .hdr-back svg{width:1.25rem;height:1.25rem;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
@@ -94,9 +90,8 @@ body{padding-bottom:calc(var(–nav-h) + env(safe-area-inset-bottom,0px) + 5rem)
 position:fixed;bottom:0;left:0;right:0;z-index:100;
 background:var(–bg);
 border-top:1px solid var(–divider);
-height:calc(var(–nav-h) + env(safe-area-inset-bottom,0px));
-padding-bottom:env(safe-area-inset-bottom,0px);
-padding-top:0;
+height:var(–nav-h);
+padding:0;
 display:flex;justify-content:center;align-items:stretch
 }
 .tab-bar-inner{width:100%;max-width:480px;display:flex;align-items:stretch;justify-content:space-around}
